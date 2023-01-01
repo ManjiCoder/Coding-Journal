@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import LoadingBar from "react-top-loading-bar";
 import { useState } from "react";
 import CardItem from "./components/CardItem";
+import AddItem from "./components/AddItem";
 
 function App() {
   let title = "Code-Journal";
@@ -21,6 +22,10 @@ function App() {
         <Route
           path="/"
           element={<CardItem title={title} setProgressBar={setProgressBar} />}
+        />
+        <Route
+          path="/add"
+          element={<AddItem title={title} />}
         />
       </Routes>
     </>
