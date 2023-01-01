@@ -14,7 +14,7 @@ function Heading({title}) {
         capital can unlock long-term value and drive economic growth.
       </p>
       {/* Line */}
-      <hr className="my-8 h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
+      <hr className="mt-4 mb-3 h-px bg-gray-200 border-0 dark:bg-gray-700"></hr>
     </div>
   );
 }

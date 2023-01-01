@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import Heading from "./components/Heading";
 import Navbar from "./components/Navbar";
-import Table from "./components/Table";
 import LoadingBar from "react-top-loading-bar";
 import { useState } from "react";
+import CardItem from "./components/CardItem";
 
 function App() {
   let title = "Code-Journal";
@@ -20,7 +20,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={<Table title={title} setProgressBar={setProgressBar} />}
+          element={<CardItem title={title} setProgressBar={setProgressBar} />}
         />
       </Routes>
     </>
