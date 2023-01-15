@@ -5,6 +5,7 @@ import LoadingBar from "react-top-loading-bar";
 import { useState } from "react";
 import CardItem from "./components/CardItem";
 import AddItem from "./components/AddItem";
+import BottomNav from "./components/BottomNav";
 
 function App() {
   let title = "Code-Journal";
@@ -28,6 +29,7 @@ function App() {
           element={<AddItem title={title} />}
         />
       </Routes>
+      <BottomNav/>
     </>
   );
 }
