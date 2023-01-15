@@ -6,17 +6,17 @@ function CardItem({ title, setProgressBar }) {
   const [spinner, setSpinner] = useState(true);
 
   const getRow = async () => {
-    let url = `https://script.google.com/macros/s/AKfycbyH3ItxKNTqbwMRHW3xPT51vVUqomTL1Rq4unEKdaChLTFrwEFsAGtR9NDSnmlOLikm/exec`;
+    let url = `https://script.google.com/macros/s/AKfycbyzpvcL3QKvS0wD8LntnI4vBAtSl46KMCgAqK3tVVjK8LKBqLD5SVyssvx_7l1D4327/exec`;
     setProgressBar(30);
     let res = await fetch(url);
     setProgressBar(60);
     if (res.ok) {
       let response = await res.json();
-      console.log(response);
+      response.data.shift();
+      // console.log(response);
       setProgressBar(90);
-      setSpinner(false)
+      setSpinner(false);
       setRow(row.concat(response.data));
-      // row.shift();
       setProgressBar(100);
     } else {
       throw Error(res.message);
@@ -40,7 +40,7 @@ function CardItem({ title, setProgressBar }) {
 
       {/* Spinner */}
       {/* <Spinner/> */}
-      {spinner && <Spinner/>}
+      {spinner && <Spinner />}
       {/* cards */}
       <section className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
         {row.map((element, i) => {
