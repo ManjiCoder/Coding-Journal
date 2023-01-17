@@ -2,16 +2,16 @@ import React, { useState } from "react";
 
 function AddItem(props) {
   const [link, setLink] = useState(
-    "https://practice.geeksforgeeks.org/problems/plus-one/1?page=7&difficulty[]=-1&difficulty[]=0&status[]=unsolved&category[]=Data%20Structures&sortBy=submissions"
+    "https://practice.geeksforgeeks.org/problems/-regex-matching1145/1?page=5&difficulty[]=-1&difficulty[]=0&status[]=unsolved&category[]=Strings&sortBy=submissions"
   );
-  const [title, setTitle] = useState("Plus One");
+  const [title, setTitle] = useState("RegEx matching");
   const [status, setStatus] = useState("Done");
   const [level, setLevel] = useState("2");
-  const [accuracy, setAccuracy] = useState("14");
-  const [time, setTime] = useState("14m");
+  const [accuracy, setAccuracy] = useState("2");
+  const [time, setTime] = useState("10m 55s");
   const [code, setCode] = useState("");
   const [date, setDate] = useState("");
-  const [score, setScore] = useState("");
+  const [score, setScore] = useState("736");
   // const handleOnSumbit = async (e) => {
   //   e.preventDefault();
   //   setDate(new Date().getTime());
@@ -56,7 +56,7 @@ function AddItem(props) {
           onSubmit={(e) =>
             setTimeout(() => {
               window.location = "/";
-            }, 300)
+            }, 600)
           }
           className="space-y-6"
         >

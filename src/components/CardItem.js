@@ -95,6 +95,12 @@ function CardItem({ title, setProgressBar }) {
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                 Date - <span className={`font-bold`}>{element.date}</span>
               </p>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Score -{" "}
+                <span className={`font-bold text-red-700`}>
+                  {element.score}
+                </span>
+              </p>
               <a
                 href={element.link}
                 target="_blank"
