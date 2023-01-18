@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import React, {useState } from "react";
 import { useLocation } from "react-router-dom";
-function AddItem(props) {
+function UpdateItem({ APIKEY }) {
   const location = useLocation();
-  console.log(location);
-  const [link, setLink] = useState(
-    "https://practice.geeksforgeeks.org/problems/-regex-matching1145/1?page=5&difficulty[]=-1&difficulty[]=0&status[]=unsolved&category[]=Strings&sortBy=submissions"
-  );
-  const [title, setTitle] = useState("RegEx matching");
-  const [status, setStatus] = useState("Done");
-  const [level, setLevel] = useState("2");
-  const [accuracy, setAccuracy] = useState("2");
-  const [time, setTime] = useState("10m 55s");
-  const [code, setCode] = useState("");
-  const [score, setScore] = useState("730");
+//   const [updateDate] = location.state;
+  const updateData = location.state
+//   console.log(updateData);
+  const [link, setLink] = useState(updateData.Link);
+  const [title, setTitle] = useState(updateData.Title);
+  const [status, setStatus] = useState(updateData.Status);
+  const [level, setLevel] = useState(updateData.Level);
+  const [accuracy, setAccuracy] = useState(updateData.Accuracy);
+  const [time, setTime] = useState(updateData.Time);
+  const [code, setCode] = useState(updateData.Code);
+  const [score, setScore] = useState(updateData.Code);
   const handleOnSumbit = async (e) => {
     e.preventDefault();
     let row = {
-      ID: "INCREMENT",
+      ID: updateData.ID,
       Link: link,
       Title: title,
       Status: status,
@@ -24,13 +24,13 @@ function AddItem(props) {
       Accuracy: accuracy,
       Time: time,
       Code: code,
-      Date: new Date().getTime(),
+      Date: updateData.Date,
       Score: 560,
     };
     console.log(JSON.stringify(row));
 
-    fetch(`https://sheetdb.io/api/v1/${props.APIKEY}`, {
-      method: "POST",
+    fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${updateData.ID}`, {
+      method: "PATCH",
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
@@ -47,7 +47,7 @@ function AddItem(props) {
       <div className="w-full mb-7 max-w-sm p-4 dark:bg-slate-800  border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
         <form className="space-y-6" onSubmit={handleOnSumbit}>
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-            Add Data To <b>{props.title}</b>
+            Add Data To <b>Code-Journal</b>
           </h5>
           {/* Link */}
           <div>
@@ -318,7 +318,7 @@ function AddItem(props) {
             type="submit"
             className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Submit
+            Update
           </button>
         </form>
       </div>
@@ -326,4 +326,4 @@ function AddItem(props) {
   );
 }
 
-export default AddItem;
+export default UpdateItem;

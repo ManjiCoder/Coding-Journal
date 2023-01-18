@@ -7,6 +7,7 @@ import CardItem from "./components/CardItem";
 import AddItem from "./components/AddItem";
 import BottomNav from "./components/BottomNav";
 import Alert from "./components/Alert";
+import UpdateItem from "./components/UpdateItem";
 
 function App() {
   let title = "Code-Journal";
@@ -51,6 +52,15 @@ function App() {
           path="/add"
           element={
             <AddItem 
+            APIKEY={APIKEY} 
+            title={title} 
+            alertTodo={alertTodo} />
+          }
+        />
+        <Route
+          path="/update"
+          element={
+            <UpdateItem 
             APIKEY={APIKEY} 
             title={title} 
             alertTodo={alertTodo} />
