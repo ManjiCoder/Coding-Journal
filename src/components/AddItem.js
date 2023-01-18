@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 function AddItem(props) {
   const [link, setLink] = useState(
     "https://practice.geeksforgeeks.org/problems/-regex-matching1145/1?page=5&difficulty[]=-1&difficulty[]=0&status[]=unsolved&category[]=Strings&sortBy=submissions"
@@ -10,56 +9,40 @@ function AddItem(props) {
   const [accuracy, setAccuracy] = useState("2");
   const [time, setTime] = useState("10m 55s");
   const [code, setCode] = useState("");
-  const [date, setDate] = useState("");
-  const [score, setScore] = useState("736");
-  // const handleOnSumbit = async (e) => {
-  //   e.preventDefault();
-  //   setDate(new Date().getTime());
-  //   console.log(link, title, status, level, accuracy, time, code, date);
+  const [score, setScore] = useState("730");
+  const handleOnSumbit = async (e) => {
+    e.preventDefault();
+    let row = {
+      ID: "INCREMENT",
+      Link: link,
+      Title: title,
+      Status: status,
+      Level: level,
+      Accuracy: accuracy,
+      Time: time,
+      Code: code,
+      Date: new Date().getTime(),
+      Score: 560,
+    };
+    console.log(JSON.stringify(row));
 
-  //   let row = {
-  //     link: link,
-  //     title: title,
-  //     status: status,
-  //     level: level,
-  //     accuracy: accuracy,
-  //     time: time,
-  //     code: code,
-  //     date: new Date().toDateString(),
-  //     score: 560,
-  //   };
-  //   console.log(JSON.stringify(row));
-  //   const options = {
-  //     method: "POST",
-  //     url: "https://script.google.com/macros/s/AKfycbyH3ItxKNTqbwMRHW3xPT51vVUqomTL1Rq4unEKdaChLTFrwEFsAGtR9NDSnmlOLikm/exec",
-  //     params: { action: "doPost" },
-  //     headers: { "Content-Type": "application/json; charset=utf-8" },
-  //     data: JSON.stringify(row),
-  //   };
-
-  //   axios
-  //     .request(options)
-  //     .then(function (response) {
-  //       console.log(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.error(error);
-  //     });
-  // };
+    fetch(`https://sheetdb.io/api/v1/${props.APIKEY}`, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: [row],
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
   return (
-    <>
-      <div className="w-full mb-7 max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700 mx-auto">
-        <form
-          action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSc1zzDQ16EivCgJ8DcMex4E0GeJKRJmoY4a4Blh35DvcxNdMw/formResponse"
-          method="POST"
-          target="_self"
-          onSubmit={(e) =>
-            setTimeout(() => {
-              window.location = "/";
-            }, 600)
-          }
-          className="space-y-6"
-        >
+    <div className="dark:bg-slate-900 py-4">
+      <div className="w-full mb-7 max-w-sm p-4 dark:bg-slate-800  border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
+        <form className="space-y-6" onSubmit={handleOnSumbit}>
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
             Add Data To <b>{props.title}</b>
           </h5>
@@ -336,7 +319,7 @@ function AddItem(props) {
           </button>
         </form>
       </div>
-    </>
+    </div>
   );
 }
 
