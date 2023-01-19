@@ -4,7 +4,8 @@ function UpdateItem({ APIKEY }) {
   const location = useLocation();
 //   const [updateDate] = location.state;
   const updateData = location.state
-//   console.log(updateData);
+  console.log(updateData);
+  console.log(updateData.Score);
   const [link, setLink] = useState(updateData.Link);
   const [title, setTitle] = useState(updateData.Title);
   const [status, setStatus] = useState(updateData.Status);
@@ -12,7 +13,7 @@ function UpdateItem({ APIKEY }) {
   const [accuracy, setAccuracy] = useState(updateData.Accuracy);
   const [time, setTime] = useState(updateData.Time);
   const [code, setCode] = useState(updateData.Code);
-  const [score, setScore] = useState(updateData.Code);
+  const [score, setScore] = useState(updateData.Score);
   const handleOnSumbit = async (e) => {
     e.preventDefault();
     let row = {
@@ -25,8 +26,9 @@ function UpdateItem({ APIKEY }) {
       Time: time,
       Code: code,
       Date: updateData.Date,
-      Score: 560,
+      Score: score,
     };
+    console.log(score);
     console.log(JSON.stringify(row));
 
     fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${updateData.ID}`, {
@@ -299,7 +301,7 @@ function UpdateItem({ APIKEY }) {
               htmlFor="score"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              score
+              Score
             </label>
             <input
               type="number"

@@ -25,7 +25,7 @@ function AddItem(props) {
       Time: time,
       Code: code,
       Date: new Date().getTime(),
-      Score: 560,
+      Score: score,
     };
     console.log(JSON.stringify(row));
 
@@ -299,7 +299,7 @@ function AddItem(props) {
               htmlFor="score"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              score
+              Score
             </label>
             <input
               type="number"
