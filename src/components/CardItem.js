@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
   const [data, setData] = useState([]);
-  const [row, setRow] = useState([]);
+  // const [row, setRow] = useState([]);
   const [spinner, setSpinner] = useState(true);
   // const [status, setStatus] = useState(false)
 
@@ -18,13 +18,13 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
     setProgressBar(30);
     let res = await fetch(url);
     setProgressBar(60);
+    alertTodo('Fetch',res.ok)
     if (res.ok) {
       let response = await res.json();
-      response.data.shift();
-      console.log(response.data);
+      console.log(response);
       setProgressBar(90);
       setSpinner(false);
-      setData(data.concat(response.data));
+      setData(data.concat(response));
       setProgressBar(100);
     } else {
       throw Error(res.message);
@@ -55,7 +55,7 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
 
   return (
     <>
-      <div className="pb-7 dark:bg-gray-900">
+      <div className="pb-7 bg-slate-50 dark:bg-gray-900">
         <p className="text-3xl mb-4 font-bold text-center text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
           {title}
         </p>
@@ -65,12 +65,11 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
         {spinner && <Spinner />}
         {/* cards */}
         <section className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {data.map((element) => {
-            // console.log(row);
+          {data.map((element,index) => {
             return (
               <div
                 key={element.ID}
-                className="w-96 sm:w-96 mx-auto p-6 bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+                className="w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               >
                 <div className="flex mb-4">
                   <img
@@ -78,7 +77,7 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                     alt="Greeks For Greek"
                   />
                   <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    {"-"}&nbsp;&nbsp;{element.ID.toString().padStart(2, 0)}
+                    {"-"}&nbsp;&nbsp;{(data.length-index).toString().padStart(2, 0)}
                   </span>
                 </div>
                 <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
@@ -101,7 +100,7 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                 </p>
                 <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                   Accuracy -{" "}
-                  <span className={`font-bold`}>{element.Accuracy}%</span>
+                  <span className={`font-bold`}>{(100/element.Accuracy).toFixed(2)}%</span>
                 </p>
                 <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                   Time - <span className={`font-bold`}>{element.Time}</span>

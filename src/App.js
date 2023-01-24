@@ -19,14 +19,14 @@ function App() {
   const [alert, setAlert] = useState(null); //  Alert
   
   // Function to set Alert
-  const alertTodo = (msg, type) => {
+  const alertTodo = (msg, status) => {
     setAlert({
       msg: msg,
-      type: type,
+      stauts: status,
     });
     setTimeout(() => {
       setAlert(null);
-    }, 2000);
+    }, 4000);
   };
 
   return (

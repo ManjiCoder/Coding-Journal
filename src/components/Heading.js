@@ -2,7 +2,7 @@ import React from "react";
 
 function Heading({title}) {
   return (
-    <div className="container pl-5 dark:bg-gray-900 space-y-7 pb-5">
+    <div className="p-5 bg-slate-50 dark:bg-gray-900 space-y-7">
       <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl">
         <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
           {title}

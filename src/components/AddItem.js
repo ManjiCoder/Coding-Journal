@@ -1,18 +1,15 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+
 function AddItem(props) {
-  const location = useLocation();
-  console.log(location);
-  const [link, setLink] = useState(
-    "https://practice.geeksforgeeks.org/problems/-regex-matching1145/1?page=5&difficulty[]=-1&difficulty[]=0&status[]=unsolved&category[]=Strings&sortBy=submissions"
-  );
-  const [title, setTitle] = useState("RegEx matching");
-  const [status, setStatus] = useState("Done");
-  const [level, setLevel] = useState("2");
-  const [accuracy, setAccuracy] = useState("2");
-  const [time, setTime] = useState("10m 55s");
+  const [link, setLink] = useState("");
+  const [title, setTitle] = useState("");
+  const [status, setStatus] = useState("")
+  const [level, setLevel] = useState("");
+  const [accuracy, setAccuracy] = useState("");
+  const [time, setTime] = useState("");
   const [code, setCode] = useState("");
-  const [score, setScore] = useState("730");
+  // const [lang, setLang] = useState("")
+  const [score, setScore] = useState("");
   const handleOnSumbit = async (e) => {
     e.preventDefault();
     let row = {
@@ -27,9 +24,9 @@ function AddItem(props) {
       Date: new Date().getTime(),
       Score: score,
     };
-    console.log(JSON.stringify(row));
+    console.log(row);
 
-    fetch(`https://sheetdb.io/api/v1/${props.APIKEY}`, {
+    let res = await fetch(`https://sheetdb.io/api/v1/${props.APIKEY}`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -38,13 +35,22 @@ function AddItem(props) {
       body: JSON.stringify({
         data: [row],
       }),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    });
+    console.log(res)
+    props.alerTodo('Added',res.ok)
+    if (res.ok) {
+      let response = await res.json();
+      console.log(response);
+      setTimeout(() => {
+        window.location = '/'
+      }, 1000);
+    } else {
+      throw Error(res.message);
+    }
   };
   return (
     <div className="dark:bg-slate-900 py-4">
-      <div className="w-full mb-7 max-w-sm p-4 dark:bg-slate-800  border border-gray-200 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
+      <div className="w-full mb-7 max-w-sm p-4 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
         <form className="space-y-6" onSubmit={handleOnSumbit}>
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
             Add Data To <b>{props.title}</b>
@@ -101,13 +107,16 @@ function AddItem(props) {
               <input
                 id="done"
                 type="radio"
-                name="entry.584125227"
+                name="status"
                 value="Done"
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                onChange={(e) => {
+                  setStatus(e.target.value);
+                }}
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
               />
               <label
                 htmlFor="done"
-                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 Done
               </label>
@@ -117,16 +126,35 @@ function AddItem(props) {
               <input
                 id="wrong"
                 type="radio"
-                name="entry.584125227"
+                name="status"
                 value="Wrong"
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                 onChange={(e) => {
                   setStatus(e.target.value);
                 }}
               />
               <label
                 htmlFor="wrong"
-                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+              >
+                Wrong
+              </label>
+            </div>
+
+            <div className="flex items-center pl-5 mb-4">
+              <input
+                id="TLE"
+                type="radio"
+                name="status"
+                value="TLE"
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                onChange={(e) => {
+                  setStatus(e.target.value);
+                }}
+              />
+              <label
+                htmlFor="TLE"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 TimeOut
               </label>
@@ -141,16 +169,16 @@ function AddItem(props) {
               <input
                 id="zero"
                 type="radio"
-                name="entry.813669578"
+                name="level"
                 value="0"
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
               />
               <label
                 htmlFor="zero"
-                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 0
               </label>
@@ -160,16 +188,16 @@ function AddItem(props) {
               <input
                 id="one"
                 type="radio"
-                name="entry.813669578"
+                name="level"
                 value="1"
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
               />
               <label
                 htmlFor="one"
-                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 1
               </label>
@@ -179,16 +207,16 @@ function AddItem(props) {
               <input
                 id="two"
                 type="radio"
-                name="entry.813669578"
+                name="level"
                 value="2"
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
               />
               <label
                 htmlFor="two"
-                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 2
               </label>
@@ -197,16 +225,16 @@ function AddItem(props) {
               <input
                 id="four"
                 type="radio"
-                name="entry.813669578"
+                name="level"
                 value="4"
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
               />
               <label
                 htmlFor="four"
-                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 4
               </label>
@@ -215,16 +243,16 @@ function AddItem(props) {
               <input
                 id="eight"
                 type="radio"
-                name="entry.813669578"
+                name="level"
                 value="8"
-                className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
+                className="cursor-pointer w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
               />
               <label
                 htmlFor="eight"
-                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 8
               </label>
@@ -236,13 +264,13 @@ function AddItem(props) {
               htmlFor="accuracy"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Accuracy
+              Attempt
             </label>
             <input
               type="number"
               name="entry.182705387"
               id="accuracy"
-              placeholder="Enter the time like : 10m 11s"
+              placeholder="Enter the number of attempt."
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               onChange={(e) => {
                 setAccuracy(e.target.value);
