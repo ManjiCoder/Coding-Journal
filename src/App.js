@@ -17,7 +17,6 @@ function App() {
     setProgress(UpdateProgress);
   };
   const [alert, setAlert] = useState(null); //  Alert
-  
   // Function to set Alert
   const alertTodo = (msg, status) => {
     setAlert({
@@ -51,19 +50,13 @@ function App() {
         <Route
           path="/add"
           element={
-            <AddItem 
-            APIKEY={APIKEY} 
-            title={title} 
-            alertTodo={alertTodo} />
+            <AddItem APIKEY={APIKEY} title={title} alertTodo={alertTodo} />
           }
         />
         <Route
           path="/update"
           element={
-            <UpdateItem 
-            APIKEY={APIKEY} 
-            title={title} 
-            alertTodo={alertTodo} />
+            <UpdateItem APIKEY={APIKEY} title={title} alertTodo={alertTodo} />
           }
         />
       </Routes>

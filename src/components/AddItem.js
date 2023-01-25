@@ -36,14 +36,15 @@ function AddItem(props) {
         data: [row],
       }),
     });
-    console.log(res)
+    console.log(res.ok)
     props.alerTodo('Added',res.ok)
     if (res.ok) {
       let response = await res.json();
       console.log(response);
-      setTimeout(() => {
-        window.location = '/'
-      }, 1000);
+      window.location = '/'
+      // setTimeout(() => {
+      //   window.location = '/'
+      // }, 1000);
     } else {
       throw Error(res.message);
     }

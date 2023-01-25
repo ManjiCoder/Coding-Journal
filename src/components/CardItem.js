@@ -3,12 +3,19 @@ import Spinner from "./Spinner";
 import Tooltip from "./Tooltip";
 // import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
+// import Modal from "./Modal";
+import ConfirmModal from "./ConfirmModal";
 
 function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
   const [data, setData] = useState([]);
   // const [row, setRow] = useState([]);
-  const [spinner, setSpinner] = useState(true);
+  const [spinner, setSpinner] = useState(false);
   // const [status, setStatus] = useState(false)
+
+  const [showModal, setShowModal] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
+  //  Funtion to close Modal
+  const closeModal = () => setShowModal(false);
 
   // GET - REQUEST
   const getRow = async () => {
@@ -18,7 +25,7 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
     setProgressBar(30);
     let res = await fetch(url);
     setProgressBar(60);
-    alertTodo('Fetch',res.ok)
+    alertTodo("Fetch", res.ok);
     if (res.ok) {
       let response = await res.json();
       console.log(response);
@@ -29,20 +36,6 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
     } else {
       throw Error(res.message);
     }
-  };
-
-  // DELETE - REQUEST
-  const deleteRow = (id) => {
-    // console.log(id, APIKEY);
-    fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
   };
 
   useEffect(() => {
@@ -64,12 +57,13 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
         {/* <Spinner/> */}
         {spinner && <Spinner />}
         {/* cards */}
-        <section className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {data.map((element,index) => {
+        <section className="pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+          {data.map((element, index) => {
             return (
               <div
+                id={element.ID}
                 key={element.ID}
-                className="w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+                className="focus:bg-black focus:scale-105 cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               >
                 <div className="flex mb-4">
                   <img
@@ -77,7 +71,8 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                     alt="Greeks For Greek"
                   />
                   <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    {"-"}&nbsp;&nbsp;{(data.length-index).toString().padStart(2, 0)}
+                    {"-"}&nbsp;&nbsp;
+                    {(data.length - index).toString().padStart(2, 0)}
                   </span>
                 </div>
                 <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
@@ -100,14 +95,16 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                 </p>
                 <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                   Accuracy -{" "}
-                  <span className={`font-bold`}>{(100/element.Accuracy).toFixed(2)}%</span>
+                  <span className={`font-bold`}>
+                    {(100 / element.Accuracy).toFixed(2)}%
+                  </span>
                 </p>
                 <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                   Time - <span className={`font-bold`}>{element.Time}</span>
                 </p>
                 <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                   Code -{" "}
-                  <span className={`font-bold`}>
+                  <span className="pointer-events-auto font-bold">
                     <a href="/" className="text-blue-600 cursor-pointer">
                       View
                     </a>
@@ -126,7 +123,7 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                   href={element.Link}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="pointer-events-auto inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Read More
                   <svg
@@ -141,11 +138,11 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                 </a>
                 {/* Icons */}
                 <section className="flex justify-between py-7">
-                  <Link to="/update" state={data[element.ID-1]}>
+                  <Link to="/update" state={data[element.ID - 1]}>
                     <i
                       data-tooltip-target="tooltip-animation-Edit"
                       data-tooltip-placement="bottom"
-                      className="text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer"
+                      className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer"
                       onClick={() => {
                         console.log(element.ID);
                       }}
@@ -155,9 +152,11 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                   <i
                     data-tooltip-target="tooltip-animation-Delete"
                     data-tooltip-placement="bottom"
-                    className="text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
+                    className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
                     onClick={() => {
-                      deleteRow(element.ID);
+                      setShowModal(true);
+                      setCurrentId(element.ID);
+                      console.log(element.ID);
                     }}
                   ></i>
                   <Tooltip text="Delete" />
@@ -166,6 +165,14 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
             );
           })}
         </section>
+        {/* <Modal/> */}
+        {showModal && (
+          <ConfirmModal
+            APIKEY={APIKEY}
+            deleteCardId={currentId}
+            closeModal={closeModal}
+          />
+        )}
       </div>
     </>
   );
