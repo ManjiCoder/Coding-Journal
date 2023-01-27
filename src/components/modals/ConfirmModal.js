@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import reactDom from "react-dom";
 
-const ConfirmModal = ({ closeModal, deleteCardId, APIKEY }) => {
+const ConfirmModal = ({ closeModal, deleteCardId, APIKEY, alertTodo }) => {
   // TO TOGGLE SCROLL
   useEffect(() => {
     document.body.style.overflowY = "hidden";
@@ -14,17 +14,27 @@ const ConfirmModal = ({ closeModal, deleteCardId, APIKEY }) => {
   }, []);
 
   // DELETE - REQUEST
-  const deleteRow = (id) => {
+  const deleteRow = async (id) => {
     // console.log(id, APIKEY);
-    fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${id}`, {
+    let res = await fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${id}`, {
       method: "DELETE",
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json",
       },
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
+    console.log(res.ok);
+    alertTodo("Deleted", res.ok);
+    if (res.ok) {
+      let response = await res.json();
+      console.log(response);
+      window.location = "/";
+      // setTimeout(() => {
+      //   window.location = '/'
+      // }, 1000);
+    } else {
+      throw Error(res.message);
+    }
   };
   const handleOnDelete = () => {
     closeModal();

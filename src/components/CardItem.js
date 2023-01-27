@@ -171,15 +171,17 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
             );
           })}
         </section>
-        {/* <Modal/> */}
+        {/* Delete-Modal */}
         {showModal && (
           <ConfirmModal
             APIKEY={APIKEY}
             deleteCardId={currentId}
             closeModal={closeModal}
+            alertTodo={alertTodo}
           />
-        )}
+          )}
 
+        {/* ViewCode-Modal */}
         {viewCode && (
           <ViewCodeModal
             lang={"javascript"}

@@ -1,10 +1,10 @@
 import React from "react";
 
-function Alert({ alert }) {
+function Alert({ alert, closeAlert}) {
   return (
     // // If alert is not null
     alert && (
-      <div className="flex justify-end bg-slate-50 pb-4">
+      <section id="alertWrapper" className="fixed top-20 right-2 flex justify-end bg-slate-50 dark:bg-slate-900">
         <div
           id="toast-success"
           className="flex items-center w-full max-w-xs py-4 px-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
@@ -24,18 +24,17 @@ function Alert({ alert }) {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <span className="sr-only">Check icon</span>
           </div>
           <div className="ml-3 text-sm font-normal">
             Item {alert.msg} successfully.
           </div>
+
+          {/* Close-Button */}
           <button
             type="button"
             className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-            data-dismiss-target="#toast-success"
-            aria-label="Close"
+            onClick={closeAlert}
           >
-            <span className="sr-only">Close</span>
             <svg
               aria-hidden="true"
               className="w-5 h-5"
@@ -51,7 +50,10 @@ function Alert({ alert }) {
             </svg>
           </button>
         </div>
-      </div>
+
+        {/* Animate Slider */}
+        <div id="slider-line"></div>
+      </section>
     )
   );
 }

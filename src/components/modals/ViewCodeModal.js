@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { monokaiSublime } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import reactDom from "react-dom";
 
 function ViewCodeModal({ lang, code, closeModal }) {
   const [copy, setCopy] = useState(false);
@@ -11,15 +12,15 @@ function ViewCodeModal({ lang, code, closeModal }) {
   // // TO TOGGLE SCROLL
   useEffect(() => {
     document.body.style.overflowY = "hidden";
-    // document.getElementById("root").style.filter = "brightness(0.5)";
+    document.getElementById("root").style.filter = "brightness(0.5)";
 
     return () => {
       document.body.style.overflowY = "scroll";
-      // document.getElementById("root").style.filter = "brightness(1)";
+      document.getElementById("root").style.filter = "brightness(1)";
     };
   }, []);
 
-  return (
+  return reactDom.createPortal(
     <>
       <div
         className="fixed top-0 left-0 right-0 bottom-0 backdrop-blur-sm"
@@ -32,7 +33,7 @@ function ViewCodeModal({ lang, code, closeModal }) {
         className="fixed top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-50 overflow-y-scroll"
       >
         <main className="relative w-[80vw] md:max-w-6xl bg-[#23241f] rounded-sm">
-          <div className="flex items-center justify-between text-base text-white py-2 px-4">
+          <div className="flex items-center justify-between text-base text-white py-2 px-4 border border-gray-500 border-b-2 border-t-0 border-l-0 border-r-0">
             <span className="font-medium">Code </span>
             {/* Cancal */}
             <button
@@ -55,10 +56,10 @@ function ViewCodeModal({ lang, code, closeModal }) {
               </svg>
             </button>
             {/* Copy-To-Clipboard */}
-            <div className="absolute top-11 right-4">
+            <div className="absolute top-12 right-4">
               <span>{copy ? "copied!" : ""}</span>
               <i
-                className={`ml-2 cursor-pointer text-slate-50 fa-${
+                className={`ml-2 cursor-pointer text-slate-50 hover:text-slate-400 fa-${
                   copy ? "solid" : "regular"
                 } fa-${copy ? "check" : "clone"}`}
                 onClick={() => {
@@ -74,10 +75,10 @@ function ViewCodeModal({ lang, code, closeModal }) {
           </div>
 
           {/* Line-Wrap */}
-          <div className="flex items-center gap-2 absolute top-11">
+          <div className="flex items-center gap-2 absolute top-12">
             <label
               htmlFor="line-wrap"
-              className="ml-2 text-sm font-medium dark:text-gray-900 text-gray-200"
+              className="ml-2 text-sm font-medium text-gray-200"
             >
               Line-Wrap
             </label>
@@ -101,7 +102,8 @@ function ViewCodeModal({ lang, code, closeModal }) {
           </SyntaxHighlighter>
         </main>
       </section>
-    </>
+    </>,
+    document.getElementById("ParentModalDiv")
   );
 }
 

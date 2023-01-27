@@ -8,6 +8,7 @@ import AddItem from "./components/AddItem";
 import BottomNav from "./components/BottomNav";
 import Alert from "./components/Alert";
 import UpdateItem from "./components/UpdateItem";
+import UseContext from "./components/context/UseContext";
 
 function App() {
   let title = "Code-Journal";
@@ -17,24 +18,28 @@ function App() {
     setProgress(UpdateProgress);
   };
   const [alert, setAlert] = useState(null); //  Alert
+
   // Function to set Alert
+  const closeAlert = () => {
+    setAlert(null)
+  }
   const alertTodo = (msg, status) => {
     setAlert({
       msg: msg,
       stauts: status,
     });
     setTimeout(() => {
-      setAlert(null);
-    }, 4000);
+      closeAlert();
+    }, 3100);
   };
 
   return (
-    <>
+    <UseContext.Provider value={{progress,setProgress}}>
       <Navbar title={title} />
       {/* Top Loading Bar */}
       <LoadingBar color="#f11946" height={3.4} progress={progress} />
       <Heading title={title} />
-      <Alert alert={alert} />
+      <Alert alert={alert} closeAlert={closeAlert} />
       <Routes>
         <Route
           path="/"
@@ -50,18 +55,18 @@ function App() {
         <Route
           path="/add"
           element={
-            <AddItem APIKEY={APIKEY} title={title} alertTodo={alertTodo} />
+            <AddItem APIKEY={APIKEY} title={title} alertTodo={alertTodo} setProgressBar={setProgressBar} />
           }
         />
         <Route
           path="/update"
           element={
-            <UpdateItem APIKEY={APIKEY} title={title} alertTodo={alertTodo} />
+            <UpdateItem APIKEY={APIKEY} title={title} alertTodo={alertTodo} setProgressBar={setProgressBar} />
           }
         />
       </Routes>
       <BottomNav />
-    </>
+    </UseContext.Provider>
   );
 }
 

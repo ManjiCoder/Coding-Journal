@@ -2,4 +2,21 @@
 
 @tailwind base;
 @tailwind components;
+#slider-line{
+    position: absolute;
+    bottom: 0;
+    right: 1px;
+    height: 5px;
+    border-radius: 11px;
+    background: limegreen;
+    animation: slide 2s ease-in-out 1 forwards;
+}
+@keyframes slide {
+    from{
+        width: 0px;
+    }
+    to{
+        width: 246px;
+    }
+}
 @tailwind utilities;

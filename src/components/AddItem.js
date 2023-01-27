@@ -3,13 +3,14 @@ import React, { useState } from "react";
 function AddItem(props) {
   const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
-  const [status, setStatus] = useState("")
+  const [status, setStatus] = useState("");
   const [level, setLevel] = useState("");
   const [accuracy, setAccuracy] = useState("");
   const [time, setTime] = useState("");
   const [code, setCode] = useState("");
-  // const [lang, setLang] = useState("")
+  const [lang, setLang] = useState("");
   const [score, setScore] = useState("");
+  // props.setProgressBar(90)
   const handleOnSumbit = async (e) => {
     e.preventDefault();
     let row = {
@@ -21,27 +22,27 @@ function AddItem(props) {
       Accuracy: accuracy,
       Time: time,
       Code: code,
+      Lang:lang,
       Date: new Date().getTime(),
       Score: score,
     };
     console.log(row);
-
     let res = await fetch(`https://sheetdb.io/api/v1/${props.APIKEY}`, {
       method: "POST",
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         data: [row],
       }),
     });
-    console.log(res.ok)
-    props.alerTodo('Added',res.ok)
+    console.log(res.ok);
+    props.alertTodo("Added", res.ok);
     if (res.ok) {
       let response = await res.json();
       console.log(response);
-      window.location = '/'
+      window.location = "/";
       // setTimeout(() => {
       //   window.location = '/'
       // }, 1000);
@@ -49,6 +50,9 @@ function AddItem(props) {
       throw Error(res.message);
     }
   };
+
+  const langList = ["javascript", "python", "java", "c++"];
+
   return (
     <div className="dark:bg-slate-900 py-4">
       <div className="w-full mb-7 max-w-sm p-4 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
@@ -302,6 +306,35 @@ function AddItem(props) {
               required
               value={time}
             />
+          </div>
+          {/* Lang */}
+          <div>
+            <label
+              htmlFor="dropdown"
+              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Language
+            </label>
+            <select
+              name="lang"
+              id="dropdown"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white capitalize"
+              onChange={(e) => setLang(e.target.value)}
+            >
+              Enter Lang
+              <option value="" className="bg-gray-400">
+                --Please select the language--
+              </option>
+              {/* Looping --> langList */}
+              {langList.map((item) => {
+                return (
+                  <option key={item} value={item}>
+                    {" "}
+                    {item}
+                  </option>
+                );
+              })}
+            </select>
           </div>
           {/* Code */}
           <div>
