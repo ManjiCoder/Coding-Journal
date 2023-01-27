@@ -3,9 +3,8 @@ import Spinner from "./Spinner";
 import Tooltip from "./Tooltip";
 // import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
-// import Modal from "./Modal";
-import ConfirmModal from "./ConfirmModal";
-
+import ConfirmModal from "../components/modals/ConfirmModal";
+import ViewCodeModal from "./modals/ViewCodeModal";
 function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
   const [data, setData] = useState([]);
   // const [row, setRow] = useState([]);
@@ -13,10 +12,11 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
   // const [status, setStatus] = useState(false)
 
   const [showModal, setShowModal] = useState(false);
+  const [viewCode, setViewCode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
   //  Funtion to close Modal
   const closeModal = () => setShowModal(false);
-
+  const closeViewCode = () => setViewCode(false)
   // GET - REQUEST
   const getRow = async () => {
     // let url = `https://sheetdb.io/api/v1/${APIKEY}`;
@@ -105,9 +105,15 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
                 <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                   Code -{" "}
                   <span className="pointer-events-auto font-bold">
-                    <a href="/" className="text-blue-600 cursor-pointer">
+                    <button
+                      className="text-blue-600 cursor-pointer"
+                      onClick={() => {
+                        setViewCode(true);
+                        setCurrentId(element.Code);
+                      }}
+                    >
                       View
-                    </a>
+                    </button>
                   </span>
                 </p>
                 <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
@@ -171,6 +177,14 @@ function CardItem({ title, setProgressBar, APIKEY, alertTodo }) {
             APIKEY={APIKEY}
             deleteCardId={currentId}
             closeModal={closeModal}
+          />
+        )}
+
+        {viewCode && (
+          <ViewCodeModal
+            lang={"javascript"}
+            code={currentId}
+            closeModal={closeViewCode}
           />
         )}
       </div>

@@ -1,41 +1,43 @@
 import React, { useEffect } from "react";
-import reactDom from 'react-dom'
+import reactDom from "react-dom";
 
-const ConfirmModal = ({ closeModal, deleteCardId,APIKEY }) => {
-  
+const ConfirmModal = ({ closeModal, deleteCardId, APIKEY }) => {
   // TO TOGGLE SCROLL
   useEffect(() => {
-    document.body.style.overflowY = 'hidden'
-    document.getElementById('root').style.filter = 'blur(2px)'
-    document.getElementById('root').style.filter = 'brightness(0.5)'
+    document.body.style.overflowY = "hidden";
+    document.getElementById("root").style.filter = "brightness(0.5)";
 
     return () => {
-      document.getElementById('root').style.filter = 'blur(0px)'
-      document.getElementById('root').style.filter = 'brightness(1)'
-      document.body.style.overflowY = 'scroll'
-    }
-  }, [])
-  
-    // DELETE - REQUEST
-    const deleteRow = (id) => {
-      // console.log(id, APIKEY);
-      fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+      document.body.style.overflowY = "scroll";
+      document.getElementById("root").style.filter = "brightness(1)";
     };
-    const handleOnDelete = () => {
-      closeModal()
-      deleteRow(deleteCardId)
-    }
-    // console.log(deleteCardId);
+  }, []);
+
+  // DELETE - REQUEST
+  const deleteRow = (id) => {
+    // console.log(id, APIKEY);
+    fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
+  };
+  const handleOnDelete = () => {
+    closeModal();
+    deleteRow(deleteCardId);
+  };
+  // console.log(deleteCardId);
   return reactDom.createPortal(
     <>
+      {/* Modal Wrapper */}
+      <div
+        className="fixed top-0 left-0 right-0 bottom-0 backdrop-blur-sm"
+        onClick={closeModal}
+      ></div>
       <div
         id="popup-modal"
         tabIndex="-1"
@@ -84,7 +86,7 @@ const ConfirmModal = ({ closeModal, deleteCardId,APIKEY }) => {
                 Are you sure?
               </h3>
               <h4 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              You want to delete Card No.{deleteCardId}?
+                You want to delete Card No.{deleteCardId}?
               </h4>
               <button
                 data-modal-hide="popup-modal"
@@ -107,7 +109,7 @@ const ConfirmModal = ({ closeModal, deleteCardId,APIKEY }) => {
         </div>
       </div>
     </>,
-    document.getElementById('ParentModalDiv')
+    document.getElementById("ParentModalDiv")
   );
 };
 
