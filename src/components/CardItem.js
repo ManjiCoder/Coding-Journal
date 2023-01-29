@@ -10,8 +10,9 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 function CardItem({ title, APIKEY, alertTodo }) {
   const { setProgress } = useContext(UseContext);
-  const [data, setData] = useState([]);
-  // const [row, setRow] = useState([]);
+  const [row, setRow] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalResult, setTotalResult] = useState(0);
   const [spinner, setSpinner] = useState(false);
   // const [status, setStatus] = useState(false)
   const [showModal, setShowModal] = useState(false);
@@ -21,6 +22,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
   //  Funtion to close Modal
   const closeModal = () => setShowModal(false);
   const closeViewCode = () => setViewCode(false);
+
   // GET - REQUEST
   const getRow = async () => {
     // let url = `https://sheetdb.io/api/v1/${APIKEY}`;
@@ -36,7 +38,25 @@ function CardItem({ title, APIKEY, alertTodo }) {
       console.log(response);
       setProgress(100);
       setSpinner(false);
-      setData(data.concat(response));
+      setRow(row.concat(response));
+      setTotalResult(response[0].totalResults);
+    } else {
+      throw Error(res.message);
+    }
+  };
+
+  // Fetch-More --> GET REQUEST
+  const fetchMoreRow = async () => {
+    setPage(page + 1);
+    let url = `https://script.google.com/macros/s/AKfycbyerC-F20IUhaCOri76oLGSYJPMj7AsIxVfp2oxTAETi1kAE_qFIcW0nFLT-_6jI1c3aw/exec?page=${
+      page + 1
+    }&limit=15`;
+    console.log(url);
+    let res = await fetch(url);
+    if (res.ok) {
+      let response = await res.json();
+      setSpinner(false);
+      setRow(row.concat(response));
     } else {
       throw Error(res.message);
     }
@@ -60,15 +80,15 @@ function CardItem({ title, APIKEY, alertTodo }) {
         {/* Spinner */}
         {/* <Spinner/> */}
         {spinner && <Spinner />}
-        {/* cards */}
         <InfiniteScroll
-          dataLength={data.length}
-          // next={fetchMoreData}
-          // hasMore={row.length <= data.length}
-          loader={spinner && <Spinner />} // show Spinner only if loading is true in state
+          dataLength={row.length}
+          next={fetchMoreRow}
+          hasMore={row.length !== totalResult}
+          loader={Spinner && <Spinner />}
         >
+          {/* cards */}
           <section className="pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
-            {data.map((element, index) => {
+            {row.map((element, index) => {
               return (
                 <div
                   id={element.ID}
@@ -154,10 +174,10 @@ function CardItem({ title, APIKEY, alertTodo }) {
                   </a>
                   {/* Icons */}
                   <section className="flex justify-between py-7">
-                    <Link to="/update" state={data[element.ID - 1]}>
+                    <Link to="/update" state={row[element.ID - 1]}>
                       <i
-                        data-tooltip-target="tooltip-animation-Edit"
-                        data-tooltip-placement="bottom"
+                        row-tooltip-target="tooltip-animation-Edit"
+                        row-tooltip-placement="bottom"
                         className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer"
                         onClick={() => {
                           console.log(element.ID);
@@ -166,8 +186,8 @@ function CardItem({ title, APIKEY, alertTodo }) {
                       <Tooltip text="Edit" />
                     </Link>
                     <i
-                      data-tooltip-target="tooltip-animation-Delete"
-                      data-tooltip-placement="bottom"
+                      row-tooltip-target="tooltip-animation-Delete"
+                      row-tooltip-placement="bottom"
                       className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
                       onClick={() => {
                         setShowModal(true);
@@ -182,6 +202,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
             })}
           </section>
         </InfiniteScroll>
+
         {/* Delete-Modal */}
         {showModal && (
           <ConfirmModal
