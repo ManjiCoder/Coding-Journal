@@ -1,11 +1,12 @@
-import React, {useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useContext } from "react";
 import { useLocation } from "react-router-dom";
+import UseContext from "./context/UseContext";
 function UpdateItem({ APIKEY }) {
   const location = useLocation();
-//   const [updateDate] = location.state;
-  const updateData = location.state
+  const { setProgress } = useContext(UseContext);
+  const updateData = location.state;
   console.log(updateData);
-  console.log(updateData.Score);
   const [link, setLink] = useState(updateData.Link);
   const [title, setTitle] = useState(updateData.Title);
   const [status, setStatus] = useState(updateData.Status);
@@ -14,6 +15,11 @@ function UpdateItem({ APIKEY }) {
   const [time, setTime] = useState(updateData.Time);
   const [code, setCode] = useState(updateData.Code);
   const [score, setScore] = useState(updateData.Score);
+
+  useEffect(() => {
+    setProgress(100);
+  }, []);
+
   const handleOnSumbit = async (e) => {
     e.preventDefault();
     let row = {
@@ -34,7 +40,7 @@ function UpdateItem({ APIKEY }) {
     fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${updateData.ID}`, {
       method: "PATCH",
       headers: {
-        "Accept": "application/json",
+        Accept: "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

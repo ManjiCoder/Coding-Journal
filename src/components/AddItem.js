@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useContext } from "react";
+import UseContext from "./context/UseContext";
 
 function AddItem(props) {
+  const { setProgress } = useContext(UseContext);
   const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("");
@@ -10,7 +13,11 @@ function AddItem(props) {
   const [code, setCode] = useState("");
   const [lang, setLang] = useState("");
   const [score, setScore] = useState("");
-  // props.setProgressBar(90)
+
+  useEffect(() => {
+    setProgress(100);
+  }, []);
+
   const handleOnSumbit = async (e) => {
     e.preventDefault();
     let row = {
@@ -22,7 +29,7 @@ function AddItem(props) {
       Accuracy: accuracy,
       Time: time,
       Code: code,
-      Lang:lang,
+      Lang: lang,
       Date: new Date().getTime(),
       Score: score,
     };
