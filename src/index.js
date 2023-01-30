@@ -4,15 +4,23 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
-
+import { Auth0Provider } from "@auth0/auth0-react";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
-    <ErrorBoundary>
+  <ErrorBoundary>
+    <Auth0Provider
+      domain="dev-1320wqpts1u13uah.us.auth0.com"
+      clientId="WlwjEkLD8RtM0uHgLq1QvmY8LZCqjeA9"
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+    >
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </ErrorBoundary>
+    </Auth0Provider>
+  </ErrorBoundary>
   // </React.StrictMode>
 );
 

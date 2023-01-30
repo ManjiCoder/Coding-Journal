@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Navbar({ title }) {
+  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
+
   return (
     <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
       <div className="container flex flex-wrap items-center justify-between mx-auto">
@@ -138,6 +141,27 @@ function Navbar({ title }) {
                 Services
               </Link>
             </li>
+            {/* Log-Out */}
+            {isAuthenticated ? (
+              <li>
+                <span>{user.name}</span>
+                {/* <span>{user.email}</span> */}
+                <img className="h-7 w-7 rounded-full" src={user.picture} />
+                <button
+                  onClick={() =>
+                    logout({
+                      logoutParams: { returnTo: window.location.origin },
+                    })
+                  }
+                >
+                  Log Out
+                </button>
+              </li>
+            ) : (
+              <li>
+                <button onClick={() => loginWithRedirect()}>Log In</button>
+              </li>
+            )}
           </ul>
         </div>
       </div>

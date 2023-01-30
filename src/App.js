@@ -32,7 +32,6 @@ function App() {
       closeAlert();
     }, 3100);
   };
-
   return (
     <UseContext.Provider value={{progress,setProgress}}>
       <Navbar title={title} />
