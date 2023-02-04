@@ -15,7 +15,7 @@ function AddItem(props) {
   const [score, setScore] = useState("");
 
   useEffect(() => {
-    setProgress(100);
+    setProgress(100); // eslint-disable-next-line
   }, []);
 
   const handleOnSumbit = async (e) => {

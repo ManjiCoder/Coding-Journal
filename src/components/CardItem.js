@@ -3,10 +3,10 @@ import Spinner from "./Spinner";
 import Tooltip from "./Tooltip";
 import { Link } from "react-router-dom";
 import ConfirmModal from "../components/modals/ConfirmModal";
-import ViewCodeModal from "./modals/ViewCodeModal";
 import { useContext } from "react";
 import UseContext from "./context/UseContext";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ViewCodeModal from "./modals/ViewCodeModal";
 
 function CardItem({ title, APIKEY, alertTodo }) {
   const { setProgress } = useContext(UseContext);
@@ -18,6 +18,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
+  const [lang, setLang] = useState("");
 
   //  Funtion to close Modal
   const closeModal = () => setShowModal(false);
@@ -140,6 +141,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
                         onClick={() => {
                           setViewCode(true);
                           setCurrentId(element.Code);
+                          setLang(element.Lang);
                         }}
                       >
                         View
@@ -208,6 +210,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
           <ConfirmModal
             APIKEY={APIKEY}
             deleteCardId={currentId}
+            showModal={showModal}
             closeModal={closeModal}
             alertTodo={alertTodo}
           />
@@ -216,7 +219,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
         {/* ViewCode-Modal */}
         {viewCode && (
           <ViewCodeModal
-            lang={"javascript"}
+            lang={lang}
             code={currentId}
             closeModal={closeViewCode}
           />

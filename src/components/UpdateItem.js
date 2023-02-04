@@ -17,7 +17,7 @@ function UpdateItem({ APIKEY }) {
   const [score, setScore] = useState(updateData.Score);
 
   useEffect(() => {
-    setProgress(100);
+    setProgress(100); // eslint-disable-next-line
   }, []);
 
   const handleOnSumbit = async (e) => {
