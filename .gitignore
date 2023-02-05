@@ -24,3 +24,5 @@ yarn-error.log*
 
 # Sample-Data
 /sampleOutput.json
+# Local Netlify folder
+.netlify

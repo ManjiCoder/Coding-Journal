@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import UseContext from "./context/UseContext";
+import ListBox from "./ListBox";
 
 function AddItem(props) {
-  const { setProgress } = useContext(UseContext);
+  const { setProgress, selected } = useContext(UseContext);
   const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
   const [status, setStatus] = useState("");
@@ -11,7 +12,6 @@ function AddItem(props) {
   const [accuracy, setAccuracy] = useState("");
   const [time, setTime] = useState("");
   const [code, setCode] = useState("");
-  const [lang, setLang] = useState("");
   const [score, setScore] = useState("");
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function AddItem(props) {
       Accuracy: accuracy,
       Time: time,
       Code: code,
-      Lang: lang,
+      Lang: selected,
       Date: new Date().getTime(),
       Score: score,
     };
@@ -37,7 +37,7 @@ function AddItem(props) {
     let res = await fetch(`https://sheetdb.io/api/v1/${props.APIKEY}`, {
       method: "POST",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -58,8 +58,6 @@ function AddItem(props) {
     }
   };
 
-  const langList = ["javascript", "python", "java", "c++"];
-
   return (
     <div className="dark:bg-slate-900 py-4">
       <div className="w-full mb-7 max-w-sm p-4 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
@@ -79,7 +77,7 @@ function AddItem(props) {
               type="text"
               name="entry.314843673"
               id="link"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600  dark:placeholder-gray-400 "
               placeholder="Paste the link"
               onChange={(e) => {
                 setLink(e.target.value);
@@ -315,38 +313,11 @@ function AddItem(props) {
             />
           </div>
           {/* Lang */}
-          <div>
-            <label
-              htmlFor="dropdown"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-            >
-              Language
-            </label>
-            <select
-              name="lang"
-              id="dropdown"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white capitalize"
-              onChange={(e) => setLang(e.target.value)}
-            >
-              Enter Lang
-              <option value="" className="bg-gray-400">
-                --Please select the language--
-              </option>
-              {/* Looping --> langList */}
-              {langList.map((item) => {
-                return (
-                  <option key={item} value={item}>
-                    {" "}
-                    {item}
-                  </option>
-                );
-              })}
-            </select>
-          </div>
+          <ListBox />
           {/* Code */}
           <div>
             <label
-              htmlFor="time"
+              htmlFor="code"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Code
@@ -355,7 +326,7 @@ function AddItem(props) {
               name="entry.1433191799"
               id="code"
               cols="40"
-              rows="7"
+              rows="4"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               onChange={(e) => setCode(e.target.value)}
               placeholder="Paste the code here!"

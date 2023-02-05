@@ -7,7 +7,6 @@
     bottom: 0;
     right: 1px;
     height: 5px;
-    border-radius: 11px;
     background: limegreen;
     animation: slide 2s ease-in-out 1 forwards;
 }
@@ -16,7 +15,7 @@
         width: 0px;
     }
     to{
-        width: 246px;
+        width: 100%;
     }
 }
 @tailwind utilities;

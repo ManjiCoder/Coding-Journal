@@ -18,7 +18,15 @@ function App() {
   // console.log(progress.current);
   const [progress, setProgress] = useState(20);
   const [alert, setAlert] = useState(null); //  Alert
-
+  const LangOption = [
+    "--select language",
+    "javascript",
+    "python",
+    "java",
+    "c++",
+  ];
+  // To set language
+  const [selected, setSelected] = useState(LangOption[0]);
   // Function to set Alert
   const closeAlert = () => {
     setAlert(null);
@@ -33,7 +41,9 @@ function App() {
     }, 3100);
   };
   return (
-    <UseContext.Provider value={{progress,setProgress}}>
+    <UseContext.Provider
+      value={{ progress, setProgress, selected, setSelected, LangOption }}
+    >
       <Navbar title={title} />
       {/* Top Loading Bar */}
       <LoadingBar
