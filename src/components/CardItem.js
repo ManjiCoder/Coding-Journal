@@ -7,6 +7,7 @@ import { useContext } from "react";
 import UseContext from "./context/UseContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ViewCodeModal from "./modals/ViewCodeModal";
+import ScrollToTop from "./ScrollToTop";
 
 function CardItem({ title, APIKEY, alertTodo }) {
   const { setProgress } = useContext(UseContext);
@@ -225,6 +226,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
           />
         )}
       </div>
+      <ScrollToTop />
     </>
   );
 }

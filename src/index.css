@@ -2,6 +2,9 @@
 
 @tailwind base;
 @tailwind components;
+body{
+    scroll-behavior: smooth;
+}
 #slider-line{
     position: absolute;
     bottom: 0;
