@@ -21,4 +21,15 @@ body{
         width: 100%;
     }
 }
+.scroll-to-top{
+    animation: gotoTop 1.1s linear infinite alternate-reverse;
+}
+@keyframes gotoTop {
+    0%{
+        transform: translateY(-0.2rem)
+    }
+    100%{
+        transform: translateY(0.2rem)
+    }
+}
 @tailwind utilities;

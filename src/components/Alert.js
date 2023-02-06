@@ -6,7 +6,7 @@ function Alert({ alert, closeAlert }) {
     alert && (
       <section
         id="alertWrapper"
-        className="fixed top-20 right-2 flex justify-end bg-slate-50 dark:bg-slate-900"
+        className="fixed z-50 top-20 right-2 flex justify-end bg-slate-50 dark:bg-slate-900"
       >
         <div className="relative overflow-hidden">
           <div

@@ -75,7 +75,7 @@ export default function Example() {
                     <button className="flex items-center">
                       <input
                         type="search"
-                        className="w-32 h-9 outline-none rounded-md"
+                        className="w-32 pl-3 h-9 outline-none rounded-md"
                         placeholder="Search"
                       />
                     </button>
