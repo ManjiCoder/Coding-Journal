@@ -8,6 +8,10 @@ import UseContext from "./context/UseContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ViewCodeModal from "./modals/ViewCodeModal";
 import ScrollToTop from "./ScrollToTop";
+import axios from "axios";
+
+// GOOGLE-SHEET => URL
+let url = `https://script.google.com/macros/s/AKfycbyerC-F20IUhaCOri76oLGSYJPMj7AsIxVfp2oxTAETi1kAE_qFIcW0nFLT-_6jI1c3aw/exec`;
 
 function CardItem({ title, APIKEY, alertTodo }) {
   const { setProgress } = useContext(UseContext);
@@ -15,7 +19,6 @@ function CardItem({ title, APIKEY, alertTodo }) {
   const [page, setPage] = useState(1);
   const [totalResult, setTotalResult] = useState(0);
   const [spinner, setSpinner] = useState(false);
-  // const [status, setStatus] = useState(false)
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -27,40 +30,34 @@ function CardItem({ title, APIKEY, alertTodo }) {
 
   // GET - REQUEST
   const getRow = async () => {
-    // let url = `https://sheetdb.io/api/v1/${APIKEY}`;
-    let url = `https://script.google.com/macros/s/AKfycbyerC-F20IUhaCOri76oLGSYJPMj7AsIxVfp2oxTAETi1kAE_qFIcW0nFLT-_6jI1c3aw/exec`;
-    console.log(url);
-    setProgress(40);
-    let res = await fetch(url);
-    setProgress(60);
-    alertTodo("Fetch", res.ok);
-    setProgress(80);
-    if (res.ok) {
-      let response = await res.json();
+    try {
+      setProgress(40);
+      let response = await axios.get(url);
+      setProgress(80);
+      console.log(url);
       console.log(response);
       setProgress(100);
       setSpinner(false);
-      setRow(row.concat(response));
-      setTotalResult(response[0].totalResults);
-    } else {
-      throw Error(res.message);
+      alertTodo('Fetch', true)
+      setRow(row.concat(response.data));
+      setTotalResult(response.data[0].totalResults);
+    } catch (error) {
+      // alertTodo('Fetch', false)
+      console.log(error);
     }
   };
 
   // Fetch-More --> GET REQUEST
   const fetchMoreRow = async () => {
     setPage(page + 1);
-    let url = `https://script.google.com/macros/s/AKfycbyerC-F20IUhaCOri76oLGSYJPMj7AsIxVfp2oxTAETi1kAE_qFIcW0nFLT-_6jI1c3aw/exec?page=${
-      page + 1
-    }&limit=15`;
-    console.log(url);
-    let res = await fetch(url);
-    if (res.ok) {
-      let response = await res.json();
+    try {
+      var response = await axios.get(`${url}?page=${page + 1}&limit=15`);
+      console.log(url);
+      console.log(response.data);
       setSpinner(false);
-      setRow(row.concat(response));
-    } else {
-      throw Error(res.message);
+      setRow(row.concat(response.data));
+    } catch (error) {
+      console.log(response);
     }
   };
 
@@ -87,7 +84,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
           next={fetchMoreRow}
           hasMore={row.length !== totalResult}
           loader={Spinner && <Spinner />}
-          style={{overflow:"hidden"}}
+          style={{ overflow: "hidden" }}
         >
           {/* cards */}
           <section className="pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
