@@ -26,10 +26,10 @@ function ScrollToTop() {
     <>
       {isVisible && (
         <div
-          className="bg-blue-800 w-12 h-12 rounded-full text-center p-3 fixed bottom-14 right-3"
+          className="bg-blue-800 cursor-pointer w-12 h-12 rounded-full text-center p-3 fixed bottom-14 right-3"
           onClick={scrollToTop}
         >
-          <i className="scroll-to-top text-white cursor-pointer text-2xl fa-solid fa-arrow-up"></i>
+          <i className="scroll-to-top text-white text-2xl fa-solid fa-arrow-up"></i>
         </div>
       )}
     </>

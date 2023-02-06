@@ -72,13 +72,13 @@ export default function Example() {
                 {isAuthenticated ? (
                   <>
                     {/* Search button */}
-                    <button className="flex items-center">
+                    {/* <button className="flex items-center">
                       <input
                         type="search"
                         className="w-32 pl-3 h-9 outline-none rounded-md"
                         placeholder="Search"
                       />
-                    </button>
+                    </button> */}
 
                     {/* Profile dropdown */}
                     <Menu as="div" className="relative ml-3">

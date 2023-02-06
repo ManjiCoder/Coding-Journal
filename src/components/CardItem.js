@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
 import Tooltip from "./Tooltip";
-import { Link } from "react-router-dom";
 import ConfirmModal from "../components/modals/ConfirmModal";
-import { useContext } from "react";
 import UseContext from "./context/UseContext";
-import InfiniteScroll from "react-infinite-scroll-component";
+// import InfiniteScroll from "react-infinite-scroll-component";
 import ViewCodeModal from "./modals/ViewCodeModal";
-import ScrollToTop from "./ScrollToTop";
-import axios from "axios";
 
 // GOOGLE-SHEET => URL
 let url = `https://script.google.com/macros/s/AKfycbyerC-F20IUhaCOri76oLGSYJPMj7AsIxVfp2oxTAETi1kAE_qFIcW0nFLT-_6jI1c3aw/exec`;
 
 function CardItem({ title, APIKEY, alertTodo }) {
   const { setProgress } = useContext(UseContext);
-  const [row, setRow] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalResult, setTotalResult] = useState(0);
-  const [spinner, setSpinner] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -31,43 +27,33 @@ function CardItem({ title, APIKEY, alertTodo }) {
   // GET - REQUEST
   const getRow = async () => {
     try {
-      setProgress(40);
-      let response = await axios.get(url);
-      setProgress(80);
-      console.log(url);
-      console.log(response);
       setProgress(100);
-      setSpinner(false);
-      alertTodo('Fetch', true)
-      setRow(row.concat(response.data));
-      setTotalResult(response.data[0].totalResults);
+      const { data } = await axios.get(url);
+      // alertTodo('Fetch',true)
+      return data;
     } catch (error) {
-      // alertTodo('Fetch', false)
       console.log(error);
     }
   };
 
   // Fetch-More --> GET REQUEST
-  const fetchMoreRow = async () => {
-    setPage(page + 1);
-    try {
-      var response = await axios.get(`${url}?page=${page + 1}&limit=15`);
-      console.log(url);
-      console.log(response.data);
-      setSpinner(false);
-      setRow(row.concat(response.data));
-    } catch (error) {
-      console.log(response);
-    }
-  };
+  // const fetchMoreRow = async () => {
+  //   setPage(page + 1);
+  //   try {
+  //     const { data } = await axios.get(`${url}?page=${page + 1}&limit=15`);
+  //     return data;
+  //     // console.log(url);
+  //     // console.log(data);
+  //     // setSpinner(false);
+  //     // setRow(row.concat(data));
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  useEffect(() => {
-    getRow();
-    return () => {
-      console.log("Component logged out...");
-    };
-    // eslint-disable-next-line
-  }, []);
+  // React-Query to Handle Request
+  const { data, isLoading, error } = useQuery("card", getRow);
+  // console.log(data);
 
   return (
     <>
@@ -77,24 +63,28 @@ function CardItem({ title, APIKEY, alertTodo }) {
         </p>
 
         {/* Spinner */}
-        {/* <Spinner/> */}
-        {spinner && <Spinner />}
-        <InfiniteScroll
-          dataLength={row.length}
+        {isLoading && <Spinner />}
+
+        {/* <InfiniteScroll
+          dataLength={data.length}
           next={fetchMoreRow}
-          hasMore={row.length !== totalResult}
+          hasMore={data.length !== data[0]['totalResults']}
           loader={Spinner && <Spinner />}
           style={{ overflow: "hidden" }}
-        >
-          {/* cards */}
-          <section className="pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
-            {row.map((element, index) => {
+        > */}
+
+        {/* cards */}
+        <section className="pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+          {!isLoading &&
+            data.map((element, index) => {
               return (
                 <div
                   id={element.ID}
                   key={element.ID}
-                  className="cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
-                  data-aos="fade-up"
+                  className={`${
+                    isLoading ? "hidden" : "block"
+                  } cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+                  data-aos="fade-up`}
                 >
                   <div className="flex mb-4">
                     <img
@@ -176,7 +166,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
                   </a>
                   {/* Icons */}
                   <section className="flex justify-between py-7">
-                    <Link to="/update" state={row[element.ID - 1]}>
+                    <Link to="/update" state={data[element.ID - 1]}>
                       <i
                         row-tooltip-target="tooltip-animation-Edit"
                         row-tooltip-placement="bottom"
@@ -202,8 +192,8 @@ function CardItem({ title, APIKEY, alertTodo }) {
                 </div>
               );
             })}
-          </section>
-        </InfiniteScroll>
+        </section>
+        {/* </InfiniteScroll> */}
 
         {/* Delete-Modal */}
         {showModal && (
@@ -225,7 +215,6 @@ function CardItem({ title, APIKEY, alertTodo }) {
           />
         )}
       </div>
-      <ScrollToTop />
     </>
   );
 }

@@ -5,6 +5,12 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { Auth0Provider } from "@auth0/auth0-react";
+import { QueryClient, QueryClientProvider } from "react-query";
+// import { ReactQueryDevtools } from "react-query/devtools"; /* FOR DEV */
+
+// Create a client
+const queryClient = new QueryClient();
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   // <React.StrictMode>
@@ -17,7 +23,11 @@ root.render(
           redirect_uri: window.location.origin,
         }}
       >
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+          {/* FOR DEV */}
+          {/* <ReactQueryDevtools /> */}
+        </QueryClientProvider>
       </Auth0Provider>
     </BrowserRouter>
   </ErrorBoundary>
