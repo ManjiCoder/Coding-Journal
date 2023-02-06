@@ -75,16 +75,14 @@ function CardItem({ title, APIKEY, alertTodo }) {
 
         {/* cards */}
         <section className="pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
-          {!isLoading &&
+          {data &&
             data.map((element, index) => {
               return (
                 <div
                   id={element.ID}
                   key={element.ID}
-                  className={`${
-                    isLoading ? "hidden" : "block"
-                  } cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
-                  data-aos="fade-up`}
+                  className="cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+                  // data-aos={data ? "fade-in":""}
                 >
                   <div className="flex mb-4">
                     <img
