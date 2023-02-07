@@ -6,7 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { QueryClient, QueryClientProvider } from "react-query";
-// import { ReactQueryDevtools } from "react-query/devtools"; /* FOR DEV */
+// eslint-disable-next-line
+import { ReactQueryDevtools } from "react-query/devtools"; /* FOR DEV */ 
 
 // Create a client
 const queryClient = new QueryClient();

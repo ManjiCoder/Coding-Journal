@@ -1,6 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
+import AOS from "aos";
+import "aos/dist/aos.css";
 import { Link } from "react-router-dom";
 import Spinner from "./Spinner";
 import Tooltip from "./Tooltip";
@@ -11,10 +13,11 @@ import ViewCodeModal from "./modals/ViewCodeModal";
 
 // GOOGLE-SHEET => URL
 let url = `https://script.google.com/macros/s/AKfycbyerC-F20IUhaCOri76oLGSYJPMj7AsIxVfp2oxTAETi1kAE_qFIcW0nFLT-_6jI1c3aw/exec`;
+// let url = `https://script.google.com/mac/AKfycbyerC-F20IUhaCOri76oLGSYJPMj7AsIxVfp2oxTAETi1kAE_qFIcW0nFLT-_6jI1c3aw/exec`;
 
 function CardItem({ title, APIKEY, alertTodo }) {
   const { setProgress } = useContext(UseContext);
-  const [page, setPage] = useState(1);
+  // const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -26,34 +29,26 @@ function CardItem({ title, APIKEY, alertTodo }) {
 
   // GET - REQUEST
   const getRow = async () => {
-    try {
-      setProgress(100);
-      const { data } = await axios.get(url);
-      // alertTodo('Fetch',true)
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
+    setProgress(100);
+    const { data } = await axios.get(url);
+    console.log(data);
+    return data;
   };
+
+  // To-Initiazing AOS
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
   // Fetch-More --> GET REQUEST
   // const fetchMoreRow = async () => {
   //   setPage(page + 1);
-  //   try {
-  //     const { data } = await axios.get(`${url}?page=${page + 1}&limit=15`);
-  //     return data;
-  //     // console.log(url);
-  //     // console.log(data);
-  //     // setSpinner(false);
-  //     // setRow(row.concat(data));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
+  //   const { data } = await axios.get(`${url}?page=${page + 1}&limit=15`);
+  //   return data;
   // };
 
   // React-Query to Handle Request
-  const { data, isLoading, error } = useQuery("card", getRow);
-  // console.log(data);
+  const { data, isLoading } = useQuery("card", getRow);
 
   return (
     <>
@@ -82,7 +77,7 @@ function CardItem({ title, APIKEY, alertTodo }) {
                   id={element.ID}
                   key={element.ID}
                   className="cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
-                  // data-aos={data ? "fade-in":""}
+                  data-aos= "fade-in"
                 >
                   <div className="flex mb-4">
                     <img
