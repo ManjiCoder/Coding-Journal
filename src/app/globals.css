@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Rubik+80s+Fade&display=swap');
+
+@tailwind base;
+@tailwind components;
+
+body {
+    scroll-behavior: smooth;
+    font-family: 'Julius Sans One', sans-serif;
+}
+
+.Logo-Text {
+    /* font-family: 'Rubik 80s Fade', cursive; */
+}
+
+#slider-line {
+    position: absolute;
+    bottom: 0;
+    right: 1px;
+    height: 5px;
+    background: limegreen;
+    animation: slide 2s ease-in-out 1 forwards;
+}
+
+@keyframes slide {
+    from {
+        width: 0px;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+.scroll-to-top {
+    animation: gotoTop 1.1s linear infinite alternate-reverse;
+}
+
+@keyframes gotoTop {
+    0% {
+        transform: translateY(-0.2rem)
+    }
+
+    100% {
+        transform: translateY(0.2rem)
+    }
+}
+
+@tailwind utilities;
