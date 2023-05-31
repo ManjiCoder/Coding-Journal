@@ -13,9 +13,10 @@ function Cards({ data }) {
   const [currentId, setCurrentId] = useState(null);
   const [lang, setLang] = useState("");
 
-  const { setTargetQuestion } = useContext(NoteContext);
+  const { setTargetQuestion, setProgress, alertTodo } = useContext(NoteContext);
 
   useEffect(() => {
+    alertTodo("Loaded", true);
     setProgress(100); // eslint-disable-next-line
   }, []);
   //  Funtion to close Modal
@@ -134,7 +135,7 @@ function Cards({ data }) {
                   <i
                     className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer"
                     onClick={() => {
-                      console.log(setTargetQuestion(element));
+                      setTargetQuestion(element);
                     }}
                   ></i>
                 </Link>
@@ -144,7 +145,7 @@ function Cards({ data }) {
                   onClick={() => {
                     setShowModal(true);
                     setCurrentId(element.ID);
-                    console.log(element.ID);
+                    // console.log(element.ID);
                   }}
                 ></i>
               </section>

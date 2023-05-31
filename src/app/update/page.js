@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import NoteContext from "@/context/notes/NoteContext";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ListBox from "@/components/layouts/ListBox";
 
-function page({ APIKEY, alertTodo }) {
-  const { targetQuestion } = useContext(NoteContext);
+function page() {
+  const { push } = useRouter();
+  const { targetQuestion, alertTodo } = useContext(NoteContext);
   const { setProgress, selected, setSelected } = useContext(NoteContext);
   const {
     ID,
@@ -34,6 +35,7 @@ function page({ APIKEY, alertTodo }) {
   const [score, setScore] = useState(Score);
 
   useEffect(() => {
+    console.log({ env: process.env.NEXT_PUBLIC_APIKEY });
     document.getElementById(Status).checked = true;
     const numberToWord = {
       0: "zero",
@@ -47,22 +49,25 @@ function page({ APIKEY, alertTodo }) {
     setProgress(100); // eslint-disable-next-line
   }, []);
   const updateRow = async (row) => {
-    let res = await fetch(`https://sheetdb.io/api/v1/${APIKEY}/ID/${ID}`, {
-      method: "PATCH",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        data: [row],
-      }),
-    });
+    let res = await fetch(
+      `https://sheetdb.io/api/v1/${process.env.NEXT_PUBLIC_APIKEY}/ID/${ID}`,
+      {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: [row],
+        }),
+      }
+    );
     console.log(res.ok);
     alertTodo("Added", res.ok);
     if (res.ok) {
       let response = await res.json();
       console.log(response);
-      redirect("/");
+      push("/");
     } else {
       throw Error(res.message);
     }
@@ -83,7 +88,7 @@ function page({ APIKEY, alertTodo }) {
       Date: Date,
       Score: score,
     };
-    console.log(score);
+    // console.log(score);
     console.log(JSON.stringify(row));
 
     updateRow(row);

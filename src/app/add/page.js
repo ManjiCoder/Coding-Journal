@@ -21,19 +21,23 @@ function page() {
 
   useEffect(() => {
     setProgress(100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addRow = async (row) => {
-    let res = await fetch(`https://sheetdb.io/api/v1/${NEXT_PUBLIC_APIKEY}`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        data: [row],
-      }),
-    });
+    let res = await fetch(
+      `https://sheetdb.io/api/v1/${process.env.NEXT_PUBLIC_APIKEY}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: [row],
+        }),
+      }
+    );
     console.log(res.ok);
     props.alertTodo("Added", res.ok);
     if (res.ok) {
