@@ -10,7 +10,7 @@ import NoteContext from "@/context/notes/NoteContext";
 function Cards({ data }) {
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [selectedElement, setSelectedElement] = useState(null);
   const [lang, setLang] = useState("");
 
   const { setProgress, alertTodo } = useContext(NoteContext);
@@ -89,7 +89,7 @@ function Cards({ data }) {
                     className="text-blue-600 cursor-pointer"
                     onClick={() => {
                       setViewCode(true);
-                      setCurrentId(element.Code);
+                      setSelectedElement(element);
                       setLang(element.Lang);
                     }}
                   >
@@ -146,7 +146,7 @@ function Cards({ data }) {
                   className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
-                    setCurrentId(element.ID);
+                    setSelectedElement(element);
                     // console.log(element.ID);
                   }}
                 ></i>
@@ -158,7 +158,7 @@ function Cards({ data }) {
         {/* Delete-Modal */}
         {showModal && (
           <ConfirmModal
-            deleteCardId={currentId}
+            deleteCard={selectedElement}
             showModal={showModal}
             closeModal={closeModal}
           />
@@ -168,7 +168,7 @@ function Cards({ data }) {
         {viewCode && (
           <ViewCodeModal
             lang={lang}
-            code={currentId}
+            code={selectedElement.Code}
             closeModal={closeViewCode}
           />
         )}

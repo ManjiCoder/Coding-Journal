@@ -9,8 +9,9 @@ import ListBox from "@/components/layouts/ListBox";
 function page(props) {
   const { push } = useRouter();
 
-  const { alertTodo } = useContext(NoteContext);
-  const { setProgress, selected, setSelected } = useContext(NoteContext);
+  const { setProgress, selected, setSelected, alertTodo } =
+    useContext(NoteContext);
+
   const {
     ID,
     Username,
@@ -36,7 +37,7 @@ function page(props) {
   const [score, setScore] = useState(Score);
 
   useEffect(() => {
-    console.log(props.searchParams);
+    console.log(JSON.parse(props.searchParams.data));
     document.getElementById(Status).checked = true;
     const numberToWord = {
       0: "zero",

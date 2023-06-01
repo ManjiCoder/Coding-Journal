@@ -4,7 +4,7 @@ import { Fragment, useContext } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import NoteContext from "@/context/notes/NoteContext";
 
-export default function ConfirmModal({ closeModal, deleteCardId }) {
+export default function ConfirmModal({ closeModal, deleteCard }) {
   const { alertTodo } = useContext(NoteContext);
   // DELETE - REQUEST
   const deleteRow = async (id) => {
@@ -31,7 +31,7 @@ export default function ConfirmModal({ closeModal, deleteCardId }) {
   };
   const handleOnDelete = () => {
     closeModal();
-    deleteRow(deleteCardId);
+    deleteRow(deleteCard.ID);
   };
 
   return (
@@ -65,8 +65,14 @@ export default function ConfirmModal({ closeModal, deleteCardId }) {
                   <Dialog.Title as="h3">
                     <i className="mb-3 fa-solid fa-circle-exclamation text-5xl text-red-600"></i>
                   </Dialog.Title>
-                  <h2 className="text-2xl font-medium">Are you sure?</h2>
-                  <p>You want to delete Card No.{deleteCardId}</p>
+                  <h2 className="text-2xl font-medium mb-3">Are you sure?</h2>
+                  <h2 className="text-center font-medium mb-4">
+                    Do you want to delete this Question?
+                  </h2>
+                  <h2 className="text-center font-medium mb-4">
+                    {deleteCard.Title} with Card No.
+                    {deleteCard.ID}
+                  </h2>
                   <div className="w-full mt-4 flex justify-evenly">
                     <button
                       type="button"

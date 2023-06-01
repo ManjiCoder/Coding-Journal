@@ -2,7 +2,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { monokaiSublime } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { monokai } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 
 export default function ViewCodeModal({ lang, code, closeModal }) {
   const [copy, setCopy] = useState(false);
@@ -62,21 +62,23 @@ export default function ViewCodeModal({ lang, code, closeModal }) {
                   <div className="overflow-auto">
                     <SyntaxHighlighter
                       language={lang}
-                      style={monokaiSublime}
+                      style={monokai}
                       customStyle={{
                         padding: "2rem 1rem",
                         borderRadius: "6px",
                       }}
+                      showLineNumbers
+                      // lineNumberStyle={{ color: "greenyellow" }}
                     >
                       {codeString}
                     </SyntaxHighlighter>
                   </div>
                   <div className="mt-4">
-                    {/* Cancal */}
+                    {/* Cancel */}
                     <button
                       type="button"
                       onClick={closeModal}
-                      className="absolute top-2 right-4 bg-gray-200 text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                      className="absolute top-2 right-4 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
                     >
                       <svg
                         aria-hidden="true"
