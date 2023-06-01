@@ -12,7 +12,6 @@ function NoteState(props) {
     "c++",
   ];
   const [progress, setProgress] = useState(20);
-  const [targetQuestion, setTargetQuestion] = useState(null);
   const [alert, setAlert] = useState(null); //  Alert
   // To set language
   const [selected, setSelected] = useState(LangOption[0]);
@@ -40,8 +39,6 @@ function NoteState(props) {
         setSelected,
         LangOption,
         alertTodo,
-        targetQuestion,
-        setTargetQuestion,
       }}
     >
       {props.children}

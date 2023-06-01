@@ -13,7 +13,7 @@ function Cards({ data }) {
   const [currentId, setCurrentId] = useState(null);
   const [lang, setLang] = useState("");
 
-  const { setTargetQuestion, setProgress, alertTodo } = useContext(NoteContext);
+  const { setProgress, alertTodo } = useContext(NoteContext);
 
   useEffect(() => {
     alertTodo("Loaded", true);
@@ -131,13 +131,15 @@ function Cards({ data }) {
               {/* Icons */}
               <section className="flex justify-between py-7">
                 {/* Update */}
-                <Link href="/update">
-                  <i
-                    className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer"
-                    onClick={() => {
-                      setTargetQuestion(element);
-                    }}
-                  ></i>
+                <Link
+                  href={{
+                    pathname: "/update",
+                    query: {
+                      data: JSON.stringify(element),
+                    },
+                  }}
+                >
+                  <i className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer"></i>
                 </Link>
                 {/* Delete */}
                 <i

@@ -6,9 +6,10 @@ import NoteContext from "@/context/notes/NoteContext";
 import { useRouter } from "next/navigation";
 import ListBox from "@/components/layouts/ListBox";
 
-function page() {
+function page(props) {
   const { push } = useRouter();
-  const { targetQuestion, alertTodo } = useContext(NoteContext);
+
+  const { alertTodo } = useContext(NoteContext);
   const { setProgress, selected, setSelected } = useContext(NoteContext);
   const {
     ID,
@@ -24,7 +25,7 @@ function page() {
     Date,
     Score,
     TotalResults,
-  } = targetQuestion;
+  } = JSON.parse(props.searchParams.data);
   const [link, setLink] = useState(Link);
   const [title, setTitle] = useState(Title);
   const [status, setStatus] = useState(Status);
@@ -35,7 +36,7 @@ function page() {
   const [score, setScore] = useState(Score);
 
   useEffect(() => {
-    console.log({ env: process.env.NEXT_PUBLIC_APIKEY });
+    console.log(props.searchParams);
     document.getElementById(Status).checked = true;
     const numberToWord = {
       0: "zero",
