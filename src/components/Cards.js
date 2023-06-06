@@ -19,6 +19,7 @@ function Cards({ data }) {
     alertTodo("Loaded", true);
     setProgress(100); // eslint-disable-next-line
   }, []);
+
   //  Funtion to close Modal
   const closeModal = () => setShowModal(false);
   const closeViewCode = () => setViewCode(false);
@@ -40,7 +41,7 @@ function Cards({ data }) {
                   alt="Greeks For Greek"
                   height={90}
                   width={90}
-                  className="h-auto w-auto"
+                  // className="h-auto w-auto"
                 />
                 <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
                   {"-"}&nbsp;&nbsp;

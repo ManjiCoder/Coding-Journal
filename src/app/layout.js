@@ -1,10 +1,12 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import NoteState from "@/context/notes/NoteState";
+
 import Navbar from "@/components/layouts/Navbar";
 import Footer from "@/components/layouts/Footer";
 import AuthProvider from "@/components/AuthProvider";
-import Script from "next/script";
+import TopLoadingBar from "@/components/layouts/TopLoadingBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,6 +26,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <AuthProvider>
           <NoteState>
+            <TopLoadingBar />
             <Navbar />
             {children}
             <Footer />
