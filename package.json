@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.1.0",
+    "@auth0/nextjs-auth0": "^2.6.3",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "axios": "^1.4.0",

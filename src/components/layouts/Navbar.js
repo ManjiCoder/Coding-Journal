@@ -3,7 +3,7 @@ import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth0 } from "@auth0/auth0-react";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import BrandHead from "../BrandHead";
@@ -24,8 +24,8 @@ function Navbar() {
       current: pathname === "/contact" ? true : false,
     },
   ];
-  const { loginWithRedirect, logout, isAuthenticated, user } = useAuth0();
-  // console.log({ isAuthenticated, user });
+  const { isLoading, user } = useUser();
+  console.log({ isLoading, user });
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -69,7 +69,7 @@ function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {isAuthenticated ? (
+                {user ? (
                   <>
                     {/* Search button */}
                     {/* <button className="flex items-center">
@@ -115,11 +115,10 @@ function Navbar() {
                           </Menu.Item>
                           <Menu.Item>
                             <Link
-                              href="/login"
+                              href="api/auth/logout"
                               className={classNames(
                                 "hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700"
                               )}
-                              onClick={() => logout()}
                             >
                               Sign out
                             </Link>
@@ -130,9 +129,8 @@ function Navbar() {
                   </>
                 ) : (
                   <Link
-                    href="/"
+                    href="api/auth/login"
                     className="ml-8 h-9 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                    onClick={() => loginWithRedirect()}
                   >
                     LogIn
                   </Link>

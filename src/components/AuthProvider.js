@@ -1,19 +1,9 @@
 "use client";
 import React from "react";
-import { Auth0Provider } from "@auth0/auth0-react";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
 
 function AuthProvider({ children }) {
-  return (
-    <Auth0Provider
-      domain="dev-1320wqpts1u13uah.us.auth0.com"
-      clientId="WlwjEkLD8RtM0uHgLq1QvmY8LZCqjeA9"
-      authorizationParams={{
-        redirect_uri: window.location.origin,
-      }}
-    >
-      {children}
-    </Auth0Provider>
-  );
+  return <UserProvider>{children}</UserProvider>;
 }
 
 export default AuthProvider;

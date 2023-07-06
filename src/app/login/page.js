@@ -1,25 +1,26 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 "use client";
 import HeadingList from "@/components/HeadingList";
-import { useAuth0 } from "@auth0/auth0-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-
+import { useUser } from "@auth0/nextjs-auth0/client";
 export default function page() {
+  const { user, isLoading } = useUser();
+  console.log({ user, isLoading });
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
-  const router = useRouter();
+  // const { loginWithRedirect, isAuthenticated } = useAuth0();
+  // const router = useRouter();
 
-  // console.log({ isAuthenticated });
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/");
-    } else {
-      router.push("/login");
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAuthenticated]);
+  // // console.log({ isAuthenticated });
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     router.push("/");
+  //   } else {
+  //     router.push("/login");
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isAuthenticated]);
 
   return (
     <main className="min-h-screen">
