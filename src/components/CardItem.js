@@ -7,7 +7,7 @@ import ConfirmModal from "./ConfirmModal";
 import AddIcon from "./AddIcon";
 import NoteContext from "@/context/notes/NoteContext";
 
-function Cards({ data }) {
+function CardItem({ data }) {
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
   const [selectedElement, setSelectedElement] = useState(null);
@@ -179,4 +179,4 @@ function Cards({ data }) {
   );
 }
 
-export default Cards;
+export default CardItem;
