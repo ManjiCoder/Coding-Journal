@@ -16,14 +16,13 @@ export async function POST(req, res) {
         {
           message: "User with this email already exists.",
         },
-        { status: 400 }
+        { status: 404 }
       );
     }
     // Password hashing
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
     // console.log(hashPassword);
-    // console.log(name, email, role, password);
 
     // Saving into the db
     const newUser = await UserModel.create({
@@ -33,6 +32,7 @@ export async function POST(req, res) {
       password: hashPassword,
     });
     // console.log(newUser);
+
     // JWT-Token
     const payload = {
       userId: {
@@ -40,17 +40,20 @@ export async function POST(req, res) {
       },
     };
 
+    // Signing JWT
     const authToken = jwt.sign(payload, process.env.JWT_PRIVATE_KEY);
     // console.log({ payload, authToken });
     return NextResponse.json(
-      { message: "Account Created Sucessfully", authToken },
+      { message: "Account Created Sucessfully", authToken, newUser },
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
-      { message: "User with this email already exists.", error: error.message },
-      { status: 400 }
+      {
+        message: "Internal server error",
+        error: error.message,
+      },
+      { status: 500 }
     );
   }
 }
