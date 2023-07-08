@@ -1,7 +1,7 @@
 import UserModel from "@/models/User";
 import dbConnect from "@/utils/dbConnect";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+// import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { pretifyUserInfo } from "../login/route";
 
@@ -42,7 +42,8 @@ export async function POST(req) {
     };
 
     // Signing JWT
-    const authToken = jwt.sign(payload, process.env.JWT_PRIVATE_KEY);
+    // const authToken = jwt.sign(payload, process.env.JWT_PRIVATE_KEY);
+    const authToken = await sign(payload, process.env.JWT_PRIVATE_KEY);
     // console.log({ payload, authToken });
     const userInfo = pretifyUserInfo(user);
     return NextResponse.json(
