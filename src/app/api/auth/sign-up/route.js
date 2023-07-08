@@ -3,8 +3,9 @@ import dbConnect from "@/utils/dbConnect";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
+import { pretifyUserInfo } from "../login/route";
 
-export async function POST(req, res) {
+export async function POST(req) {
   try {
     const { name, email, role, password } = await req.json();
     await dbConnect();
@@ -43,8 +44,9 @@ export async function POST(req, res) {
     // Signing JWT
     const authToken = jwt.sign(payload, process.env.JWT_PRIVATE_KEY);
     // console.log({ payload, authToken });
+    const userInfo = pretifyUserInfo(user);
     return NextResponse.json(
-      { message: "Account Created Sucessfully", authToken, newUser },
+      { message: "Account Created Sucessfully", authToken, user: userInfo },
       { status: 200 }
     );
   } catch (error) {
