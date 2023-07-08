@@ -4,9 +4,15 @@ const { Schema } = mongoose;
 const userSchema = new Schema(
   {
     name: String, // String is shorthand for {type: String}
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true },
     role: { type: String, default: "user" },
-    password: String,
+    password: { type: String, required: true },
+    friends: [
+      {
+        name: { type: String },
+        friendUserId: { type: mongoose.Types.ObjectId },
+      },
+    ],
   },
   { timestamps: true }
 );
