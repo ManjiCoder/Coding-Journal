@@ -28,9 +28,13 @@ export async function verify(token, secret) {
 export default async function middleware(request) {
   // console.log(request.nextUrl.pathname);
   if (
-    request.nextUrl.pathname === "/api/auth/forgot" ||
-    "/api/friends/add" ||
-    "/api/friends/remove"
+    (request.nextUrl.pathname === "/api/auth/forgot" ||
+      "/api/friends/add" ||
+      "/api/friends/remove" ||
+      "/api/solutions/add",
+    "/api/solutions/getall",
+    "/api/solutions/update",
+    "/api/solutions/remove")
   ) {
     // console.log(await isValidUser(request));
     const result = await isValidUser(request);
@@ -55,5 +59,13 @@ export default async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/api/auth/forgot", "/api/friends/add", "/api/friends/remove"],
+  matcher: [
+    "/api/auth/forgot",
+    "/api/friends/add",
+    "/api/friends/remove",
+    "/api/solutions/add",
+    "/api/solutions/getall",
+    "/api/solutions/update",
+    "/api/solutions/remove",
+  ],
 };
