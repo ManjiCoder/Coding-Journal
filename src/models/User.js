@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
+import { string } from "yup";
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -7,12 +8,23 @@ const userSchema = new Schema(
     email: { type: String, required: true },
     role: { type: String, default: "user" },
     password: { type: String, required: true },
-    friends: [
-      {
-        name: { type: String },
-        friendUserId: { type: mongoose.Types.ObjectId },
-      },
-    ],
+    friends: {
+      type: [
+        {
+          name: String,
+          id: { type: Types.ObjectId },
+        },
+      ],
+      default: [],
+    },
+    passwordHistory: {
+      type: [
+        {
+          date: Date,
+        },
+      ],
+      default: [],
+    },
   },
   { timestamps: true }
 );

@@ -26,18 +26,20 @@ export async function verify(token, secret) {
 }
 
 export default async function middleware(request) {
-  if (request.nextUrl.pathname === "/api/auth/user") {
+  // console.log(request.nextUrl.pathname);
+  if (
+    request.nextUrl.pathname === "/api/auth/forgot" ||
+    "/api/friends/add" ||
+    "/api/friends/remove"
+  ) {
     // console.log(await isValidUser(request));
     const result = await isValidUser(request);
-    console.log(result);
+    // console.log(result);
     if (result !== false) {
       const response = NextResponse.next({
         headers: new Headers(request.headers),
       });
       response.headers.set("userId", JSON.stringify(result));
-      // response.cookies.set({ userId: "23=32" });
-      // console.log(response.headers.get("userId"));
-
       return response;
     } else {
       return NextResponse.json(
@@ -53,5 +55,5 @@ export default async function middleware(request) {
 }
 
 export const config = {
-  matcher: ["/api/auth/user"],
+  matcher: ["/api/auth/forgot", "/api/friends/add", "/api/friends/remove"],
 };

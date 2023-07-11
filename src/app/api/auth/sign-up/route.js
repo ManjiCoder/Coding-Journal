@@ -1,13 +1,19 @@
 import UserModel from "@/models/User";
 import dbConnect from "@/utils/dbConnect";
 import bcrypt from "bcryptjs";
+// import * as Yup from "yup";
 // import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
-import { pretifyUserInfo } from "../login/route";
+import { pretifyUserInfo, sign } from "../login/route";
 
+// const signUpSchema = Yup.object().shape({
+//   name: Yup.string().required(),
+//   email: Yup.string().required(),
+//   password: Yup.string().required(),
+// });
 export async function POST(req) {
+  const { name, email, role, password } = await req.json();
   try {
-    const { name, email, role, password } = await req.json();
     await dbConnect();
     const user = await UserModel.findOne({ email });
 
@@ -45,7 +51,7 @@ export async function POST(req) {
     // const authToken = jwt.sign(payload, process.env.JWT_PRIVATE_KEY);
     const authToken = await sign(payload, process.env.JWT_PRIVATE_KEY);
     // console.log({ payload, authToken });
-    const userInfo = pretifyUserInfo(user);
+    const userInfo = pretifyUserInfo(newUser);
     return NextResponse.json(
       { message: "Account Created Sucessfully", authToken, user: userInfo },
       { status: 200 }
