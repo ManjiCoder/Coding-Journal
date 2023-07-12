@@ -35,6 +35,12 @@ export async function POST(req) {
     if (time) updateSolution.time = time;
     if (score) updateSolution.score = score;
 
+    if (Object.keys(updateSolution).length === 0) {
+      return NextResponse.json(
+        { message: "Nothing to update" },
+        { status: 200 }
+      );
+    }
     if (match !== null) {
       const solution = await solutionModel.findByIdAndUpdate(
         id,
@@ -42,7 +48,7 @@ export async function POST(req) {
         { new: true }
       );
       return NextResponse.json(
-        { message: "Solution added successfully", solution },
+        { message: "Solution updated successfully", solution },
         { status: 200 }
       );
     }

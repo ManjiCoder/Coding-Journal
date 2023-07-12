@@ -1,24 +1,26 @@
-import UserModel from "@/models/User";
+import { NextResponse } from "next/server";
 import dbConnect from "@/utils/dbConnect";
 import bcrypt from "bcryptjs";
-// import jwt from "jsonwebtoken";
 import { SignJWT } from "jose";
-import { object, string } from "yup";
-import { NextResponse } from "next/server";
+import * as Yup from "yup";
+import UserModel from "@/models/User";
 
-const loginSchema = object({
-  email: string().required(),
-  password: string()
-    .required()
-    .min(8, "Password should be atleast 8 characters")
+const loginSchema = Yup.object().shape({
+  email: Yup.string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(5, "Password should be atleast 5 characters")
     .max(30, "Password should be maximum 30 characters"),
 });
+
 export function pretifyUserInfo(obj) {
   const user = JSON.parse(JSON.stringify(obj));
   delete user.password;
   delete user.__v;
   delete user.createdAt;
   delete user.updatedAt;
+  delete user.passwordHistory;
   return user;
 }
 export async function sign(payload, secret) {
@@ -35,7 +37,12 @@ export async function sign(payload, secret) {
 
 export async function POST(req) {
   try {
-    const { email, password } = await req.json();
+    const body = await req.json();
+    const { email, password } = body;
+
+    // For user-input validation
+    await loginSchema.validate(body, { abortEarly: false });
+
     await dbConnect();
 
     const user = await UserModel.findOne({ email });
@@ -85,7 +92,16 @@ export async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
-    console.log(error);
+    // console.log(error);
+    if (error.errors) {
+      return NextResponse.json(
+        {
+          message: error.errors.join(" & "),
+        },
+        { status: 400 }
+      );
+    }
+
     return NextResponse.json(
       {
         message: "Internal server error",

@@ -1,19 +1,28 @@
 import UserModel from "@/models/User";
 import dbConnect from "@/utils/dbConnect";
 import bcrypt from "bcryptjs";
-// import * as Yup from "yup";
-// import jwt from "jsonwebtoken";
+import * as Yup from "yup";
 import { NextResponse } from "next/server";
 import { pretifyUserInfo, sign } from "../login/route";
 
-// const signUpSchema = Yup.object().shape({
-//   name: Yup.string().required(),
-//   email: Yup.string().required(),
-//   password: Yup.string().required(),
-// });
+const signUpSchema = Yup.object().shape({
+  name: Yup.string()
+    .required("Name is required")
+    .max(100, "Enter your nickname"),
+  email: Yup.string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(5, "Password should be atleast 5 characters")
+    .max(30, "Password should be maximum 30 characters"),
+});
 export async function POST(req) {
-  const { name, email, role, password } = await req.json();
   try {
+    const body = await req.json();
+    const { name, email, role, password } = body;
+    // For user-input validation
+    await signUpSchema.validate(body, { abortEarly: false });
+
     await dbConnect();
     const user = await UserModel.findOne({ email });
 
@@ -57,6 +66,14 @@ export async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
+    if (error.errors) {
+      return NextResponse.json(
+        {
+          message: error.errors.join(" & "),
+        },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       {
         message: "Internal server error",

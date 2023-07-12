@@ -2,25 +2,39 @@ import UserModel from "@/models/User";
 import bcrypt from "bcryptjs";
 import { NextResponse } from "next/server";
 import { pretifyUserInfo, sign } from "../login/route";
+import * as Yup from "yup";
+import dbConnect from "@/utils/dbConnect";
+
+const forgotSchema = Yup.object().shape({
+  password: Yup.string()
+    .min(5, "Password should be atleast 5 characters")
+    .max(30, "Password should be maximum 30 characters"),
+});
 
 export async function POST(req) {
   const userId = JSON.parse(req.headers.get("userId"));
   // console.log(userId);
-  const { password } = await req.json();
   if (!userId) {
     return NextResponse.json(
       { message: "Please authenticate using valid token" },
       { status: 401 }
     );
   }
-  const user = await UserModel.findOne({ _id: userId.id });
-  if (!user) {
-    return NextResponse.json(
-      { message: "User doesn't exists" },
-      { status: 401 }
-    );
-  }
   try {
+    const body = await req.json();
+    const { password } = body;
+    // For user-input validation
+    await forgotSchema.validate(body, { abortEarly: false });
+
+    await dbConnect(); // TODO check this is really useful or not
+
+    const user = await UserModel.findOne({ _id: userId.id });
+    if (!user) {
+      return NextResponse.json(
+        { message: "User doesn't exists" },
+        { status: 401 }
+      );
+    }
     // Password hashing
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
@@ -55,6 +69,14 @@ export async function POST(req) {
     const userInfo = pretifyUserInfo(newPassword);
     return NextResponse.json({ authToken, user: userInfo }, { status: 200 });
   } catch (error) {
+    if (error.errors) {
+      return NextResponse.json(
+        {
+          message: error.errors.join(" & "),
+        },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { message: error.message || "Internal server error" },
       { status: 500 }
