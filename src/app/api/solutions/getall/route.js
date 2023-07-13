@@ -1,4 +1,5 @@
 import solutionModel from "@/models/Solution";
+import dbConnect from "@/utils/dbConnect";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
@@ -11,6 +12,7 @@ export async function GET(req) {
     );
   }
   try {
+    await dbConnect();
     const solutions = await solutionModel.aggregate([
       ({
         $match: {

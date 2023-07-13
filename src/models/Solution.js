@@ -8,7 +8,7 @@ const solutionSchema = new Schema(
     status: { type: String, required: true },
     level: { type: Number, required: true },
     language: { type: String, required: true },
-    accuracy: { type: String, required: true },
+    accuracy: { type: Number, required: true },
     code: { type: String, required: true },
     time: { type: String },
     score: { type: Number },

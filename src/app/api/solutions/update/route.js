@@ -1,5 +1,19 @@
 import solutionModel from "@/models/Solution";
 import { NextResponse } from "next/server";
+import * as Yup from "yup";
+
+const solutionSchema = Yup.object().shape({
+  id: Yup.string().min(24, "invalid id").max(24, "invalid id"),
+  title: Yup.string(),
+  questionNo: Yup.string(),
+  status: Yup.string(),
+  level: Yup.number("Level must be number"),
+  language: Yup.string(),
+  accuracy: Yup.number(),
+  code: Yup.string(),
+  time: Yup.string(),
+  score: Yup.number(),
+});
 
 export async function POST(req) {
   const userId = JSON.parse(req.headers.get("userId"));
@@ -10,19 +24,23 @@ export async function POST(req) {
       { status: 401 }
     );
   }
-  const {
-    id,
-    title,
-    questionNo,
-    status,
-    level,
-    language,
-    accuracy,
-    code,
-    time,
-    score,
-  } = await req.json();
+  const body = await req.json().catch((error) => {
+    return NextResponse.json({ message: error.message }, { status: 400 });
+  });
   try {
+    const {
+      id,
+      title,
+      questionNo,
+      status,
+      level,
+      language,
+      accuracy,
+      code,
+      time,
+      score,
+    } = body;
+    await solutionSchema.validate(body, { abortEarly: false });
     const match = await solutionModel.findById(id);
     const updateSolution = {};
     if (title) updateSolution.title = title;
@@ -57,6 +75,27 @@ export async function POST(req) {
       { status: 404 }
     );
   } catch (error) {
+    console.log(error.errors);
+    if (
+      error.message ===
+      "this must be a `object` type, but the final value was: `{}`."
+    ) {
+      return NextResponse.json(
+        {
+          message: "update solution fields are required",
+        },
+        { status: 400 }
+      );
+    }
+    // console.log(error.errors);
+    else if (error.errors) {
+      return NextResponse.json(
+        {
+          message: error.errors.join(" & "),
+        },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { message: error.message || "Internal server error" },
       { status: 500 }
