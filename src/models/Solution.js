@@ -12,7 +12,7 @@ const solutionSchema = new Schema(
     code: { type: String, required: true },
     time: { type: String },
     score: { type: Number },
-    note: { String },
+    note: { type: String, default: null },
   },
   { timestamps: true }
 );

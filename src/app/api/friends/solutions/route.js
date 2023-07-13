@@ -2,6 +2,7 @@ import solutionModel from "@/models/Solution";
 import dbConnect from "@/utils/dbConnect";
 import { NextResponse } from "next/server";
 import { idSchema } from "../add/route";
+import UserModel from "@/models/User";
 
 export async function POST(req) {
   const userId = JSON.parse(req.headers.get("userId"));
@@ -15,29 +16,40 @@ export async function POST(req) {
   const { id } = await req.json().catch((error) => {
     return NextResponse.json({ message: error.message }, { status: 401 });
   });
-
+  if (id === userId.id) {
+    return NextResponse.json(
+      {
+        message: "You can't use it for self",
+      },
+      { status: 400 }
+    );
+  }
   try {
     await idSchema.validate({ id });
     await dbConnect();
 
-    // const solutions = await solutionModel.aggregate([
-    //   ({
-    //     $match: {
-    //       user: id,
-    //     },
-    //   },
-    //   {
-    //     $sort: {
-    //       questionNo: -1,
-    //     },
-    //   }),
-    //   {
-    //     $unset: ["__v"],
-    //   },
-    // ]);
-    const solutions = await solutionModel.find({ user: id });
+    const user = await UserModel.findById(userId.id).select("friends");
+    const isFriend = user["friends"].filter((obj) => obj.id.toString() === id);
+
+    if (isFriend.length === 0) {
+      return NextResponse.json(
+        {
+          message: "You don't have access",
+        },
+        { status: 401 }
+      );
+    }
+    const solutions = await solutionModel
+      .find({ user: id })
+      .sort({ questionNo: -1 })
+      .select("-user");
+
     return NextResponse.json(
-      { message: "Solution fetch successfully", solutions },
+      {
+        message: "Solution fetch successfully",
+        solutions,
+        nbHits: solutions.length,
+      },
       { status: 200 }
     );
   } catch (error) {

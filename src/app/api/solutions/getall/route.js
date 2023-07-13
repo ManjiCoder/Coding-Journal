@@ -1,5 +1,6 @@
 import solutionModel from "@/models/Solution";
 import dbConnect from "@/utils/dbConnect";
+import { ObjectId } from "mongoose";
 import { NextResponse } from "next/server";
 
 export async function GET(req) {
@@ -13,24 +14,17 @@ export async function GET(req) {
   }
   try {
     await dbConnect();
-    const solutions = await solutionModel.aggregate([
-      ({
-        $match: {
-          user: userId.id,
-        },
-      },
-      {
-        $sort: {
-          questionNo: -1,
-        },
-      }),
-      {
-        $unset: ["__v", "user"],
-      },
-    ]);
+    const solutions = await solutionModel
+      .find({ user: userId.id })
+      .sort({ questionNo: -1 })
+      .select(["-user"]);
     // console.log({ solutions });
     return NextResponse.json(
-      { message: "Solution fetch successfully", solutions },
+      {
+        message: "Solution fetch successfully",
+        solutions,
+        nbHits: solutions.length,
+      },
       { status: 200 }
     );
   } catch (error) {

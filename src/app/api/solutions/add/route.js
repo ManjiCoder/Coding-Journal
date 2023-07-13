@@ -42,6 +42,7 @@ export async function POST(req) {
     score,
     note,
   } = body;
+
   try {
     await solutionSchema.validate(body, { abortEarly: false });
     await dbConnect();
