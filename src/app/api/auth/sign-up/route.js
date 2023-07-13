@@ -18,7 +18,14 @@ const signUpSchema = Yup.object().shape({
 });
 export async function POST(req) {
   try {
-    const body = await req.json();
+    const body = await req.json().catch((error) => {
+      return NextResponse.json(
+        {
+          message: error.message,
+        },
+        { status: 400 }
+      );
+    });
     const { name, email, role, password } = body;
     // For user-input validation
     await signUpSchema.validate(body, { abortEarly: false });
@@ -66,7 +73,17 @@ export async function POST(req) {
       { status: 200 }
     );
   } catch (error) {
-    if (error.errors) {
+    if (
+      error.message ===
+      "this must be a `object` type, but the final value was: `{}`."
+    ) {
+      return NextResponse.json(
+        {
+          message: "Sign-up fields are required",
+        },
+        { status: 400 }
+      );
+    } else if (error.errors) {
       return NextResponse.json(
         {
           message: error.errors.join(" & "),

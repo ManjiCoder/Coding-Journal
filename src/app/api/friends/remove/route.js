@@ -1,7 +1,7 @@
 import UserModel from "@/models/User";
 import { NextResponse } from "next/server";
 import { pretifyUserInfo } from "../../auth/login/route";
-import { object } from "yup";
+
 import dbConnect from "@/utils/dbConnect";
 import { idSchema } from "../add/route";
 

@@ -5,7 +5,7 @@ import * as Yup from "yup";
 
 const solutionSchema = Yup.object().shape({
   title: Yup.string().required("Title is required"),
-  questionNo: Yup.string().required("Question No is required"),
+  questionNo: Yup.number(),
   status: Yup.string().required("Status is required"),
   level: Yup.number("Level must be number").required("Level is required"),
   language: Yup.string().required("Language is required"),
@@ -13,6 +13,7 @@ const solutionSchema = Yup.object().shape({
   code: Yup.string().required("Code is required"),
   time: Yup.string().required("Time is required"),
   score: Yup.number().required("Score is required"),
+  note: Yup.string(),
 });
 
 export async function POST(req) {
@@ -39,14 +40,16 @@ export async function POST(req) {
     code,
     time,
     score,
+    note,
   } = body;
   try {
     await solutionSchema.validate(body, { abortEarly: false });
     await dbConnect();
+    const solutions = await solutionModel.find({ user: userId.id });
     const solution = await solutionModel.create({
       user: userId.id,
       title,
-      questionNo,
+      questionNo: questionNo || solutions.length + 1,
       status,
       level,
       language,
@@ -54,6 +57,7 @@ export async function POST(req) {
       code,
       time,
       score,
+      note,
     });
     return NextResponse.json(
       { message: "Solution added successfully", solution },

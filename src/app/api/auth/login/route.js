@@ -37,7 +37,14 @@ export async function sign(payload, secret) {
 
 export async function POST(req) {
   try {
-    const body = await req.json();
+    const body = await req.json().catch((error) => {
+      return NextResponse.json(
+        {
+          message: error.message,
+        },
+        { status: 400 }
+      );
+    });
     const { email, password } = body;
 
     // For user-input validation
@@ -80,8 +87,6 @@ export async function POST(req) {
     // Signing JWT
     const authToken = await sign(payload, process.env.JWT_PRIVATE_KEY);
     const userInfo = pretifyUserInfo(user);
-    // const authToken = jwt.sign(payload, process.env.JWT_PRIVATE_KEY);
-    // console.log({ payload, authToken });
 
     return NextResponse.json(
       {
@@ -93,6 +98,17 @@ export async function POST(req) {
     );
   } catch (error) {
     // console.log(error);
+    if (
+      error.message ===
+      "this must be a `object` type, but the final value was: `{}`."
+    ) {
+      return NextResponse.json(
+        {
+          message: "Login fields are required",
+        },
+        { status: 400 }
+      );
+    }
     if (error.errors) {
       return NextResponse.json(
         {

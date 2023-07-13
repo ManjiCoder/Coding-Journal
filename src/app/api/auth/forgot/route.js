@@ -21,7 +21,14 @@ export async function POST(req) {
     );
   }
   try {
-    const body = await req.json();
+    const body = await req.json().catch((error) => {
+      return NextResponse.json(
+        {
+          message: error.message,
+        },
+        { status: 400 }
+      );
+    });
     const { password } = body;
     // For user-input validation
     await forgotSchema.validate(body, { abortEarly: false });
@@ -69,7 +76,17 @@ export async function POST(req) {
     const userInfo = pretifyUserInfo(newPassword);
     return NextResponse.json({ authToken, user: userInfo }, { status: 200 });
   } catch (error) {
-    if (error.errors) {
+    if (
+      error.message ===
+      "this must be a `object` type, but the final value was: `{}`."
+    ) {
+      return NextResponse.json(
+        {
+          message: "forgot fields are required",
+        },
+        { status: 400 }
+      );
+    } else if (error.errors) {
       return NextResponse.json(
         {
           message: error.errors.join(" & "),
