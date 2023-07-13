@@ -5,7 +5,6 @@ import NoteState from "@/context/notes/NoteState";
 
 import Navbar from "@/components/layouts/Navbar";
 import Footer from "@/components/layouts/Footer";
-import AuthProvider from "@/components/AuthProvider";
 import TopLoadingBar from "@/components/layouts/TopLoadingBar";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,14 +23,12 @@ export default function RootLayout({ children }) {
         strategy="lazyOnload"
       />
       <body className={inter.className}>
-        <AuthProvider>
-          <NoteState>
-            <TopLoadingBar />
-            <Navbar />
-            {children}
-            <Footer />
-          </NoteState>
-        </AuthProvider>
+        <NoteState>
+          <TopLoadingBar />
+          <Navbar />
+          {children}
+          <Footer />
+        </NoteState>
       </body>
     </html>
   );

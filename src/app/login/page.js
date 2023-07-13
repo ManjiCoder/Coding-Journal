@@ -1,39 +1,162 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 "use client";
-import HeadingList from "@/components/HeadingList";
-import Link from "next/link";
+import React, { useContext, useEffect, useState } from "react";
+import * as Yup from "yup";
+import { FaUserCircle, FaLock } from "react-icons/fa";
+import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { Formik } from "formik";
+import NoteContext from "@/context/notes/NoteContext";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { useUser } from "@auth0/nextjs-auth0/client";
-export default function page() {
-  const { user, isLoading } = useUser();
-  console.log({ user, isLoading });
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // const { loginWithRedirect, isAuthenticated } = useAuth0();
-  // const router = useRouter();
 
-  // // console.log({ isAuthenticated });
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push("/");
-  //   } else {
-  //     router.push("/login");
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isAuthenticated]);
+const Login = () => {
+  const router = useRouter();
+  const { setProgress, title } = useContext(NoteContext);
+  const loginSchema = Yup.object().shape({
+    email: Yup.string().required("*required").email("Enter valid email"),
+    password: Yup.string()
+      .required("*required")
+      .min(5, "Should be min of 5 characters")
+      .max(30, "Should be max of 30 characters"),
+  });
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggleEye = () => {
+    setIsVisible(!isVisible);
+  };
+  useEffect(() => {
+    setProgress(100);
+  }, []);
+
+  const handleLogin = async (email, password) => {
+    let response;
+
+    try {
+      response = await fetch("http://localhost:3000/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data);
+        localStorage.setItem("token", data.authToken);
+        router.replace("/");
+      }
+    } catch (error) {
+      console.log({ error });
+    }
+  };
 
   return (
-    <main className="min-h-screen">
-      <HeadingList />
-      <div className="p-3 flex flex-col items-center gap-4 bg-slate-50">
-        <Link
-          href="/"
-          className="w-10/12 lg:max-w-md text-xl shadow-sm shadow-gray-900 h-11 inline-flex items-center justify-center whitespace-nowrap rounded-full border border-transparent bg-indigo-600 px-4 py-2  font-medium text-white hover:bg-indigo-700 "
-          onClick={() => loginWithRedirect()}
+    <ProtectedRoute>
+      <div className="p-3 min-h-screen bg-slate-300 flex flex-col justify-start items-center">
+        <Formik
+          initialValues={{ email: "", password: "" }}
+          validationSchema={loginSchema}
+          onSubmit={(values) => {
+            // console.log(values);
+            handleLogin(values.email, values.password);
+          }}
         >
-          LogIn
-        </Link>
+          {({
+            values,
+            errors,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isValid,
+            /* and other goodies */
+          }) => (
+            <form
+              className="inline-flex w-11/12 md:w-auto mx-4 mt-20 bg-slate-50 border rounded-md shadow-lg items-center  flex-col text-center py-5 px-10"
+              onSubmit={handleSubmit}
+            >
+              <h2 className="text-xl md:text-2xl mb-5 text-center font-semibold">
+                Login to continue {title}
+              </h2>
+              {/* logo */}
+
+              <div className={`${errors.email ? "mb-0" : "mb-7"}`}>
+                <div
+                  className={`inline-flex bg-white p-3 ring-2 ${
+                    errors.email ? "ring-red-400" : "ring-transparent"
+                  }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
+                >
+                  <label
+                    htmlFor="username"
+                    className="text-red-400 cursor-pointer hover:text-red-500"
+                  >
+                    <FaUserCircle />
+                  </label>
+                  <input
+                    type="email"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    id="username"
+                    name="email"
+                    placeholder="Enter your email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                  />
+                  <AiFillEye className="invisible text-xl" />
+                </div>
+                <h2 className="text-right px-3 text-red-400 my-1 font-semibold">
+                  {errors.email}
+                </h2>
+              </div>
+
+              <div className={`${errors.password ? "mb-0" : "mb-7"}`}>
+                <div
+                  className={`inline-flex bg-white p-3 ring-2 ${
+                    errors.password ? "ring-red-400" : "ring-transparent"
+                  }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
+                >
+                  <label
+                    htmlFor="userpassword"
+                    className="text-red-400 cursor-pointer hover:text-red-500"
+                  >
+                    <FaLock className="rounded-full" />
+                  </label>
+                  <input
+                    type={isVisible === false ? "password" : "text"}
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    id="userpassword"
+                    name="password"
+                    placeholder="Enter your password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  <button
+                    type="button"
+                    className="cursor-pointer text-red-400 text-xl hover:text-red-500"
+                    onClick={toggleEye}
+                  >
+                    {isVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
+                  </button>
+                </div>
+
+                <h3 className="text-right px-3 text-red-400 my-1 font-semibold">
+                  {errors.password}
+                </h3>
+              </div>
+
+              <button
+                type="submit"
+                disabled={!isValid}
+                className="bg-red-400 mb-5  hover:bg-red-500 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+              >
+                Login
+              </button>
+            </form>
+          )}
+        </Formik>
       </div>
-    </main>
+    </ProtectedRoute>
   );
-}
+};
+
+export default Login;

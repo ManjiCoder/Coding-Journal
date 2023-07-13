@@ -3,7 +3,6 @@ import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import BrandHead from "../BrandHead";
@@ -24,8 +23,6 @@ function Navbar() {
       current: pathname === "/contact" ? true : false,
     },
   ];
-  const { isLoading, user } = useUser();
-  console.log({ isLoading, user });
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -69,7 +66,7 @@ function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {user ? (
+                {localStorage.getItem("token") ? (
                   <>
                     {/* Search button */}
                     {/* <button className="flex items-center">
@@ -85,13 +82,13 @@ function Navbar() {
                       <div>
                         <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                           <span className="sr-only">Open user menu</span>
-                          <Image
+                          {/* <Image
                             src={user?.picture}
                             alt={user?.nickname}
                             height={8}
                             width={8}
                             className="h-8 w-8 rounded-full"
-                          />
+                          /> */}
                         </Menu.Button>
                       </div>
                       <Transition
@@ -110,12 +107,12 @@ function Navbar() {
                                 "hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
-                              <i>Welcome,</i> {user?.nickname}
+                              {/* <i>Welcome,</i> {user?.nickname} */}
                             </span>
                           </Menu.Item>
                           <Menu.Item>
                             <Link
-                              href="api/auth/logout"
+                              href="/"
                               className={classNames(
                                 "hover:bg-gray-100 block px-4 py-2 text-sm text-gray-700"
                               )}
@@ -129,7 +126,7 @@ function Navbar() {
                   </>
                 ) : (
                   <Link
-                    href="api/auth/login"
+                    href="/login"
                     className="ml-8 h-9 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                   >
                     LogIn
