@@ -11,6 +11,7 @@ function NoteState(props) {
     "java",
     "c++",
   ];
+  const [showToast, setShowToast] = useState(false);
   const [progress, setProgress] = useState(20);
   const [alert, setAlert] = useState(null); //  Alert
   // To set language
@@ -39,6 +40,8 @@ function NoteState(props) {
         setSelected,
         LangOption,
         alertTodo,
+        showToast,
+        setShowToast,
       }}
     >
       {props.children}

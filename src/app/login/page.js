@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 const Login = () => {
   const router = useRouter();
-  const { setProgress, title } = useContext(NoteContext);
+  const { setProgress, title, setShowToast } = useContext(NoteContext);
   const loginSchema = Yup.object().shape({
     email: Yup.string().required("*required").email("Enter valid email"),
     password: Yup.string()
@@ -26,6 +26,7 @@ const Login = () => {
   };
   useEffect(() => {
     setProgress(100);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogin = async (email, password) => {
@@ -44,6 +45,7 @@ const Login = () => {
       if (response.ok) {
         console.log(data);
         localStorage.setItem("token", data.authToken);
+        setShowToast(data.message);
         router.replace("/");
       }
     } catch (error) {
