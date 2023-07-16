@@ -17,6 +17,6 @@ function Toast() {
   if (showToast === false) {
     return null;
   }
-  return <ToastContainer className="mt-9" />;
+  return <ToastContainer className="mt-12" />;
 }
 export default Toast;

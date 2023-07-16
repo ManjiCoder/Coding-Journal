@@ -35,11 +35,6 @@ const Navbar = () => {
       href: "/contact",
       current: pathname === "/contact" ? true : false,
     },
-    {
-      name: "Login",
-      href: "/login",
-      current: pathname === "/login" ? true : false,
-    },
   ];
 
   return (

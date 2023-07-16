@@ -10,10 +10,12 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const SignUp = () => {
   const router = useRouter();
   const { setProgress, title, setShowToast } = useContext(NoteContext);
-  const loginSchema = Yup.object().shape({
+
+  const signupSchema = Yup.object().shape({
+    name: Yup.string().required("*required").max(50, "50 characters"),
     email: Yup.string().required("*required").email("Enter valid email"),
     password: Yup.string()
       .required("*required")
@@ -31,13 +33,13 @@ const Login = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleLogin = async (email, password) => {
+  const handleLogin = async (name, email, password) => {
     let response;
 
     try {
-      response = await fetch("http://localhost:3000/api/auth/login", {
+      response = await fetch("http://localhost:3000/api/auth/sign-up", {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -66,11 +68,11 @@ const Login = () => {
     <ProtectedRoute>
       <div className="p-3 min-h-screen bg-slate-300 flex flex-col justify-start items-center">
         <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={loginSchema}
+          initialValues={{ name: "", email: "", password: "" }}
+          validationSchema={signupSchema}
           onSubmit={(values) => {
             // console.log(values);
-            handleLogin(values.email, values.password);
+            handleLogin(values.name, values.email, values.password);
           }}
         >
           {({
@@ -87,7 +89,7 @@ const Login = () => {
               onSubmit={handleSubmit}
             >
               <h2 className="text-xl md:text-2xl mb-5 text-center font-semibold">
-                Login to continue{" "}
+                Sign-Up to continue{" "}
                 <Link
                   className="font-bold text-slate-600"
                   style={{ textShadow: "1px 1px pink" }}
@@ -103,6 +105,36 @@ const Login = () => {
                 </Link>
               </h2>
               {/* logo */}
+
+              <div className={`${errors.name ? "mb-0" : "mb-7"}`}>
+                <div
+                  className={`inline-flex bg-white p-3 ring-2 ${
+                    errors.email ? "ring-red-400" : "ring-transparent"
+                  }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
+                >
+                  <label
+                    htmlFor="name"
+                    className="text-slate-800 cursor-pointer hover:text-slate-900"
+                  >
+                    <FaUserCircle />
+                  </label>
+                  <input
+                    type="text"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.name}
+                  />
+                  <AiFillEye className="invisible text-xl" />
+                </div>
+                <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
+                  {errors.name}
+                </h2>
+              </div>
+
               <div className={`${errors.email ? "mb-0" : "mb-7"}`}>
                 <div
                   className={`inline-flex bg-white p-3 ring-2 ${
@@ -110,7 +142,7 @@ const Login = () => {
                   }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
                 >
                   <label
-                    htmlFor="email"
+                    htmlFor="username"
                     className="text-slate-800 cursor-pointer hover:text-slate-900"
                   >
                     <FaUserCircle />
@@ -118,7 +150,7 @@ const Login = () => {
                   <input
                     type="email"
                     className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
-                    id="email"
+                    id="username"
                     name="email"
                     placeholder="Enter your email"
                     onChange={handleChange}
@@ -127,10 +159,11 @@ const Login = () => {
                   />
                   <AiFillEye className="invisible text-xl" />
                 </div>
-                <h2 className="text-right px-3 text-red-500 my-1 font-semibold text-xs">
+                <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
                   {errors.email}
                 </h2>
               </div>
+
               <div className={`${errors.password ? "mb-0" : "mb-7"}`}>
                 <div
                   className={`inline-flex bg-white p-3 ring-2 ${
@@ -154,34 +187,32 @@ const Login = () => {
                   />
                   <button
                     type="button"
-                    className="cursor-pointer text-slate-800 text-xl hover:text-slate-900 font-serif"
+                    className="cursor-pointer text-slate-800 text-xl hover:text-slate-900"
                     onClick={toggleEye}
                   >
                     {isVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
                   </button>
                 </div>
 
-                <h3 className="text-right px-3 text-slate-800 my-1 font-semibold text-xs">
-                  <Link href="/forgot">Forgot Password?</Link>
-                </h3>
-                <h3 className="text-right px-3 text-red-500 my-1 font-semibold text-xs">
+                <h3 className="text-red-500 my-1 font-semibold text-xs text-right">
                   {errors.password}
                 </h3>
               </div>
+
               <button
                 type="submit"
                 disabled={!isValid}
                 className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
-                Login
+                Sign-Up
               </button>
 
-              <div className="mb-5">OR Create Account</div>
+              <div className="mb-5">OR Login Account</div>
               <Link
-                href="/sign-up"
+                href="/login"
                 className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
-                Sign-up
+                Login
               </Link>
             </form>
           )}
@@ -191,4 +222,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;

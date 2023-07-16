@@ -10,12 +10,16 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
 
-const Login = () => {
+const Forgot = () => {
   const router = useRouter();
   const { setProgress, title, setShowToast } = useContext(NoteContext);
-  const loginSchema = Yup.object().shape({
+  const forgotPasswordSchema = Yup.object().shape({
     email: Yup.string().required("*required").email("Enter valid email"),
     password: Yup.string()
+      .required("*required")
+      .min(5, "Should be min of 5 characters")
+      .max(30, "Should be max of 30 characters"),
+    repeatPassword: Yup.string()
       .required("*required")
       .min(5, "Should be min of 5 characters")
       .max(30, "Should be max of 30 characters"),
@@ -66,8 +70,8 @@ const Login = () => {
     <ProtectedRoute>
       <div className="p-3 min-h-screen bg-slate-300 flex flex-col justify-start items-center">
         <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={loginSchema}
+          initialValues={{ email: "", password: "", repeatPassword: "" }}
+          validationSchema={forgotPasswordSchema}
           onSubmit={(values) => {
             // console.log(values);
             handleLogin(values.email, values.password);
@@ -161,27 +165,63 @@ const Login = () => {
                   </button>
                 </div>
 
-                <h3 className="text-right px-3 text-slate-800 my-1 font-semibold text-xs">
-                  <Link href="/forgot">Forgot Password?</Link>
-                </h3>
                 <h3 className="text-right px-3 text-red-500 my-1 font-semibold text-xs">
                   {errors.password}
                 </h3>
               </div>
+              <div className={`${errors.repeatPassword ? "mb-0" : "mb-7"}`}>
+                <div
+                  className={`inline-flex bg-white p-3 ring-2 ${
+                    errors.repeatPassword ? "ring-red-400" : "ring-transparent"
+                  }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
+                >
+                  <label
+                    htmlFor="repeatPassword"
+                    className="text-slate-800 cursor-pointer hover:text-slate-900"
+                  >
+                    <FaLock className="rounded-full" />
+                  </label>
+                  <input
+                    type={isVisible === false ? "password" : "text"}
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    id="repeatPassword"
+                    name="repeatPassword"
+                    placeholder="Enter your password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  <button
+                    type="button"
+                    className="cursor-pointer text-slate-800 text-xl hover:text-slate-900 font-serif"
+                    onClick={toggleEye}
+                  >
+                    {isVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
+                  </button>
+                </div>
+
+                <h3 className="text-right px-3 text-red-500 my-1 font-semibold text-xs">
+                  {errors.repeatPassword}
+                </h3>
+                {values.password !== values.repeatPassword && (
+                  <h3 className="text-right px-3 text-red-500 my-1 font-semibold text-xs">
+                    Both Password must be same
+                  </h3>
+                )}
+              </div>
               <button
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid && values.password === values.repeatPassword}
                 className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
-                Login
+                Change Password
               </button>
 
-              <div className="mb-5">OR Create Account</div>
+              <div className="mb-5">OR Login Account</div>
               <Link
                 href="/sign-up"
                 className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
-                Sign-up
+                Login
               </Link>
             </form>
           )}
@@ -191,4 +231,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Forgot;
