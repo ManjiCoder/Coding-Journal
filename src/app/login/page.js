@@ -7,6 +7,7 @@ import { Formik } from "formik";
 import NoteContext from "@/context/notes/NoteContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
@@ -78,7 +79,20 @@ const Login = () => {
               onSubmit={handleSubmit}
             >
               <h2 className="text-xl md:text-2xl mb-5 text-center font-semibold">
-                Login to continue {title}
+                Login to continue{" "}
+                <Link
+                  className="font-bold text-slate-600"
+                  style={{ textShadow: "1px 1px pink" }}
+                  href="/"
+                >
+                  Coding-
+                  <span
+                    className="font-bold text-[gold]"
+                    style={{ textShadow: "0.4px 0.4px white" }}
+                  >
+                    Journal
+                  </span>
+                </Link>
               </h2>
               {/* logo */}
 

@@ -4,7 +4,6 @@ import React, { useState, useContext, useEffect } from "react";
 import NoteContext from "@/context/notes/NoteContext";
 import { redirect } from "next/navigation";
 import ListBox from "@/components/layouts/ListBox";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 function page() {
   const { setProgress, selected, title: mainTitle } = useContext(NoteContext);
@@ -377,7 +376,6 @@ function page() {
           <button
             type="submit"
             className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer"
-            disabled={!user}
           >
             Submit
           </button>
