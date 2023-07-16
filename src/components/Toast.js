@@ -1,7 +1,7 @@
 "use client";
 import NoteContext from "@/context/notes/NoteContext";
 import React, { useContext, useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Toast() {
@@ -9,7 +9,7 @@ function Toast() {
   console.log(showToast);
   useEffect(() => {
     if (showToast !== false) {
-      toast(showToast);
+      showToast;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -17,10 +17,6 @@ function Toast() {
   if (showToast === false) {
     return null;
   }
-  return (
-    <>
-      <ToastContainer />
-    </>
-  );
+  return <ToastContainer className="mt-9" />;
 }
 export default Toast;

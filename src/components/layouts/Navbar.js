@@ -1,17 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import BrandHead from "../BrandHead";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import MenuUI from "../MenuUI";
 import { Menu } from "@headlessui/react";
 import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
+import NoteContext from "@/context/notes/NoteContext";
+import { toast } from "react-toastify";
 
 const Navbar = () => {
   const pathname = usePathname();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
@@ -76,7 +79,7 @@ const Navbar = () => {
           <MenuUI
             parent={
               <Menu.Button className="w-9 h-9 flex justify-center items-center bg-indigo-100 ring-yellow-500 rounded-full shadow-md hover:ring-4 focus:ring-4 font-medium">
-                MC
+                {JSON.parse(localStorage.getItem("user")).name[0]}
               </Menu.Button>
             }
           >
@@ -120,6 +123,8 @@ const Navbar = () => {
 export default Navbar;
 
 const MenuItems = () => {
+  const { setShowToast } = useContext(NoteContext);
+  const router = useRouter();
   const option = [
     {
       icons: <FaUserCircle />,
@@ -135,6 +140,12 @@ const MenuItems = () => {
     },
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router.replace("/login");
+    setShowToast(toast.success("Logout Successfully"));
+  };
   return (
     <>
       <Menu.Item>
@@ -172,6 +183,7 @@ const MenuItems = () => {
             className={`${
               active ? "bg-slate-800 text-white" : "text-gray-900"
             } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+            onClick={handleLogout}
           >
             <span className="mr-2">{option[2].icons}</span>
             <span className={`${active ? " text-white" : "text-gray-900"} `}>

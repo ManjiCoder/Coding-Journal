@@ -6,6 +6,7 @@ import NoteState from "@/context/notes/NoteState";
 import Navbar from "@/components/layouts/Navbar";
 import Footer from "@/components/layouts/Footer";
 import TopLoadingBar from "@/components/layouts/TopLoadingBar";
+import Toast from "@/components/Toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         <NoteState>
           <TopLoadingBar />
           <Navbar />
+          <Toast />
           {children}
           <Footer />
         </NoteState>

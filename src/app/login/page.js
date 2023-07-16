@@ -8,6 +8,7 @@ import NoteContext from "@/context/notes/NoteContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const router = useRouter();
@@ -44,12 +45,18 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
+        // console.log(data);
         localStorage.setItem("token", data.authToken);
-        setShowToast(data.message);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setShowToast(toast.success(data.message));
         router.replace("/");
       }
+      console.log(data);
+      setShowToast(
+        toast.error(data.message || "Some error occurs please try again")
+      );
     } catch (error) {
+      alert(data.message);
       console.log({ error });
     }
   };
