@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import BrandHead from "../BrandHead";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
@@ -11,6 +11,7 @@ import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import NoteContext from "@/context/notes/NoteContext";
 import { toast } from "react-toastify";
+import Cookie from "js-cookie";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -36,6 +37,9 @@ const Navbar = () => {
       current: pathname === "/contact" ? true : false,
     },
   ];
+  useEffect(() => {
+    console.log(Cookie.get("token"));
+  }, []);
 
   return (
     <header className="bg-slate-800">
@@ -63,7 +67,7 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
-        {!localStorage.getItem("token") ? (
+        {!Cookie.get("token") ? (
           <Link
             href="/login"
             className="bg-blue-600 px-2 py-1.5 rounded-md font-medium text-white"
@@ -74,7 +78,7 @@ const Navbar = () => {
           <MenuUI
             parent={
               <Menu.Button className="w-9 h-9 flex justify-center items-center bg-indigo-100 ring-yellow-500 rounded-full shadow-md hover:ring-4 focus:ring-4 font-medium">
-                {JSON.parse(localStorage.getItem("user")).name[0]}
+                {/* {JSON.parse(localStorage.getItem("user")).name[0]} */}U
               </Menu.Button>
             }
           >
@@ -136,8 +140,7 @@ const MenuItems = () => {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    Cookie.remove("token");
     router.replace("/login");
     setShowToast(toast.success("Logout Successfully"));
   };

@@ -16,7 +16,6 @@ function CardItem({ data }) {
   const { setProgress, alertTodo } = useContext(NoteContext);
 
   useEffect(() => {
-    alertTodo("Loaded", true);
     setProgress(100); // eslint-disable-next-line
   }, []);
 
@@ -30,8 +29,8 @@ function CardItem({ data }) {
         {data?.map((element, index) => {
           return (
             <section
-              id={element.ID}
-              key={element.ID}
+              id={element._id}
+              key={element._id}
               className="cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               data-aos="fade-in"
             >
@@ -45,43 +44,43 @@ function CardItem({ data }) {
                 />
                 <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
                   {"-"}&nbsp;&nbsp;
-                  {(data.length - index).toString().padStart(2, 0)}
+                  {element.questionNo.toString().padStart(2, 0)}
                 </span>
               </div>
               <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                <blockquote>{element.Title}</blockquote>
+                <blockquote>{element.title}</blockquote>
               </h5>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                 Status -{" "}
                 <span
                   className={`${
-                    element.Status === "Done"
+                    element.status === "done"
                       ? "text-green-500"
                       : "text-red-600"
                   } font-bold`}
                 >
-                  {element.Status}
+                  {element.status}
                 </span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Level - <span className={`font-bold`}>{element.Level}</span>
+                Level - <span className={`font-bold`}>{element.level}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                 Language -{" "}
-                <span className="font-bold capitalize">{element.Lang}</span>
+                <span className="font-bold capitalize">{element.language}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                 Accuracy -{" "}
                 <span className={`font-bold`}>
-                  {Math.floor(100 / element.Accuracy) ===
-                  Math.ceil(100 / element.Accuracy)
-                    ? 100 / element.Accuracy
-                    : (100 / element.Accuracy).toFixed(2)}
+                  {Math.floor(100 / element.accuracy) ===
+                  Math.ceil(100 / element.accuracy)
+                    ? 100 / element.accuracy
+                    : (100 / element.accuracy).toFixed(2)}
                   %
                 </span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Time - <span className={`font-bold`}>{element.Time}</span>
+                Time - <span className={`font-bold`}>{element.time}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                 Code -{" "}
@@ -91,7 +90,7 @@ function CardItem({ data }) {
                     onClick={() => {
                       setViewCode(true);
                       setSelectedElement(element);
-                      setLang(element.Lang);
+                      setLang(element.language);
                     }}
                   >
                     View
@@ -101,18 +100,18 @@ function CardItem({ data }) {
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                 Date -{" "}
                 <span className={`font-bold`}>
-                  {`${new Date(element.Date).toDateString()}, ${new Date(
-                    element.Date
+                  {`${new Date(element.createdAt).toDateString()}, ${new Date(
+                    element.createdAt
                   ).toLocaleTimeString()}`}
                 </span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
                 Score -{" "}
                 <span className={`font-bold text-red-700`}>
-                  {element.Score}
+                  {element.score}
                 </span>
               </p>
-              <a
+              {/* <a
                 href={element.Link}
                 target="_blank"
                 rel="noreferrer"
@@ -128,7 +127,7 @@ function CardItem({ data }) {
                   <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
                   <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
                 </svg>
-              </a>
+              </a> */}
               {/* Icons */}
               <section className="flex justify-between py-7">
                 {/* Update */}
@@ -169,7 +168,7 @@ function CardItem({ data }) {
         {viewCode && (
           <ViewCodeModal
             lang={lang}
-            code={selectedElement.Code}
+            code={selectedElement.code}
             closeModal={closeViewCode}
           />
         )}

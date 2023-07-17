@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import { SignJWT } from "jose";
 import * as Yup from "yup";
 import UserModel from "@/models/User";
+import { cookies } from "next/headers";
 
 const loginSchema = Yup.object().shape({
   email: Yup.string()
@@ -81,13 +82,23 @@ export async function POST(req) {
     const payload = {
       userId: {
         id: user._id,
+        user: user,
       },
     };
 
     // Signing JWT
+    const iat = Math.floor(Date.now() / 1000);
+    const exp = iat + 60;
     const authToken = await sign(payload, process.env.JWT_PRIVATE_KEY);
-    const userInfo = pretifyUserInfo(user);
 
+    cookies().set({
+      name: "token",
+      value: authToken,
+      secure: true,
+      expires: new Date().setSeconds(60 * 5), // 5-mins
+      path: "/",
+    });
+    const userInfo = pretifyUserInfo(user);
     return NextResponse.json(
       {
         message: "Login Sucessfully",
