@@ -6,6 +6,7 @@ import ViewCodeModal from "./ViewCodeModal";
 import ConfirmModal from "./ConfirmModal";
 import AddIcon from "./AddIcon";
 import NoteContext from "@/context/notes/NoteContext";
+import { toast } from "react-toastify";
 
 function CardItem({ data }) {
   const [showModal, setShowModal] = useState(false);
@@ -13,10 +14,12 @@ function CardItem({ data }) {
   const [selectedElement, setSelectedElement] = useState(null);
   const [lang, setLang] = useState("");
 
-  const { setProgress, alertTodo } = useContext(NoteContext);
+  const { setProgress, setShowToast } = useContext(NoteContext);
 
   useEffect(() => {
-    setProgress(100); // eslint-disable-next-line
+    setProgress(100);
+    setShowToast(toast.success("Solutions"));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //  Funtion to close Modal
@@ -26,12 +29,12 @@ function CardItem({ data }) {
   return (
     <>
       <main className="mt-7 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
-        {data?.map((element, index) => {
+        {data?.map((element) => {
           return (
             <section
               id={element._id}
               key={element._id}
-              className="cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              className="cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               data-aos="fade-in"
             >
               <div className="flex mb-4">

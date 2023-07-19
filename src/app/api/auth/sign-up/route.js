@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import * as Yup from "yup";
 import { NextResponse } from "next/server";
 import { pretifyUserInfo, sign } from "../login/route";
+import { cookies } from "next/headers";
 
 const signUpSchema = Yup.object().shape({
   name: Yup.string()
@@ -64,8 +65,22 @@ export async function POST(req) {
     };
 
     // Signing JWT
-    // const authToken = jwt.sign(payload, process.env.JWT_PRIVATE_KEY);
-    const authToken = await sign(payload, process.env.JWT_PRIVATE_KEY);
+    const iat = Math.floor(Date.now() / 1000);
+    const exp = iat + 60 * 60 * 24 * 7; // one week
+    const authToken = await sign(
+      payload,
+      process.env.JWT_PRIVATE_KEY,
+      iat,
+      exp
+    );
+
+    cookies().set({
+      name: "token",
+      value: authToken,
+      secure: true,
+      expires: exp * 1000,
+      path: "/",
+    });
     // console.log({ payload, authToken });
     const userInfo = pretifyUserInfo(newUser);
     return NextResponse.json(

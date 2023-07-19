@@ -24,9 +24,9 @@ export function pretifyUserInfo(obj) {
   delete user.passwordHistory;
   return user;
 }
-export async function sign(payload, secret) {
-  const iat = Math.floor(Date.now() / 1000);
-  const exp = iat + 60 * 60 * 24 * 7; // one week
+export async function sign(payload, secret, iat, exp) {
+  // const iat = Math.floor(Date.now() / 1000);
+  // const exp = iat + 60 * 60 * 24 * 7; // one week
 
   return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: "HS256", typ: "JWT" })
@@ -88,14 +88,19 @@ export async function POST(req) {
 
     // Signing JWT
     const iat = Math.floor(Date.now() / 1000);
-    const exp = iat + 60;
-    const authToken = await sign(payload, process.env.JWT_PRIVATE_KEY);
+    const exp = iat + 60 * 60 * 24 * 7; // one week
+    const authToken = await sign(
+      payload,
+      process.env.JWT_PRIVATE_KEY,
+      iat,
+      exp
+    );
 
     cookies().set({
       name: "token",
       value: authToken,
       secure: true,
-      expires: new Date().setSeconds(60 * 5), // 5-mins
+      expires: exp * 1000,
       path: "/",
     });
     const userInfo = pretifyUserInfo(user);

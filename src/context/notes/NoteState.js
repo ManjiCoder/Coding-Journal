@@ -13,22 +13,8 @@ function NoteState(props) {
   ];
   const [showToast, setShowToast] = useState(false);
   const [progress, setProgress] = useState(20);
-  const [alert, setAlert] = useState(null); //  Alert
   // To set language
   const [selected, setSelected] = useState(LangOption[0]);
-  // Function to set Alert
-  const closeAlert = () => {
-    setAlert(null);
-  };
-  const alertTodo = (msg, status) => {
-    setAlert({
-      msg: msg,
-      stauts: status,
-    });
-    setTimeout(() => {
-      closeAlert();
-    }, 3100);
-  };
 
   return (
     <NoteContext.Provider
@@ -39,7 +25,6 @@ function NoteState(props) {
         selected,
         setSelected,
         LangOption,
-        alertTodo,
         showToast,
         setShowToast,
       }}

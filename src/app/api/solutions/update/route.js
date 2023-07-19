@@ -8,6 +8,7 @@ const solutionSchema = Yup.object().shape({
   questionNo: Yup.string(),
   status: Yup.string(),
   level: Yup.number("Level must be number"),
+  link: Yup.string(),
   language: Yup.string(),
   accuracy: Yup.number(),
   code: Yup.string(),
@@ -34,6 +35,7 @@ export async function POST(req) {
       questionNo,
       status,
       level,
+      link,
       language,
       accuracy,
       code,
@@ -47,6 +49,7 @@ export async function POST(req) {
     if (questionNo) updateSolution.questionNo = questionNo;
     if (status) updateSolution.status = status;
     if (level) updateSolution.level = level;
+    if (link) updateSolution.link = link;
     if (language) updateSolution.language = language;
     if (accuracy) updateSolution.accuracy = accuracy;
     if (code) updateSolution.code = code;

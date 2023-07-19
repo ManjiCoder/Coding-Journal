@@ -6,6 +6,7 @@ const solutionSchema = new Schema(
     title: String, // String is shorthand for {type: String}
     questionNo: Number,
     status: { type: String, required: true },
+    link: { type: String, required: true },
     level: { type: Number, required: true },
     language: { type: String, required: true },
     accuracy: { type: Number, required: true },

@@ -34,13 +34,16 @@ const Login = () => {
     let response;
 
     try {
-      response = await fetch("http://localhost:3000/api/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`,
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
       if (response.ok) {
@@ -54,7 +57,6 @@ const Login = () => {
         toast.error(data.message || "Some error occurs please try again")
       );
     } catch (error) {
-      alert(data.message);
       console.log({ error });
     }
   };
@@ -127,7 +129,7 @@ const Login = () => {
                 {errors.email}
               </h2>
             </div>
-            
+
             <div className={`${errors.password ? "mb-0" : "mb-7"}`}>
               <div
                 className={`inline-flex bg-white p-3 ring-2 ${

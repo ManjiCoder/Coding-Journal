@@ -5,13 +5,14 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import MenuUI from "../MenuUI";
+
 import { Menu } from "@headlessui/react";
 import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import NoteContext from "@/context/notes/NoteContext";
 import { toast } from "react-toastify";
 import Cookie from "js-cookie";
+import MenuUI from "../HeadlessUI/MenuUI";
 
 const Navbar = () => {
   const pathname = usePathname();

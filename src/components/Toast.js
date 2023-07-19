@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 function Toast() {
   const { showToast } = useContext(NoteContext);
-  console.log(showToast);
   useEffect(() => {
     if (showToast !== false) {
       showToast;
