@@ -13,6 +13,10 @@ function NoteState(props) {
   ];
   const [showToast, setShowToast] = useState(false);
   const [progress, setProgress] = useState(20);
+  const [user, setUser] = useState({
+    isAuthenticated: false,
+    user: {},
+  });
   // To set language
   const [selected, setSelected] = useState(LangOption[0]);
 
@@ -27,6 +31,8 @@ function NoteState(props) {
         LangOption,
         showToast,
         setShowToast,
+        user,
+        setUser,
       }}
     >
       {props.children}

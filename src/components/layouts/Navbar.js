@@ -1,18 +1,18 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
-import BrandHead from "../BrandHead";
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-
+import Cookies from "js-cookie";
+import BrandHead from "../BrandHead";
+import MenuUI from "../HeadlessUI/MenuUI";
+import NoteContext from "@/context/notes/NoteContext";
 import { Menu } from "@headlessui/react";
+import { toast } from "react-toastify";
+
+import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
 import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
-import NoteContext from "@/context/notes/NoteContext";
-import { toast } from "react-toastify";
-import Cookie from "js-cookie";
-import MenuUI from "../HeadlessUI/MenuUI";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -38,9 +38,6 @@ const Navbar = () => {
       current: pathname === "/contact" ? true : false,
     },
   ];
-  useEffect(() => {
-    console.log(Cookie.get("token"));
-  }, []);
 
   return (
     <header className="bg-slate-800">
@@ -68,7 +65,7 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
-        {!Cookie.get("token") ? (
+        {/* {!Cookie.get("token") ? (
           <Link
             href="/login"
             className="bg-blue-600 px-2 py-1.5 rounded-md font-medium text-white"
@@ -79,13 +76,13 @@ const Navbar = () => {
           <MenuUI
             parent={
               <Menu.Button className="w-9 h-9 flex justify-center items-center bg-indigo-100 ring-yellow-500 rounded-full shadow-md hover:ring-4 focus:ring-4 font-medium">
-                {/* {JSON.parse(localStorage.getItem("user")).name[0]} */}U
+                u
               </Menu.Button>
             }
           >
             <MenuItems />
           </MenuUI>
-        )}
+        )} */}
 
         <button
           className="ml-5 w-7 h-7 flex justify-center items-center bg-white ring-yellow-500 rounded-full shadow-md hover:ring-2 focus:ring-2 font-medium"
@@ -141,7 +138,7 @@ const MenuItems = () => {
   ];
 
   const handleLogout = () => {
-    Cookie.remove("token");
+    Cookies.remove("token");
     router.replace("/login");
     setShowToast(toast.success("Logout Successfully"));
   };
@@ -194,5 +191,3 @@ const MenuItems = () => {
     </>
   );
 };
-
-export { MenuItems };

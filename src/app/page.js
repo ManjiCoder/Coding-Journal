@@ -3,6 +3,7 @@ import { verify } from "@/middleware";
 import { cookies } from "next/headers";
 import AppInfo from "@/components/AppInfo";
 import Link from "next/link";
+import { pretifyUserInfo } from "./api/auth/login/route";
 
 const title = "Coding-Journal";
 async function Home() {
@@ -15,7 +16,8 @@ async function Home() {
     );
   }
   const result = await verify(isToken.value, process.env.JWT_PRIVATE_KEY);
-  console.log(result.userId.user);
+  const user = pretifyUserInfo(result.userId.user);
+  console.log("server");
   let headersList = {
     "auth-token": isToken.value,
   };
@@ -26,9 +28,6 @@ async function Home() {
       method: "GET",
       headers: headersList,
       // cache: "no-cache",
-      next: {
-        tags: ["solutions"],
-      },
     }
   );
 
@@ -57,7 +56,7 @@ async function Home() {
   }
 
   return (
-    <div class="flex min-h-[90vh] bg-slate-200  px-6 py-12 lg:px-8">
+    <div class="flex min-h-[90vh] bg-slate-50  px-6 py-12 lg:px-8">
       <CardItem data={data.solutions} />
     </div>
   );

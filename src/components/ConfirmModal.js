@@ -1,37 +1,36 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import NoteContext from "@/context/notes/NoteContext";
+import Cookies from "js-cookie";
+import { revalidatePath } from "next/cache";
 
 export default function ConfirmModal({ closeModal, deleteCard }) {
-  const { alertTodo } = useContext(NoteContext);
   // DELETE - REQUEST
-  const deleteRow = async (id) => {
-    // console.log(id, APIKEY);
-    let res = await fetch(
-      `https://sheetdb.io/api/v1/${process.env.NEXT_PUBLIC_APIKEY}/ID/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    alertTodo("Deleted", res.ok);
-    console.log(res.ok);
-    if (res.ok) {
-      document.getElementById(String(id)).style = { display: "none" };
-      let response = await res.json();
-      console.log(response);
-    } else {
-      throw Error(res.message);
-    }
+  const removeCard = async (id) => {
+    let headersList = {
+      "auth-token": Cookies.get("token"),
+      "Content-Type": "application/json",
+    };
+
+    let bodyContent = JSON.stringify({
+      id,
+    });
+
+    let response = await fetch("http://localhost:3000/api/solutions/remove", {
+      method: "POST",
+      body: bodyContent,
+      headers: headersList,
+    });
+
+    let data = await response.json();
+    // revalidateTag("solutions");
+    revalidatePath("/");
+    console.log(data);
   };
+
   const handleOnDelete = () => {
     closeModal();
-    deleteRow(deleteCard.ID);
+    removeCard(deleteCard._id);
   };
 
   return (
@@ -79,11 +78,12 @@ export default function ConfirmModal({ closeModal, deleteCard }) {
                       className="inline-flex justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-700 focus-visible:ring-offset-2"
                       onClick={handleOnDelete}
                     >
-                      Yes,I'm sure!
+                      Yes,I&apos;m sure!
                     </button>
                     <button
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                      // formAction={() => removeCard(deleteCard._id)}
                       onClick={closeModal}
                     >
                       No, cancel!

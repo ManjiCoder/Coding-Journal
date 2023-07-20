@@ -114,8 +114,8 @@ function CardItem({ data }) {
                   {element.score}
                 </span>
               </p>
-              {/* <a
-                href={element.Link}
+              <a
+                href={element.link}
                 target="_blank"
                 rel="noreferrer"
                 className="pointer-events-auto inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -130,7 +130,7 @@ function CardItem({ data }) {
                   <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
                   <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
                 </svg>
-              </a> */}
+              </a>
               {/* Icons */}
               <section className="flex justify-between py-7">
                 {/* Update */}
@@ -150,7 +150,6 @@ function CardItem({ data }) {
                   onClick={() => {
                     setShowModal(true);
                     setSelectedElement(element);
-                    // console.log(element.ID);
                   }}
                 ></i>
               </section>

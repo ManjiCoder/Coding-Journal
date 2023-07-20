@@ -1,83 +1,106 @@
 "use client";
-import React, { useState, useContext, useEffect } from "react";
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useEffect, useState } from "react";
+import { useContext } from "react";
 import NoteContext from "@/context/notes/NoteContext";
-import ListBox from "@/components/layouts/ListBox";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
+import ListBox from "@/components/layouts/ListBox";
 
-function SolutionForm() {
+function UpdateForm(props) {
+  const { push } = useRouter();
+
+  const { setProgress, selected, setSelected, alertTodo } =
+    useContext(NoteContext);
+
   const {
-    setProgress,
-    selected,
-    title: mainTitle,
-    setShowToast,
-  } = useContext(NoteContext);
-  // console.log(mainTitle);
-  const router = useRouter();
-
-  const [link, setLink] = useState("");
-  const [title, setTitle] = useState("");
-  const [status, setStatus] = useState("");
-  const [level, setLevel] = useState("");
-  const [accuracy, setAccuracy] = useState("");
-  const [time, setTime] = useState("");
-  const [code, setCode] = useState("");
-  const [score, setScore] = useState("");
+    ID,
+    Username,
+    Link,
+    Title,
+    Status,
+    Level,
+    Accuracy,
+    Time,
+    Code,
+    Lang,
+    Date,
+    Score,
+    TotalResults,
+  } = JSON.parse(props.searchParams.data);
+  const [link, setLink] = useState(Link);
+  const [title, setTitle] = useState(Title);
+  const [status, setStatus] = useState(Status);
+  const [level, setLevel] = useState(Level);
+  const [accuracy, setAccuracy] = useState(Accuracy);
+  const [time, setTime] = useState(Time);
+  const [code, setCode] = useState(Code);
+  const [score, setScore] = useState(Score);
 
   useEffect(() => {
-    setProgress(100);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    console.log(JSON.parse(props.searchParams.data));
+    document.getElementById(Status).checked = true;
+    const numberToWord = {
+      0: "zero",
+      1: "one",
+      2: "two",
+      4: "four",
+      8: "eight",
+    };
+    document.getElementById(numberToWord[level]).checked = true;
+    setSelected(Lang);
+    setProgress(100); // eslint-disable-next-line
   }, []);
-
-  const HandleOnSumbit = async (e) => {
-    e.preventDefault();
-    let response;
-
-    try {
-      response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/add`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            link,
-            title,
-            status,
-            level,
-            accuracy,
-            language: selected,
-            time,
-            code,
-            score,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            "auth-token": Cookies.get("token"),
-          },
-        }
-      );
-
-      const data = await response.json();
-      if (response.ok) {
-        // console.log(data);
-        router.replace("/");
-        setShowToast(toast.success(data.message));
-        return;
+  const updateRow = async (row) => {
+    let res = await fetch(
+      `https://sheetdb.io/api/v1/${process.env.NEXT_PUBLIC_APIKEY}/ID/${ID}`,
+      {
+        method: "PATCH",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: [row],
+        }),
       }
-      console.log(data);
-      setShowToast(
-        toast.error(data.message || "Some error occurs please try again")
-      );
-    } catch (error) {
-      console.log({ error });
+    );
+    console.log(res.ok);
+    alertTodo("Added", res.ok);
+    if (res.ok) {
+      let response = await res.json();
+      console.log(response);
+      push("/");
+    } else {
+      throw Error(res.message);
     }
   };
+  const handleOnSumbit = async (e) => {
+    e.preventDefault();
+    let row = {
+      ID: ID,
+      Username: Username,
+      Link: link,
+      Title: title,
+      Status: status,
+      Level: level,
+      Accuracy: accuracy,
+      Time: time,
+      Code: code,
+      Lang: selected,
+      Date: Date,
+      Score: score,
+    };
+    // console.log(score);
+    console.log(JSON.stringify(row));
 
+    updateRow(row);
+  };
   return (
     <div className="dark:bg-slate-900 py-4">
-      <div className="w-full mb-7 max-w-sm p-4 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
-        <form className="space-y-6" onSubmit={HandleOnSumbit}>
+      <div className="w-full mb-7 max-w-sm p-4 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 dark:bg-slate-800 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
+        <form className="space-y-6" onSubmit={handleOnSumbit}>
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
-            Add Data To <b>{mainTitle}</b>
+            Add Data To <b>Code-Journal</b>
           </h5>
           {/* Link */}
           <div>
@@ -91,7 +114,7 @@ function SolutionForm() {
               type="text"
               name="entry.314843673"
               id="link"
-              className="bg-gray-50 border border-gray-300 dark:border-gray-500 text-gray-900 dark:text-white text-sm rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-0 focus:ring-opacity-75 focus:ring-offset-2 focus:ring-offset-blue-500 shadow-md block w-full p-2.5 dark:bg-gray-600  dark:placeholder-gray-400 "
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-0 focus:ring-opacity-75 focus:ring-offset-2 focus:ring-offset-blue-500 shadow-md block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               placeholder="Paste the link"
               onChange={(e) => {
                 setLink(e.target.value);
@@ -129,7 +152,7 @@ function SolutionForm() {
             </div>
             <div className="flex items-center mb-4">
               <input
-                id="done"
+                id="Done"
                 type="radio"
                 name="status"
                 value="Done"
@@ -137,10 +160,9 @@ function SolutionForm() {
                   setStatus(e.target.value);
                 }}
                 className="cursor-pointer w-4 h-4"
-                required
               />
               <label
-                htmlFor="done"
+                htmlFor="Done"
                 className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 Done
@@ -149,7 +171,7 @@ function SolutionForm() {
 
             <div className="flex items-center pl-5 mb-4">
               <input
-                id="wrong"
+                id="Wrong"
                 type="radio"
                 name="status"
                 value="Wrong"
@@ -157,10 +179,9 @@ function SolutionForm() {
                 onChange={(e) => {
                   setStatus(e.target.value);
                 }}
-                required
               />
               <label
-                htmlFor="wrong"
+                htmlFor="Wrong"
                 className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 Wrong
@@ -177,7 +198,6 @@ function SolutionForm() {
                 onChange={(e) => {
                   setStatus(e.target.value);
                 }}
-                required
               />
               <label
                 htmlFor="TLE"
@@ -196,17 +216,16 @@ function SolutionForm() {
               <input
                 id="zero"
                 type="radio"
-                name="level"
+                name="entry.813669578"
                 value="0"
-                className="cursor-pointer w-4 h-4"
+                className="w-4 h-4"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
-                required
               />
               <label
                 htmlFor="zero"
-                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 0
               </label>
@@ -216,17 +235,16 @@ function SolutionForm() {
               <input
                 id="one"
                 type="radio"
-                name="level"
+                name="entry.813669578"
                 value="1"
-                className="cursor-pointer w-4 h-4 "
+                className="w-4 h-4"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
-                required
               />
               <label
                 htmlFor="one"
-                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 1
               </label>
@@ -236,17 +254,16 @@ function SolutionForm() {
               <input
                 id="two"
                 type="radio"
-                name="level"
+                name="entry.813669578"
                 value="2"
-                className="cursor-pointer w-4 h-4"
+                className="w-4 h-4"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
-                required
               />
               <label
                 htmlFor="two"
-                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 2
               </label>
@@ -255,17 +272,16 @@ function SolutionForm() {
               <input
                 id="four"
                 type="radio"
-                name="level"
+                name="entry.813669578"
                 value="4"
-                className="cursor-pointer w-4 h-4"
+                className="w-4 h-4"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
-                required
               />
               <label
                 htmlFor="four"
-                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 4
               </label>
@@ -274,17 +290,16 @@ function SolutionForm() {
               <input
                 id="eight"
                 type="radio"
-                name="level"
+                name="entry.813669578"
                 value="8"
-                className="cursor-pointer w-4 h-4"
+                className="w-4 h-4"
                 onChange={(e) => {
                   setLevel(e.target.value);
                 }}
-                required
               />
               <label
                 htmlFor="eight"
-                className="cursor-pointer block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                className="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
               >
                 8
               </label>
@@ -296,13 +311,13 @@ function SolutionForm() {
               htmlFor="accuracy"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
-              Attempt
+              Accuracy
             </label>
             <input
               type="number"
               name="entry.182705387"
               id="accuracy"
-              placeholder="Enter the number of attempt."
+              placeholder="Enter the time like : 10m 11s"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-0 focus:ring-opacity-75 focus:ring-offset-2 focus:ring-offset-blue-500 shadow-md block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               onChange={(e) => {
                 setAccuracy(e.target.value);
@@ -325,7 +340,7 @@ function SolutionForm() {
               type="text"
               name="entry.1772415540"
               id="time"
-              placeholder="Enter the time like 10m or 0."
+              placeholder="Enter the time like : 10m 11s"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-0 focus:ring-opacity-75 focus:ring-offset-2 focus:ring-offset-blue-500 shadow-md block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               onChange={(e) => {
                 setTime(e.target.value);
@@ -334,12 +349,10 @@ function SolutionForm() {
               value={time}
             />
           </div>
-          {/* Lang */}
-          <ListBox />
           {/* Code */}
           <div>
             <label
-              htmlFor="code"
+              htmlFor="time"
               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
             >
               Code
@@ -349,13 +362,14 @@ function SolutionForm() {
               id="code"
               cols="40"
               rows="4"
-              className="shadow-md bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-0 focus:ring-opacity-75 focus:ring-offset-2 focus:ring-offset-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:border-indigo-500 focus:ring-0 focus:ring-opacity-75 focus:ring-offset-2 focus:ring-offset-blue-500 shadow-md block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
               onChange={(e) => setCode(e.target.value)}
               placeholder="Paste the code here!"
               value={code}
-              required
             ></textarea>
           </div>
+          {/* Lang */}
+          <ListBox />
           {/* Score */}
           <div>
             <label
@@ -379,9 +393,9 @@ function SolutionForm() {
           </div>
           <button
             type="submit"
-            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 cursor-pointer"
+            className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
-            Submit
+            Update
           </button>
         </form>
       </div>
@@ -389,4 +403,4 @@ function SolutionForm() {
   );
 }
 
-export default SolutionForm;
+export default UpdateForm;
