@@ -5,7 +5,7 @@ export function pretifyUserInfo(obj) {
   delete user.password;
   delete user.__v;
   delete user.createdAt;
-  delete user.updatedAt;
+  // delete user.updatedAt;
   delete user.passwordHistory;
   return user;
 }

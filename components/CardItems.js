@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import ConfirmModal from "./ConfirmModal";
 import ViewCodeModal from "./ViewCodeModal";
 
+import { FaEraser, FaEdit } from "react-icons/fa";
+
 export default function CardItems({ solutions }) {
   const { title } = useSelector((state) => state.static);
   const [showModal, setShowModal] = useState(false);
@@ -115,6 +117,7 @@ export default function CardItems({ solutions }) {
                 ).toLocaleTimeString()}`}
               </span>
             </p>
+
             <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
               Score -{" "}
               <span className={`font-bold text-red-700`}>{element.score}</span>
@@ -148,17 +151,17 @@ export default function CardItems({ solutions }) {
                 }}
                 // as={"/update"}
               >
-                <i className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer"></i>
+                <FaEdit className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer" />
               </Link>
               {/* Delete */}
-              <i
+              <FaEraser
                 className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
                 onClick={() => {
                   setShowModal(true);
                   element.index = solutions.length - index;
                   setSelectedElement(element);
                 }}
-              ></i>
+              />
             </section>
           </section>
         );

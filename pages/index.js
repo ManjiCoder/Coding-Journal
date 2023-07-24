@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { useSelector } from "react-redux";
 import Link from "next/link";
 import CardItems from "@/components/CardItems";
-import Script from "next/script";
+
 const inter = Inter({ subsets: ["latin"] });
 
 const codingPlatfroms = [
@@ -17,18 +17,14 @@ const codingPlatfroms = [
 ];
 
 export default function Home({ solutions }) {
-  console.log(solutions);
+  // console.log(solutions);
   const { isAuth, user } = useSelector((state) => state.user);
   const { title } = useSelector((state) => state.static);
 
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <meta
-          name="description"
-          content="Coding-Journal for coders by a coder"
-        />
+        <title>{`${isAuth && user.name + " |"} ${title} `}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

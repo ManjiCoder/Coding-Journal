@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { Menu } from "@headlessui/react";
 
-import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineMenu, AiFillSetting } from "react-icons/ai";
 import { BsFillMoonStarsFill, BsSunFill } from "react-icons/bs";
 import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
@@ -86,12 +86,12 @@ const Navbar = () => {
           </MenuUI>
         )}
 
-        <button
+        {/* <button
           className="ml-5 w-7 h-7 flex justify-center items-center bg-white ring-yellow-500 rounded-full shadow-md hover:ring-2 focus:ring-2 font-medium"
           onClick={() => setIsDark(!isDark)}
         >
           {!isDark ? <BsSunFill /> : <BsFillMoonStarsFill />}
-        </button>
+        </button> */}
       </nav>
       {/* Moblie */}
       <ul
@@ -139,6 +139,14 @@ const MenuItems = () => {
       icons: <IoMdLogOut />,
       name: "Logout",
     },
+    {
+      icons: <AiFillSetting />,
+      name: "Setting",
+    },
+    // {
+    //   icons: null,
+    //   name: `Last Login: ${new Date(user.updatedAt).toDateString()}`,
+    // },
   ];
 
   const handleLogout = () => {
@@ -194,6 +202,38 @@ const MenuItems = () => {
           </button>
         )}
       </Menu.Item>
+      <Menu.Item>
+        {({ active }) => (
+          <button
+            className={`${
+              active ? "bg-slate-800 text-white" : "text-gray-900"
+            } group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium`}
+          >
+            <span className="mr-2">{option[3].icons}</span>
+            <span
+              className={`${active ? " text-white" : "text-gray-900"} text-xs`}
+            >
+              {option[3].name}
+            </span>
+          </button>
+        )}
+      </Menu.Item>
+      {/* <Menu.Item>
+        {({ active }) => (
+          <button
+            className={`${
+              active ? "bg-slate-800 text-white" : "text-gray-900"
+            } group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium`}
+          >
+            <span className="mr-2">{option[4]?.icons}</span>
+            <span
+              className={`${active ? " text-white" : "text-gray-900"} text-xs`}
+            >
+              {option[4].name}
+            </span>
+          </button>
+        )}
+      </Menu.Item> */}
     </>
   );
 };
