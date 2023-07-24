@@ -125,6 +125,10 @@ const MenuItems = () => {
   const { user } = useSelector((state) => state.user);
   const router = useRouter();
   const dispatch = useDispatch();
+  const userLoginTime =
+    new Date(user.updatedAt).toDateString() +
+    ", " +
+    new Date(user.updatedAt).toLocaleTimeString();
 
   const option = [
     {
@@ -143,10 +147,10 @@ const MenuItems = () => {
       icons: <AiFillSetting />,
       name: "Setting",
     },
-    // {
-    //   icons: null,
-    //   name: `Last Login: ${new Date(user.updatedAt).toDateString()}`,
-    // },
+    {
+      icons: null,
+      name: `Last Login: ${userLoginTime}`,
+    },
   ];
 
   const handleLogout = () => {
@@ -207,33 +211,33 @@ const MenuItems = () => {
           <button
             className={`${
               active ? "bg-slate-800 text-white" : "text-gray-900"
-            } group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium`}
+            } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
           >
             <span className="mr-2">{option[3].icons}</span>
-            <span
-              className={`${active ? " text-white" : "text-gray-900"} text-xs`}
-            >
+            <span className={`${active ? " text-white" : "text-gray-900"}`}>
               {option[3].name}
             </span>
           </button>
         )}
       </Menu.Item>
-      {/* <Menu.Item>
+      <Menu.Item>
         {({ active }) => (
           <button
             className={`${
               active ? "bg-slate-800 text-white" : "text-gray-900"
-            } group flex w-full items-center rounded-md px-2 py-2 text-sm font-medium`}
+            } group flex w-full items-center text-left rounded-md px-2 py-2 text-sm font-medium`}
           >
             <span className="mr-2">{option[4]?.icons}</span>
             <span
-              className={`${active ? " text-white" : "text-gray-900"} text-xs`}
+              className={`${
+                active ? " text-white" : "text-gray-900"
+              } text-[10px]`}
             >
-              {option[4].name}
+              {option[4]?.name}
             </span>
           </button>
         )}
-      </Menu.Item> */}
+      </Menu.Item>
     </>
   );
 };

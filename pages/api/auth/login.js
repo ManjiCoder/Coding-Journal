@@ -65,18 +65,23 @@ export default async function handler(req, res) {
       });
       res.setHeader("Set-Cookie", cookie);
 
-      const userInfo = pretifyUserInfo(user);
+      const loginUser = await UserModel.findByIdAndUpdate(
+        user._id,
+        { $set: { updatedAt: new Date() } },
+        { new: true }
+      );
+      const userInfo = pretifyUserInfo(loginUser);
       res
         .status(200)
         .json({ message: "Login Sucessfully", user: userInfo, authToken });
     } catch (error) {
+      console.log(error.errors);
       if (error.errors) {
         res.status(400).json({
           message: error.errors.join(" & "),
         });
         return;
       }
-      console.log(error.errors);
       res
         .status(401)
         .json({ message: error.message || "Internal server error" });
