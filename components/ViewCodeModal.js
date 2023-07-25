@@ -42,7 +42,7 @@ export default function ViewCodeModal({ lang, code, closeModal }) {
                   </Dialog.Title>
                   {/* Copy-To-Clipboard */}
                   <div className="absolute top-14 right-9 text-slate-50 hover:text-slate-200">
-                    <span>{copy ? "copied!" : ""}</span>
+                    <span className="text-xs">{copy ? "copy" : ""}</span>
                     <i
                       className={`ml-2 cursor-pointer fa-${
                         copy ? "solid" : "regular"

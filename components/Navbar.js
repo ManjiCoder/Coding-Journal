@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import BrandHead from "./BrandHead";
 import MenuUI from "./headlessUI/MenuUI";
@@ -25,6 +25,12 @@ const Navbar = () => {
   const toggleNav = () => {
     setIsOpen(!isOpen);
   };
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.getElementById("main-container").style.background = "0.5";
+    }
+  }, [isOpen]);
 
   const navigation = [
     { name: "Home", href: "/", current: pathname === "/" ? true : false },
@@ -93,9 +99,10 @@ const Navbar = () => {
           {!isDark ? <BsSunFill /> : <BsFillMoonStarsFill />}
         </button> */}
       </nav>
+
       {/* Moblie */}
       <ul
-        className={`absolute top-16 pt-10 px-7 w-full md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
+        className={`absolute z-10 top-16 pt-10 px-7 w-full md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
           ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
         onClick={(e) => {
           if (e.target.tagName === "LI") {

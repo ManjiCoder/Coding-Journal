@@ -24,11 +24,11 @@ export default function Home({ solutions }) {
   return (
     <>
       <Head>
-        <title>{`${isAuth && user.name + " |"} ${title} `}</title>
+        <title>{`${isAuth ? user.name + " |" : ""} ${title} `}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
+      <main id="main-container">
         {!isAuth ? (
           <div className="p-5 rounded-md shadow-md bg-white dark:bg-gray-900 space-y-7">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl">
