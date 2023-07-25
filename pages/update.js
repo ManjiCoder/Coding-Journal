@@ -1,3 +1,4 @@
+import ListBox from "@/components/ListBox";
 import Cookies from "js-cookie";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -21,6 +22,10 @@ export default function Update() {
   const [time, setTime] = useState(solution.time || "");
   const [code, setCode] = useState(solution.code || "");
   const [score, setScore] = useState(solution.score || "");
+
+  // ListBox State
+  const [selected, setSelected] = useState(solution.language);
+  const languageOption = ["javascript", "python", "java", "c++", "c"];
 
   const HandleOnSumbit = async (e) => {
     const toastId = toast.loading("Please wait...");
@@ -357,8 +362,15 @@ export default function Update() {
               value={time}
             />
           </div>
+
           {/* Lang */}
-          {/* <ListBox /> */}
+          <ListBox
+            listBoxTitle={"Language"}
+            selected={selected}
+            setSelected={setSelected}
+            options={languageOption}
+          />
+
           {/* Code */}
           <div>
             <label

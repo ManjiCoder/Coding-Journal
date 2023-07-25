@@ -1,19 +1,22 @@
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
-import UseContext from "./context/UseContext";
+// import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-export default function ListBox() {
-  const { selected, setSelected, LangOption } = useContext(UseContext);
+export default function ListBox({
+  listBoxTitle,
+  selected,
+  setSelected,
+  options,
+}) {
   return (
     <>
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative mt-1">
           <label
             htmlFor="language"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium capitalize text-gray-900 dark:text-white"
           >
-            Language
+            {listBoxTitle}
           </label>
           <Listbox.Button
             id="language"
@@ -21,15 +24,17 @@ export default function ListBox() {
           >
             <span
               id="selectedLang"
-              className="block truncate capitalize dark:text-white"
+              className={`block truncate capitalize dark:text-white ${
+                selected === "" && "text-gray-500"
+              }`}
             >
-              {selected}
+              {selected === "" ? "Select" : selected}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon
+              {/* <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"
                 aria-hidden="true"
-              />
+              /> */}
             </span>
           </Listbox.Button>
           <Transition
@@ -39,7 +44,7 @@ export default function ListBox() {
             leaveTo="opacity-0"
           >
             <Listbox.Options className="border border-gray-300 dark:border-gray-500 absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {LangOption.map((Lang, LangIdx) => (
+              {options.map((Lang, LangIdx) => (
                 <Listbox.Option
                   key={LangIdx}
                   className={({ active }) =>
@@ -66,7 +71,7 @@ export default function ListBox() {
                           id={Lang}
                           className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
                         >
-                          <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                          {/* <CheckIcon className="h-5 w-5" aria-hidden="true" /> */}
                         </span>
                       ) : null}
                     </>

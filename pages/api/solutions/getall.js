@@ -2,14 +2,33 @@ import dbConnect from "@/utils/dbConnect";
 import solutionModel from "@/models/Solution";
 
 export default async function handler(req, res) {
-  const { method } = req;
-  if (method === "GET") {
+  const { method, query } = req;
+  const { sort, order } = query;
+  const sortByFields = [
+    "score",
+    "questionNo",
+    "createdAt",
+    "updatedAt",
+    "level",
+    "accuracy",
+  ];
+  const sortByOrders = ["ascending", "descending"];
+
+  if (
+    (method === "GET") & sortByFields.includes(sort) &&
+    sortByOrders.includes(order)
+  ) {
     try {
       const id = req.headers["user-id"];
       await dbConnect();
+
+      // Adding Filter based on query for sorting
+      const filterObj = {};
+      filterObj[sort] = order === "ascending" ? 1 : -1;
+
       const solutions = await solutionModel
         .find({ user: id })
-        .sort({ createdAt: -1 })
+        .sort(filterObj)
         .select(["-user"]);
       res
         .status(200)

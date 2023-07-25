@@ -86,7 +86,7 @@ export default function Home({ solutions }) {
 
 // SSR
 export async function getServerSideProps({ req }) {
-  const { token } = req.cookies;
+  const { token, sort, order } = req.cookies;
   // console.log({ token });
   if (token) {
     let headersList = {
@@ -94,7 +94,9 @@ export async function getServerSideProps({ req }) {
     };
 
     let response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/getall`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/getall?sort=${
+        sort || "score"
+      }&order=${order || "descending"}`,
       {
         method: "GET",
         headers: headersList,

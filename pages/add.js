@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import * as Yup from "yup";
 import Head from "next/head";
+import ListBox from "@/components/ListBox";
 
 const addSolutionsFormSchema = Yup.object().shape({
   title: Yup.string().required("*required"),
@@ -30,6 +31,10 @@ export default function Add() {
   const [time, setTime] = useState("");
   const [code, setCode] = useState("");
   const [score, setScore] = useState("");
+
+  // ListBox State
+  const [selected, setSelected] = useState("");
+  const languageOption = ["javascript", "python", "java", "c++", "c"];
 
   const HandleOnSumbit = async (e) => {
     const toastId = toast.loading("Please wait...");
@@ -72,7 +77,7 @@ export default function Add() {
         router.replace("/");
         return;
       }
-      console.log(data);
+      // console.log(data);
       toast.update(toastId, {
         render: data.message,
         type: "error",
@@ -357,8 +362,15 @@ export default function Add() {
               value={time}
             />
           </div>
+
           {/* Lang */}
-          {/* <ListBox /> */}
+          <ListBox
+            listBoxTitle={"Language"}
+            selected={selected}
+            setSelected={setSelected}
+            options={languageOption}
+          />
+
           {/* Code */}
           <div>
             <label
