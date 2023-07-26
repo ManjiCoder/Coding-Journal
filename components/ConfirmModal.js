@@ -3,6 +3,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { revalidatePath } from "next/cache";
 
 export default function ConfirmModal({ closeModal, deleteCard }) {
   const router = useRouter();
@@ -33,7 +34,6 @@ export default function ConfirmModal({ closeModal, deleteCard }) {
           closeButton: true,
           closeOnClick: true,
         });
-        // revalidatePath("/");
         router.replace("/");
         return;
       }

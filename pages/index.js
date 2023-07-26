@@ -106,33 +106,37 @@ export default function Home({ solutions }) {
 
 // SSR
 export async function getServerSideProps({ req, res }) {
-  const { token, userSetting } = req.cookies;
-  // console.log({ userSetting });
-  var sort = null;
-  var order = null;
-  if (token) {
-    let headersList = {
-      "auth-token": token,
-    };
-    if (userSetting) {
-      var { sort, order } = JSON.parse(userSetting);
-      if (sort === "date") sort = "createdAt";
-    }
-    // console.log(sort, order);
-
-    let response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/getall?sort=${
-        sort || "score"
-      }&order=${order || "descending"}`,
-      {
-        method: "GET",
-        headers: headersList,
+  try {
+    const { token, userSetting } = req.cookies;
+    // console.log({ userSetting });
+    var sort = null;
+    var order = null;
+    if (token) {
+      let headersList = {
+        "auth-token": token,
+      };
+      if (userSetting) {
+        var { sort, order } = JSON.parse(userSetting);
+        if (sort === "date") sort = "createdAt";
       }
-    );
+      // console.log(sort, order);
 
-    var { solutions } = await response.json();
-    // console.log(data);
+      let response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/getall?sort=${
+          sort || "score"
+        }&order=${order || "descending"}`,
+        {
+          method: "GET",
+          headers: headersList,
+        }
+      );
+
+      var { solutions } = await response.json();
+      // console.log(data);
+    }
+
+    return { props: { solutions: solutions || null } };
+  } catch (error) {
+    return { props: { solutions: null } };
   }
-
-  return { props: { solutions } };
 }

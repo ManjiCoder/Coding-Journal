@@ -11,8 +11,10 @@ export default function Update() {
   // console.log(query);
   const router = useRouter();
   const solution = JSON.parse(router.query.data || null);
-  console.log(solution);
-  const { title: mainTitle } = useSelector((state) => state.static);
+
+  const { title: mainTitle, toastDuration } = useSelector(
+    (state) => state.static
+  );
 
   const [link, setLink] = useState(solution.link || "");
   const [title, setTitle] = useState(solution.title || "");
@@ -43,7 +45,7 @@ export default function Update() {
             status,
             level,
             accuracy,
-            // language: "javascript",
+            language: selected,
             time,
             code,
             score,
@@ -62,7 +64,7 @@ export default function Update() {
           render: data.message,
           type: "success",
           isLoading: false,
-          autoClose: 5000,
+          autoClose: toastDuration,
           closeButton: true,
           closeOnClick: true,
         });
@@ -74,7 +76,7 @@ export default function Update() {
         render: data.message,
         type: "error",
         isLoading: false,
-        autoClose: 5000,
+        autoClose: toastDuration,
         closeButton: true,
         closeOnClick: true,
       });

@@ -19,7 +19,9 @@ const addSolutionsFormSchema = Yup.object().shape({
 });
 
 export default function Add() {
-  const { title: mainTitle } = useSelector((state) => state.static);
+  const { title: mainTitle, toastDuration } = useSelector(
+    (state) => state.static
+  );
 
   const router = useRouter();
 
@@ -51,7 +53,7 @@ export default function Add() {
             status,
             level,
             accuracy,
-            language: "javascript",
+            language: selected,
             time,
             code,
             score,
@@ -70,7 +72,7 @@ export default function Add() {
           render: data.message,
           type: "success",
           isLoading: false,
-          autoClose: 5000,
+          autoClose: toastDuration,
           closeButton: true,
           closeOnClick: true,
         });
@@ -82,7 +84,7 @@ export default function Add() {
         render: data.message,
         type: "error",
         isLoading: false,
-        autoClose: 5000,
+        autoClose: toastDuration,
         closeButton: true,
         closeOnClick: true,
       });

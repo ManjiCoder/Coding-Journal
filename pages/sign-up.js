@@ -6,7 +6,7 @@ import { Formik } from "formik";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "@/redux-slices/User";
 import Head from "next/head";
 
