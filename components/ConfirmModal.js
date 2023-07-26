@@ -99,7 +99,7 @@ export default function ConfirmModal({ closeModal, deleteCard }) {
                   </h2>
                   <h2 className="text-center font-medium mb-4">
                     {deleteCard.title} with Card No.
-                    {deleteCard.index}
+                    {deleteCard.index.toString().padStart(2, 0)}
                   </h2>
                   <div className="w-full mt-4 flex justify-evenly">
                     <button

@@ -8,8 +8,10 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { logIn } from "@/redux-slices/User";
+import Head from "next/head";
 
 export default function SignUp() {
+  const { title, toastDuration } = useSelector((state) => state.static);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -49,7 +51,7 @@ export default function SignUp() {
           render: data.message,
           type: "success",
           isLoading: false,
-          autoClose: 5000,
+          autoClose: toastDuration,
           closeButton: true,
           closeOnClick: true,
         });
@@ -61,7 +63,7 @@ export default function SignUp() {
         render: data.message,
         type: "error",
         isLoading: false,
-        autoClose: 5000,
+        autoClose: toastDuration,
         closeButton: true,
         closeOnClick: true,
       });
@@ -78,6 +80,9 @@ export default function SignUp() {
 
   return (
     <div className="p-3 min-h-screen bg-slate-300 flex flex-col justify-start items-center">
+      <Head>
+        <title>{title} - Login</title>
+      </Head>
       <Formik
         initialValues={{ name: "", email: "", password: "" }}
         validationSchema={signupSchema}

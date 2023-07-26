@@ -241,8 +241,11 @@ export default function CardItems() {
                   className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
                   onClick={() => {
                     setShowModal(true);
-                    element.index = solutions.length - index;
-                    setSelectedElement(element);
+                    setSelectedElement({
+                      ...element,
+                      index:
+                        sortByOrder === "ascending" ? index + 1 : len - index,
+                    });
                   }}
                 />
               </section>

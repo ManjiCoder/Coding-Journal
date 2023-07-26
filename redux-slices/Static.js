@@ -4,6 +4,7 @@ const Static = createSlice({
   name: "static",
   initialState: {
     title: "Coding-Journal",
+    toastDuration: 3000,
   },
   reducers: {},
 });
