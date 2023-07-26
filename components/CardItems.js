@@ -5,8 +5,18 @@ import { useDispatch, useSelector } from "react-redux";
 import ConfirmModal from "./ConfirmModal";
 import ViewCodeModal from "./ViewCodeModal";
 
-import { FaEraser, FaEdit } from "react-icons/fa";
-import { filterSolution, setSortByQuery } from "@/redux-slices/Solution";
+import {
+  FaEraser,
+  FaEdit,
+  FaArrowAltCircleUp,
+  FaArrowAltCircleDown,
+} from "react-icons/fa";
+import {
+  filterSolution,
+  setSolutions,
+  setSortByOrder,
+  setSortByQuery,
+} from "@/redux-slices/Solution";
 
 import ListBoxUI from "./headlessUI/ListBoxUI";
 import Cookies from "js-cookie";
@@ -24,11 +34,12 @@ export default function CardItems() {
   const [selectedElement, setSelectedElement] = useState(null);
 
   // ListBox State
-  const [selected, setSelected] = useState(sortByQuery);
+  const languageOption = ["score", "accuracy", "level", "date"];
   const changeSeleted = (query) => {
-    setSelected(query);
     dispatch(filterSolution(query));
     dispatch(setSortByQuery(query));
+
+    // Saving User-Setting in cookies
     Cookies.set(
       "userSetting",
       JSON.stringify({
@@ -37,12 +48,24 @@ export default function CardItems() {
       })
     );
   };
-  const languageOption = ["score", "accuracy", "level", "date"];
 
   //  Funtion to close Modal
   const closeModal = () => setShowModal(false);
   const closeViewCode = () => setViewCode(false);
 
+  const handleSortingOrder = (order) => {
+    dispatch(setSortByOrder(order));
+    dispatch(filterSolution(order));
+
+    // Saving User-Setting in cookies
+    Cookies.set(
+      "userSetting",
+      JSON.stringify({
+        sort: sortByQuery,
+        order: order,
+      })
+    );
+  };
   if (solutions.length === 0) {
     return (
       <div className="flex flex-col min-h-[90vh] bg-slate-200  px-6 py-12 lg:px-8">
@@ -66,7 +89,7 @@ export default function CardItems() {
   }
   return (
     <main>
-      <div className="flex w-56 space-x-1.5 place-items-center mx-auto mr-5">
+      <section className="flex mt-3 w-56 space-x-1.5 place-items-center mx-auto mr-5">
         <h2 className="font-medium mt-3 text-sm">Sort by</h2>
         <div className="flex-1">
           {/* Lang */}
@@ -77,7 +100,25 @@ export default function CardItems() {
             options={languageOption}
           />
         </div>
-      </div>
+        <div className="flex items-center mt-2.5 space-x-1">
+          <button
+            className={`${
+              sortByOrder === "ascending" ? "text-gray-600" : "text-gray-400"
+            }`}
+            onClick={() => handleSortingOrder("ascending")}
+          >
+            <FaArrowAltCircleUp />
+          </button>
+          <button
+            className={`${
+              sortByOrder === "descending" ? "text-gray-600" : "text-gray-400"
+            }`}
+            onClick={() => handleSortingOrder("descending")}
+          >
+            <FaArrowAltCircleDown />
+          </button>
+        </div>
+      </section>
 
       <div className="mt-7 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
         {solutions.map((element, index) => {

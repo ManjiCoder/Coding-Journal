@@ -13,32 +13,37 @@ const Solutions = createSlice({
     },
     filterSolution(state, action) {
       let sortField = action.payload;
-      switch (sortField) {
-        case "ascending":
+      if (sortField === "date") {
+        sortField = "createdAt";
+        if (state.sortByOrder === "ascending") {
           state.solutions.sort((a, b) => {
             return a[sortField] - b[sortField];
           });
-          break;
-        case "date":
-          sortField = "createdAt";
-          state.solutions.sort((a, b) => {
-            // console.log(a[sortField], b[sortField]);
-            return (
-              parseInt(new Date(b[sortField]).getTime()) -
-              parseInt(new Date(a[sortField]).getTime())
-            );
-          });
-          break;
-
-        default:
+        } else {
           state.solutions.sort((a, b) => {
             return b[sortField] - a[sortField];
           });
-          break;
+        }
+      } else {
+        if (state.sortByOrder === "ascending") {
+          return {
+            ...state,
+            solutions: state.solutions.sort((a, b) => {
+              return a[sortField] - b[sortField];
+            }),
+          };
+        } else {
+          return {
+            ...state,
+            solutions: state.solutions.sort((a, b) => {
+              return b[sortField] - a[sortField];
+            }),
+          };
+        }
       }
     },
     setSortByOrder(state, action) {
-      state.sortBy = action.payload;
+      state.sortByOrder = action.payload;
     },
     setSortByQuery(state, action) {
       state.sortByQuery = action.payload;

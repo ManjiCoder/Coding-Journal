@@ -27,9 +27,9 @@ export default function Home({ solutions }) {
   // console.log(solutions);
   const dispatch = useDispatch();
   useEffect(() => {
-    const cookies = Cookies.get("userSetting");
-    if (cookies) {
-      const { sort, order } = JSON.parse(cookies);
+    const isUserSetting = Cookies.get("userSetting");
+    if (isUserSetting) {
+      const { sort, order } = JSON.parse(isUserSetting);
       dispatch(setSortByQuery(sort));
       dispatch(setSortByOrder(order));
     }
