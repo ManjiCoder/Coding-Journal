@@ -1,8 +1,9 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
+import { BsCheck, BsChevronExpand } from "react-icons/bs";
 // import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-export default function ListBox({
+export default function ListBoxUI({
   listBoxTitle,
   selected,
   setSelected,
@@ -31,10 +32,10 @@ export default function ListBox({
               {selected === "" ? "Select" : selected}
             </span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              {/* <ChevronUpDownIcon
+              <BsChevronExpand
                 className="h-5 w-5 text-gray-400"
                 aria-hidden="true"
-              /> */}
+              />
             </span>
           </Listbox.Button>
           <Transition
@@ -71,7 +72,7 @@ export default function ListBox({
                           id={Lang}
                           className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600"
                         >
-                          {/* <CheckIcon className="h-5 w-5" aria-hidden="true" /> */}
+                          <BsCheck className="h-5 w-5" aria-hidden="true" />
                         </span>
                       ) : null}
                     </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import BrandHead from "./BrandHead";
 import MenuUI from "./headlessUI/MenuUI";
@@ -25,12 +25,12 @@ const Navbar = () => {
   const toggleNav = () => {
     setIsOpen(!isOpen);
   };
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      document.getElementById("main-container").style.background = "0.5";
-    }
-  }, [isOpen]);
+  // useEffect(() => {
+  //   if (isOpen) {
+  //     document.body.style.overflow = "hidden";
+  //     document.getElementById("main-container").style.background = "0.5";
+  //   }
+  // }, [isOpen]);
 
   const navigation = [
     { name: "Home", href: "/", current: pathname === "/" ? true : false },

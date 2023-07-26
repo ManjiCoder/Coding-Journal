@@ -1,4 +1,4 @@
-import ListBox from "@/components/ListBox";
+import ListBoxUI from "@/components/headlessUI/ListBoxUI";
 import Cookies from "js-cookie";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -364,7 +364,7 @@ export default function Update() {
           </div>
 
           {/* Lang */}
-          <ListBox
+          <ListBoxUI
             listBoxTitle={"Language"}
             selected={selected}
             setSelected={setSelected}

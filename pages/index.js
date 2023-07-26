@@ -1,8 +1,10 @@
 import Head from "next/head";
 import { Inter } from "next/font/google";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import CardItems from "@/components/CardItems";
+import { useEffect } from "react";
+import { setSolutions } from "@/redux-slices/Solution";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +20,12 @@ const codingPlatfroms = [
 
 export default function Home({ solutions }) {
   // console.log(solutions);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setSolutions(solutions));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const { isAuth, user } = useSelector((state) => state.user);
   const { title } = useSelector((state) => state.static);
 
@@ -77,7 +85,7 @@ export default function Home({ solutions }) {
             </div>
           </div>
         ) : (
-          <CardItems solutions={solutions} />
+          <CardItems />
         )}
       </main>
     </>
@@ -85,7 +93,7 @@ export default function Home({ solutions }) {
 }
 
 // SSR
-export async function getServerSideProps({ req }) {
+export async function getServerSideProps({ req, res }) {
   const { token, sort, order } = req.cookies;
   // console.log({ token });
   if (token) {
@@ -106,5 +114,6 @@ export async function getServerSideProps({ req }) {
     var { solutions } = await response.json();
     // console.log(data);
   }
-  return { props: { solutions: solutions || "" } };
+
+  return { props: { solutions } };
 }

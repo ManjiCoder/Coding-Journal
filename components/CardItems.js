@@ -1,16 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ConfirmModal from "./ConfirmModal";
 import ViewCodeModal from "./ViewCodeModal";
 
 import { FaEraser, FaEdit } from "react-icons/fa";
-import ListBox from "./ListBox";
+import { filterSolution } from "@/redux-slices/Solution";
 
-export default function CardItems({ solutions }) {
-  const len = solutions.length;
+import ListBoxUI from "./headlessUI/ListBoxUI";
+
+export default function CardItems() {
   const { title } = useSelector((state) => state.static);
+  const { sortBy, solutions } = useSelector((state) => state.solutions);
+  const len = solutions.length;
+  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
 
@@ -18,12 +22,16 @@ export default function CardItems({ solutions }) {
 
   // ListBox State
   const [selected, setSelected] = useState("score");
+  const changeSeleted = (query) => {
+    dispatch(filterSolution(query));
+    setSelected(query);
+  };
   const languageOption = [
     "score",
     "accuracy",
     "level",
-    "Created-Date",
-    "Updated-Date",
+    // "createdAt",
+    // "updatedAt",
   ];
 
   //  Funtion to close Modal
@@ -53,15 +61,17 @@ export default function CardItems({ solutions }) {
   }
   return (
     <main>
-      <div className="flex flex-col w-44 mx-auto mr-5">
-        {/* <h2>Sort</h2> */}
-        {/* Lang */}
-        <ListBox
-          listBoxTitle={``}
-          selected={selected}
-          setSelected={setSelected}
-          options={languageOption}
-        />
+      <div className="flex w-56 space-x-1.5 place-items-center mx-auto mr-5">
+        <h2 className="font-medium mt-3 text-sm">Sort by</h2>
+        <div className="flex-1">
+          {/* Lang */}
+          <ListBoxUI
+            listBoxTitle={``}
+            selected={selected}
+            setSelected={changeSeleted}
+            options={languageOption}
+          />
+        </div>
       </div>
 
       <div className="mt-7 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">

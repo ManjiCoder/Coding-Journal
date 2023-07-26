@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import * as Yup from "yup";
 import Head from "next/head";
-import ListBox from "@/components/ListBox";
+import ListBoxUI from "@/components/headlessUI/ListBoxUI";
 
 const addSolutionsFormSchema = Yup.object().shape({
   title: Yup.string().required("*required"),
@@ -364,7 +364,7 @@ export default function Add() {
           </div>
 
           {/* Lang */}
-          <ListBox
+          <ListBoxUI
             listBoxTitle={"Language"}
             selected={selected}
             setSelected={setSelected}

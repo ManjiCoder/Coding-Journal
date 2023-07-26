@@ -14,6 +14,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import solutions from "./redux-slices/Solution";
 
 const persistConfig = {
   key: "root",
@@ -25,6 +26,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   static: Static,
   user: User,
+  solutions: solutions,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
