@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import CardItems from "@/components/CardItems";
 import { useEffect } from "react";
-import { setSolutions } from "@/redux-slices/Solution";
+import {
+  setSolutions,
+  setSortByOrder,
+  setSortByQuery,
+} from "@/redux-slices/Solution";
+import Cookies from "js-cookie";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +27,14 @@ export default function Home({ solutions }) {
   // console.log(solutions);
   const dispatch = useDispatch();
   useEffect(() => {
+    const cookies = Cookies.get("userSetting");
+    if (cookies) {
+      const { sort, order } = JSON.parse(cookies);
+      dispatch(setSortByQuery(sort));
+      dispatch(setSortByOrder(order));
+    }
     dispatch(setSolutions(solutions));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -94,12 +106,19 @@ export default function Home({ solutions }) {
 
 // SSR
 export async function getServerSideProps({ req, res }) {
-  const { token, sort, order } = req.cookies;
-  // console.log({ token });
+  const { token, userSetting } = req.cookies;
+  // console.log({ userSetting });
+  var sort = null;
+  var order = null;
   if (token) {
     let headersList = {
       "auth-token": token,
     };
+    if (userSetting) {
+      var { sort, order } = JSON.parse(userSetting);
+      if (sort === "date") sort = "createdAt";
+    }
+    // console.log(sort, order);
 
     let response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/getall?sort=${

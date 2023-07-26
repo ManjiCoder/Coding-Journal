@@ -3,7 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const Solutions = createSlice({
   name: "solutions",
   initialState: {
-    sortBy: "descending",
+    sortByQuery: "score",
+    sortByOrder: "descending",
     solutions: [],
   },
   reducers: {
@@ -11,22 +12,41 @@ const Solutions = createSlice({
       state.solutions = action.payload;
     },
     filterSolution(state, action) {
-      if (state.sortBy === "ascending") {
-        state.solutions.sort((a, b) => {
-          return a[action.payload] - b[action.payload];
-        });
-      } else {
-        state.solutions.sort((a, b) => {
-          return b[action.payload] - a[action.payload];
-        });
+      let sortField = action.payload;
+      switch (sortField) {
+        case "ascending":
+          state.solutions.sort((a, b) => {
+            return a[sortField] - b[sortField];
+          });
+          break;
+        case "date":
+          sortField = "createdAt";
+          state.solutions.sort((a, b) => {
+            // console.log(a[sortField], b[sortField]);
+            return (
+              parseInt(new Date(b[sortField]).getTime()) -
+              parseInt(new Date(a[sortField]).getTime())
+            );
+          });
+          break;
+
+        default:
+          state.solutions.sort((a, b) => {
+            return b[sortField] - a[sortField];
+          });
+          break;
       }
     },
-    setSortBy(state, action) {
+    setSortByOrder(state, action) {
       state.sortBy = action.payload;
+    },
+    setSortByQuery(state, action) {
+      state.sortByQuery = action.payload;
     },
   },
 });
 
-export const { setSolutions, filterSolution, setSortBy } = Solutions.actions;
+export const { setSolutions, filterSolution, setSortByOrder, setSortByQuery } =
+  Solutions.actions;
 
 export default Solutions.reducer;

@@ -6,13 +6,16 @@ import ConfirmModal from "./ConfirmModal";
 import ViewCodeModal from "./ViewCodeModal";
 
 import { FaEraser, FaEdit } from "react-icons/fa";
-import { filterSolution } from "@/redux-slices/Solution";
+import { filterSolution, setSortByQuery } from "@/redux-slices/Solution";
 
 import ListBoxUI from "./headlessUI/ListBoxUI";
+import Cookies from "js-cookie";
 
 export default function CardItems() {
   const { title } = useSelector((state) => state.static);
-  const { sortBy, solutions } = useSelector((state) => state.solutions);
+  const { sortByQuery, sortByOrder, solutions } = useSelector(
+    (state) => state.solutions
+  );
   const len = solutions.length;
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
@@ -21,18 +24,20 @@ export default function CardItems() {
   const [selectedElement, setSelectedElement] = useState(null);
 
   // ListBox State
-  const [selected, setSelected] = useState("score");
+  const [selected, setSelected] = useState(sortByQuery);
   const changeSeleted = (query) => {
-    dispatch(filterSolution(query));
     setSelected(query);
+    dispatch(filterSolution(query));
+    dispatch(setSortByQuery(query));
+    Cookies.set(
+      "userSetting",
+      JSON.stringify({
+        sort: query,
+        order: sortByOrder,
+      })
+    );
   };
-  const languageOption = [
-    "score",
-    "accuracy",
-    "level",
-    // "createdAt",
-    // "updatedAt",
-  ];
+  const languageOption = ["score", "accuracy", "level", "date"];
 
   //  Funtion to close Modal
   const closeModal = () => setShowModal(false);
@@ -67,7 +72,7 @@ export default function CardItems() {
           {/* Lang */}
           <ListBoxUI
             listBoxTitle={``}
-            selected={selected}
+            selected={sortByQuery}
             setSelected={changeSeleted}
             options={languageOption}
           />
