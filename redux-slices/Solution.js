@@ -11,35 +11,30 @@ const Solutions = createSlice({
     setSolutions(state, action) {
       state.solutions = action.payload;
     },
-    filterSolution(state, action) {
-      let sortField = action.payload;
-      if (sortField === "date") {
-        sortField = "createdAt";
-        if (state.sortByOrder === "ascending") {
+    sortSolution(state, action) {
+      let query = action.payload;
+      if (state.sortByOrder === "ascending") {
+        if (query === "date") {
+          query = "createdAt";
           state.solutions.sort((a, b) => {
-            return a[sortField] - b[sortField];
-          });
-        } else {
-          state.solutions.sort((a, b) => {
-            return b[sortField] - a[sortField];
+            return (
+              parseInt(new Date(a[query]).getTime()) -
+              parseInt(new Date(b[query]).getTime())
+            );
           });
         }
+        state.solutions.sort((a, b) => a[query] - b[query]);
       } else {
-        if (state.sortByOrder === "ascending") {
-          return {
-            ...state,
-            solutions: state.solutions.sort((a, b) => {
-              return a[sortField] - b[sortField];
-            }),
-          };
-        } else {
-          return {
-            ...state,
-            solutions: state.solutions.sort((a, b) => {
-              return b[sortField] - a[sortField];
-            }),
-          };
+        if (query === "date") {
+          query = "createdAt";
+          state.solutions.sort((a, b) => {
+            return (
+              parseInt(new Date(b[query]).getTime()) -
+              parseInt(new Date(a[query]).getTime())
+            );
+          });
         }
+        state.solutions.sort((a, b) => b[query] - a[query]);
       }
     },
     setSortByOrder(state, action) {
@@ -51,7 +46,7 @@ const Solutions = createSlice({
   },
 });
 
-export const { setSolutions, filterSolution, setSortByOrder, setSortByQuery } =
+export const { setSolutions, sortSolution, setSortByOrder, setSortByQuery } =
   Solutions.actions;
 
 export default Solutions.reducer;

@@ -1,7 +1,9 @@
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
+import ListBoxUI from "./headlessUI/ListBoxUI";
 import ConfirmModal from "./ConfirmModal";
 import ViewCodeModal from "./ViewCodeModal";
 
@@ -11,15 +13,12 @@ import {
   FaArrowAltCircleUp,
   FaArrowAltCircleDown,
 } from "react-icons/fa";
+
 import {
-  filterSolution,
-  setSolutions,
   setSortByOrder,
   setSortByQuery,
+  sortSolution,
 } from "@/redux-slices/Solution";
-
-import ListBoxUI from "./headlessUI/ListBoxUI";
-import Cookies from "js-cookie";
 
 export default function CardItems() {
   const { title } = useSelector((state) => state.static);
@@ -36,7 +35,7 @@ export default function CardItems() {
   // ListBox State
   const languageOption = ["score", "accuracy", "level", "date"];
   const changeSeleted = (query) => {
-    dispatch(filterSolution(query));
+    dispatch(sortSolution(query));
     dispatch(setSortByQuery(query));
 
     // Saving User-Setting in cookies
@@ -55,7 +54,7 @@ export default function CardItems() {
 
   const handleSortingOrder = (order) => {
     dispatch(setSortByOrder(order));
-    dispatch(filterSolution(order));
+    dispatch(sortSolution(sortByQuery));
 
     // Saving User-Setting in cookies
     Cookies.set(
@@ -138,7 +137,9 @@ export default function CardItems() {
                 />
                 <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
                   {"-"}&nbsp;&nbsp;
-                  {(len - index).toString().padStart(2, 0)}
+                  {sortByOrder === "ascending"
+                    ? (len + index - len + 1).toString().padStart(2, 0)
+                    : (len - index).toString().padStart(2, 0)}
                 </span>
               </div>
               <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
