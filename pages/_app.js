@@ -14,8 +14,14 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     // Start showing the loading indicator when navigating to a new route
-    const handleStart = () => setIsLoading(true);
-    const handleComplete = () => setIsLoading(false);
+    const handleStart = () => {
+      setIsLoading(true);
+      document.body.style.overflow = "hidden";
+    };
+    const handleComplete = () => {
+      setIsLoading(false);
+      document.body.style.overflow = "auto";
+    };
 
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleComplete);

@@ -19,6 +19,7 @@ import {
   setSortByQuery,
   sortSolution,
 } from "@/redux-slices/Solution";
+import BrandHead from "./BrandHead";
 
 export default function CardItems() {
   const { title } = useSelector((state) => state.static);
@@ -88,38 +89,44 @@ export default function CardItems() {
   }
   return (
     <main>
-      <section className="flex mt-3 w-56 space-x-1.5 place-items-center mx-auto mr-5">
-        <h2 className="font-medium mt-3 text-sm">Sort by</h2>
-        <div className="flex-1">
-          {/* Lang */}
-          <ListBoxUI
-            listBoxTitle={``}
-            selected={sortByQuery}
-            setSelected={changeSeleted}
-            options={languageOption}
-          />
-        </div>
-        <div className="flex items-center mt-2.5 space-x-1">
-          <button
-            className={`${
-              sortByOrder === "ascending" ? "text-gray-600" : "text-gray-400"
-            }`}
-            onClick={() => handleSortingOrder("ascending")}
-          >
-            <FaArrowAltCircleUp />
-          </button>
-          <button
-            className={`${
-              sortByOrder === "descending" ? "text-gray-600" : "text-gray-400"
-            }`}
-            onClick={() => handleSortingOrder("descending")}
-          >
-            <FaArrowAltCircleDown />
-          </button>
-        </div>
-      </section>
+      <div className="flex flex-col sm:flex sm:justify-around md:justify-center items-center pr-4">
+        <h1>
+          <BrandHead />
+        </h1>
 
-      <div className="mt-7 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+        <section className="flex justify-end sm:absolute sm:right-4 scale-75 sm:scale-90 md:scale-100 -mt-2 sm:w-56 space-x-1.5 place-items-center">
+          <h2 className="font-medium mt-2.5 text-sm">Sort by</h2>
+          <div className="flex-1">
+            {/* Lang */}
+            <ListBoxUI
+              listBoxTitle={``}
+              selected={sortByQuery}
+              setSelected={changeSeleted}
+              options={languageOption}
+            />
+          </div>
+          <div className="flex items-center mt-2.5 space-x-1">
+            <button
+              className={`${
+                sortByOrder === "ascending" ? "text-gray-600" : "text-gray-400"
+              }`}
+              onClick={() => handleSortingOrder("ascending")}
+            >
+              <FaArrowAltCircleUp />
+            </button>
+            <button
+              className={`${
+                sortByOrder === "descending" ? "text-gray-600" : "text-gray-400"
+              }`}
+              onClick={() => handleSortingOrder("descending")}
+            >
+              <FaArrowAltCircleDown />
+            </button>
+          </div>
+        </section>
+      </div>
+
+      <div className="mt-3 md:mt-7 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
         {solutions.map((element, index) => {
           return (
             <section

@@ -1,0 +1,8 @@
+.brandTitle {
+    background: linear-gradient(to bottom, orange, gold);
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}

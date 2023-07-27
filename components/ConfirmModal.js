@@ -3,9 +3,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { revalidatePath } from "next/cache";
+import { useSelector } from "react-redux";
 
 export default function ConfirmModal({ closeModal, deleteCard }) {
+  const { toastDuration } = useSelector((state) => state.static);
   const router = useRouter();
   // DELETE - REQUEST API CALL
   const removeCard = async (id) => {
@@ -30,7 +31,7 @@ export default function ConfirmModal({ closeModal, deleteCard }) {
           render: data.message,
           type: "success",
           isLoading: false,
-          autoClose: 5000,
+          autoClose: toastDuration,
           closeButton: true,
           closeOnClick: true,
         });
@@ -42,7 +43,7 @@ export default function ConfirmModal({ closeModal, deleteCard }) {
         render: data.message,
         type: "error",
         isLoading: false,
-        autoClose: 5000,
+        autoClose: toastDuration,
         closeButton: true,
         closeOnClick: true,
       });

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "@/redux-slices/User";
 import { toast } from "react-toastify";
 import Head from "next/head";
+import BrandHead from "@/components/BrandHead";
 
 export default function Login() {
   const { title, toastDuration } = useSelector((state) => state.static);
@@ -104,20 +105,7 @@ export default function Login() {
             onSubmit={handleSubmit}
           >
             <h2 className="text-xl md:text-2xl mb-5 text-center font-semibold">
-              Login to continue{" "}
-              <Link
-                className="font-bold text-slate-600"
-                style={{ textShadow: "1px 1px pink" }}
-                href="/"
-              >
-                Coding-
-                <span
-                  className="font-bold text-[gold]"
-                  style={{ textShadow: "0.4px 0.4px white" }}
-                >
-                  Journal
-                </span>
-              </Link>
+              Login to continue <BrandHead />
             </h2>
             {/* logo */}
             <div className={`${errors.email ? "mb-0" : "mb-7"}`}>
