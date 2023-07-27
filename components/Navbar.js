@@ -13,6 +13,7 @@ import { FaUserCircle, FaUserPlus } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import { logOut } from "@/redux-slices/User";
 import { toast } from "react-toastify";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -73,6 +74,10 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
+
+        <SearchBar />
+
+        {/* UserIcon */}
         {!isAuth ? (
           <Link
             href="/login"
@@ -102,7 +107,7 @@ const Navbar = () => {
 
       {/* Moblie */}
       <ul
-        className={`absolute z-10 top-16 pt-10 px-7 w-full md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
+        className={`fixed h-screen z-10 top-16 pt-10 px-7 w-full md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
           ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
         onClick={(e) => {
           if (e.target.tagName === "LI") {

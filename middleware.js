@@ -27,5 +27,6 @@ export const config = {
     "/api/solutions/add",
     "/api/solutions/update",
     "/api/solutions/remove",
+    "/api/solutions/search",
   ],
 };

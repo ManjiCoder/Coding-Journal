@@ -23,9 +23,10 @@ import BrandHead from "./BrandHead";
 
 export default function CardItems() {
   const { title } = useSelector((state) => state.static);
-  const { sortByQuery, sortByOrder, solutions } = useSelector(
+  const { sortByQuery, sortByOrder, solutions, searchSolution } = useSelector(
     (state) => state.solutions
   );
+  console.log(searchSolution);
   const len = solutions.length;
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
@@ -87,14 +88,15 @@ export default function CardItems() {
       </div>
     );
   }
+
   return (
     <main>
-      <div className="flex flex-col sm:flex sm:justify-around md:justify-center items-center pr-4">
+      <div className="flex flex-col sm:flex sm:justify-around md:justify-center items-center md:first-line:pr-4">
         <h1>
           <BrandHead />
         </h1>
 
-        <section className="flex justify-end sm:absolute sm:right-4 scale-75 sm:scale-90 md:scale-100 -mt-2 sm:w-56 space-x-1.5 place-items-center">
+        <section className="flex ml-auto sm:ml-auto justify-end sm:absolute sm:right-4 scale-75 sm:scale-90 md:scale-100 -mt-2 sm:w-56 space-x-1.5 place-items-center">
           <h2 className="font-medium mt-2.5 text-sm">Sort by</h2>
           <div className="flex-1">
             {/* Lang */}
@@ -127,12 +129,12 @@ export default function CardItems() {
       </div>
 
       <div className="mt-3 md:mt-7 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
-        {solutions.map((element, index) => {
-          return (
+        {searchSolution.length === 0 &&
+          solutions.map((element, index) => (
             <section
               id={element._id}
               key={element._id}
-              className="cursor-pointer w-96 sm:w-96 mx-auto p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              className="cursor-pointer w-72 xs:w-80 p-2 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               data-aos="fade-in"
             >
               <div className="flex mb-4">
@@ -257,8 +259,136 @@ export default function CardItems() {
                 />
               </section>
             </section>
-          );
-        })}
+          ))}
+        {searchSolution.length !== 0 &&
+          searchSolution.map((element, index) => (
+            <section
+              id={element._id}
+              key={element._id}
+              className="cursor-pointer w-72 xs:w-80 p-2 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              data-aos="fade-in"
+            >
+              <div className="flex mb-4">
+                <Image
+                  src="https://media.geeksforgeeks.org/wp-content/uploads/20200716222246/Path-219.png"
+                  alt="Greeks For Greek"
+                  height={90}
+                  width={90}
+                />
+                <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {"-"}&nbsp;&nbsp;
+                  {(index + 1).toString().padStart(2, 0)}
+                </span>
+              </div>
+              <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                <blockquote>{element.title}</blockquote>
+              </h5>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Status -{" "}
+                <span
+                  className={`${
+                    element.status === "Done"
+                      ? "text-green-500"
+                      : "text-red-600"
+                  } font-bold`}
+                >
+                  {element.status}
+                </span>
+              </p>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Level - <span className={`font-bold`}>{element.level}</span>
+              </p>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Language -{" "}
+                <span className="font-bold capitalize">{element.language}</span>
+              </p>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Accuracy -{" "}
+                <span className={`font-bold`}>
+                  {Math.floor(100 / element.accuracy) ===
+                  Math.ceil(100 / element.accuracy)
+                    ? 100 / element.accuracy
+                    : (100 / element.accuracy).toFixed(2)}
+                  {/* {element.accuracy} */}%
+                </span>
+              </p>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Time - <span className={`font-bold`}>{element.time}</span>
+              </p>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Code -{" "}
+                <span className="pointer-events-auto font-bold">
+                  <button
+                    className="text-blue-600 cursor-pointer"
+                    onClick={() => {
+                      setViewCode(true);
+                      setSelectedElement(element);
+                    }}
+                  >
+                    View
+                  </button>
+                </span>
+              </p>
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Date -{" "}
+                <span className={`font-bold`}>
+                  {`${new Date(element.createdAt).toDateString()}, ${new Date(
+                    element.createdAt
+                  ).toLocaleTimeString()}`}
+                </span>
+              </p>
+
+              <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
+                Score -{" "}
+                <span className={`font-bold text-red-700`}>
+                  {element.score}
+                </span>
+              </p>
+              <a
+                href={element.link}
+                target="_blank"
+                rel="noreferrer"
+                className="pointer-events-auto inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Read More
+                <svg
+                  className="w-5 h-5 ml-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
+                  <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path>
+                </svg>
+              </a>
+              {/* Icons */}
+              <section className="flex justify-between py-7">
+                {/* Update */}
+                <Link
+                  href={{
+                    pathname: "/update",
+                    query: {
+                      data: JSON.stringify(element),
+                    },
+                  }}
+                >
+                  <FaEdit className="pointer-events-auto text-blue-700 hover:text-blue-500  text-3xl fa-solid fa-pen-to-square cursor-pointer" />
+                </Link>
+                {/* Delete */}
+                <FaEraser
+                  className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
+                  onClick={() => {
+                    setShowModal(true);
+                    setSelectedElement({
+                      ...element,
+                      index:
+                        sortByOrder === "ascending" ? index + 1 : len - index,
+                    });
+                  }}
+                />
+              </section>
+            </section>
+          ))}
 
         {/* Delete-Modal */}
         {showModal && (

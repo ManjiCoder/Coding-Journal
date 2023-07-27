@@ -6,10 +6,14 @@ const Solutions = createSlice({
     sortByQuery: "score",
     sortByOrder: "descending",
     solutions: [],
+    searchSolution: [],
   },
   reducers: {
     setSolutions(state, action) {
       state.solutions = action.payload;
+    },
+    setSearchSolution(state, action) {
+      state.searchSolution = action.payload;
     },
     sortSolution(state, action) {
       let query = action.payload;
@@ -46,7 +50,12 @@ const Solutions = createSlice({
   },
 });
 
-export const { setSolutions, sortSolution, setSortByOrder, setSortByQuery } =
-  Solutions.actions;
+export const {
+  setSolutions,
+  setSearchSolution,
+  sortSolution,
+  setSortByOrder,
+  setSortByQuery,
+} = Solutions.actions;
 
 export default Solutions.reducer;
