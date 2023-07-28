@@ -134,7 +134,7 @@ export default function CardItems() {
             <section
               id={element._id}
               key={element._id}
-              className="cursor-pointer w-72 xs:w-80 p-2 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              className="cursor-pointer w-4/5 max-w-md xs:w-80 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               data-aos="fade-in"
             >
               <div className="flex mb-4">
@@ -265,7 +265,7 @@ export default function CardItems() {
             <section
               id={element._id}
               key={element._id}
-              className="cursor-pointer w-72 xs:w-80 p-2 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              className="cursor-pointer w-4/5 max-w-md xs:w-80 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               data-aos="fade-in"
             >
               <div className="flex mb-4">
@@ -277,7 +277,7 @@ export default function CardItems() {
                 />
                 <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
                   {"-"}&nbsp;&nbsp;
-                  {(index + 1).toString().padStart(2, 0)}
+                  {index + 1}
                 </span>
               </div>
               <h5 className="mb-2 text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">

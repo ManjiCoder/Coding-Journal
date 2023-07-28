@@ -50,14 +50,16 @@ const Navbar = () => {
 
   return (
     <header className="bg-slate-800">
-      <nav className={`flex items-center px-3 py-4 lg:py-2.5 flex-1 `}>
+      <nav
+        className={`flex justify-between items-center px-3 py-4 lg:py-2.5 flex-1 `}
+      >
         <button
-          className="md:hidden text-white mr-3 text-2xl"
+          className="md:hidden text-white mr-3 text-2xl z-50"
           onClick={toggleNav}
         >
           {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
         </button>
-        <div className="px-5 flex-grow  md:flex-grow-0 text-center text-2xl">
+        <div className="hidden sm:block sm:justify-end px-5 flex-grow  md:flex-grow-0 text-center text-2xl">
           <BrandHead />
         </div>
         {/* Desktop */}
@@ -107,7 +109,7 @@ const Navbar = () => {
 
       {/* Moblie */}
       <ul
-        className={`fixed h-screen z-10 top-16 pt-10 px-7 w-full md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
+        className={`sm:hidden fixed h-screen z-10 top-0 pt-16 px-7 w-full md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
           ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
         onClick={(e) => {
           if (e.target.tagName === "LI") {

@@ -47,7 +47,10 @@ export default function SearchBar() {
   }, [search]);
 
   return (
-    <form className="flex pr-3" onSubmit={(e) => e.preventDefault()}>
+    <form
+      className="flex pr-3 absolute right-14"
+      onSubmit={(e) => e.preventDefault()}
+    >
       <input
         type="search"
         name="search"
