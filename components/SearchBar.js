@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 export default function SearchBar() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
+  const controller = new AbortController();
+  let signal = controller.signal;
 
   const fetchSearchResults = async (query) => {
     let toastId;
@@ -20,6 +22,7 @@ export default function SearchBar() {
       {
         method: "GET",
         headers: headersList,
+        signal,
       }
     );
 
@@ -43,6 +46,7 @@ export default function SearchBar() {
     return () => {
       clearTimeout(timer);
       dispatch(setSearchSolution([]));
+      controller.abort();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
