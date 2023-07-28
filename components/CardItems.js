@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import ListBoxUI from "./headlessUI/ListBoxUI";
 import ConfirmModal from "./ConfirmModal";
+import Aos from "aos";
+import "aos/dist/aos.css";
 import ViewCodeModal from "./ViewCodeModal";
 
 import {
@@ -67,6 +69,11 @@ export default function CardItems() {
       })
     );
   };
+
+  useEffect(() => {
+    Aos.init();
+  }, []);
+
   if (solutions.length === 0) {
     return (
       <div className="flex flex-col min-h-[90vh] bg-slate-200  px-6 py-12 lg:px-8">
@@ -96,45 +103,51 @@ export default function CardItems() {
           <BrandHead />
         </h1>
 
-        <section className="flex ml-auto sm:ml-auto justify-end sm:absolute sm:right-4 scale-75 sm:scale-90 md:scale-100 -mt-2 sm:w-56 space-x-1.5 place-items-center">
-          <h2 className="font-medium mt-2.5 text-sm">Sort by</h2>
-          <div className="flex-1">
-            {/* Lang */}
-            <ListBoxUI
-              listBoxTitle={``}
-              selected={sortByQuery}
-              setSelected={changeSeleted}
-              options={languageOption}
-            />
-          </div>
-          <div className="flex items-center mt-2.5 space-x-1">
-            <button
-              className={`${
-                sortByOrder === "ascending" ? "text-gray-600" : "text-gray-400"
-              }`}
-              onClick={() => handleSortingOrder("ascending")}
-            >
-              <FaArrowAltCircleUp />
-            </button>
-            <button
-              className={`${
-                sortByOrder === "descending" ? "text-gray-600" : "text-gray-400"
-              }`}
-              onClick={() => handleSortingOrder("descending")}
-            >
-              <FaArrowAltCircleDown />
-            </button>
-          </div>
-        </section>
+        {searchSolution.length === 0 && (
+          <section className="flex ml-auto sm:ml-auto justify-end sm:absolute sm:right-4 scale-75 sm:scale-90 md:scale-100 -mt-2 sm:w-56 space-x-1.5 place-items-center">
+            <h2 className="font-medium mt-2.5 text-sm">Sort by</h2>
+            <div className="flex-1">
+              {/* Lang */}
+              <ListBoxUI
+                listBoxTitle={``}
+                selected={sortByQuery}
+                setSelected={changeSeleted}
+                options={languageOption}
+              />
+            </div>
+            <div className="flex items-center mt-2.5 space-x-1">
+              <button
+                className={`${
+                  sortByOrder === "ascending"
+                    ? "text-gray-600"
+                    : "text-gray-400"
+                }`}
+                onClick={() => handleSortingOrder("ascending")}
+              >
+                <FaArrowAltCircleUp />
+              </button>
+              <button
+                className={`${
+                  sortByOrder === "descending"
+                    ? "text-gray-600"
+                    : "text-gray-400"
+                }`}
+                onClick={() => handleSortingOrder("descending")}
+              >
+                <FaArrowAltCircleDown />
+              </button>
+            </div>
+          </section>
+        )}
       </div>
-
-      <div className="mt-3 md:mt-7 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+      )
+      <div className="pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
         {searchSolution.length === 0 &&
           solutions.map((element, index) => (
             <section
               id={element._id}
               key={element._id}
-              className="cursor-pointer w-4/5 max-w-md xs:w-80 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
               data-aos="fade-in"
             >
               <div className="flex mb-4">

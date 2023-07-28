@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import BrandHead from "./BrandHead";
 import MenuUI from "./headlessUI/MenuUI";
@@ -26,12 +26,17 @@ const Navbar = () => {
   const toggleNav = () => {
     setIsOpen(!isOpen);
   };
-  // useEffect(() => {
-  //   if (isOpen) {
-  //     document.body.style.overflow = "hidden";
-  //     document.getElementById("main-container").style.background = "0.5";
-  //   }
-  // }, [isOpen]);
+
+  useEffect(() => {
+    let main = document.getElementById("main-container");
+    console.log(main);
+    const closeNav = () => {
+      setIsOpen(false);
+    };
+    main.addEventListener("click", closeNav);
+
+    return () => main.removeEventListener("click", closeNav);
+  }, [isOpen]);
 
   const navigation = [
     { name: "Home", href: "/", current: pathname === "/" ? true : false },
@@ -109,7 +114,7 @@ const Navbar = () => {
 
       {/* Moblie */}
       <ul
-        className={`sm:hidden fixed h-screen z-10 top-0 pt-16 px-7 w-full md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
+        className={`sm:hidden fixed h-screen z-10 top-0 pt-16 px-7 w-3/4 max-w-xs md:hidden text-white text-xl flex flex-col gap-4 bg-slate-900 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
           ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
         onClick={(e) => {
           if (e.target.tagName === "LI") {
