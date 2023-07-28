@@ -7,6 +7,7 @@ const Solutions = createSlice({
     sortByOrder: "descending",
     solutions: [],
     searchSolution: [],
+    searchQuery: "",
   },
   reducers: {
     setSolutions(state, action) {
@@ -14,6 +15,9 @@ const Solutions = createSlice({
     },
     setSearchSolution(state, action) {
       state.searchSolution = action.payload;
+    },
+    setSearchQuery(state, action) {
+      state.searchQuery = action.payload;
     },
     sortSolution(state, action) {
       let query = action.payload;
@@ -56,6 +60,7 @@ export const {
   sortSolution,
   setSortByOrder,
   setSortByQuery,
+  setSearchQuery,
 } = Solutions.actions;
 
 export default Solutions.reducer;

@@ -79,7 +79,10 @@ export default function Login() {
   };
 
   return (
-    <div className="p-3 min-h-screen bg-slate-300 flex flex-col justify-start items-center">
+    <div
+      id="main-container"
+      className="p-3 min-h-screen bg-slate-300 flex flex-col justify-start items-center"
+    >
       <Head>
         <title>{title} - Login</title>
       </Head>

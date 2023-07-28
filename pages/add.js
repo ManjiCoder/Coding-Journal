@@ -100,7 +100,7 @@ export default function Add() {
   };
 
   return (
-    <div className="dark:bg-slate-900 py-4">
+    <div id="main-container" className="dark:bg-slate-900 py-4">
       <Head>
         <title>{mainTitle}</title>
       </Head>

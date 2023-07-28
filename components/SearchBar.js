@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
-import { setSearchSolution } from "@/redux-slices/Solution";
+import { setSearchQuery, setSearchSolution } from "@/redux-slices/Solution";
 import { toast } from "react-toastify";
 
 export default function SearchBar() {
-  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const dispatch = useDispatch();
 
   const fetchSearchResults = async (query) => {
     let toastId;
@@ -37,6 +37,7 @@ export default function SearchBar() {
     let timer = setTimeout(() => {
       if (search.trim().length !== 0) {
         fetchSearchResults(search);
+        dispatch(setSearchQuery(search));
       }
     }, 500);
     return () => {

@@ -48,7 +48,7 @@ export default function Home({ solutions }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main id="main-container" className="pb-10 pt-3.5">
+      <section id="main-container" className="pb-10 pt-3.5">
         {!isAuth ? (
           <div className="p-5 rounded-md shadow-md bg-white dark:bg-gray-900 space-y-7">
             <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl">
@@ -99,7 +99,7 @@ export default function Home({ solutions }) {
         ) : (
           <CardItems />
         )}
-      </main>
+      </section>
     </>
   );
 }
