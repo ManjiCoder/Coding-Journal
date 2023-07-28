@@ -33,7 +33,7 @@ export default function ViewCodeModal({ lang, code, closeModal }) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full md:max-w-2xl lg:max-w-screen-md transform overflow-hidden rounded-2xl bg-slate-50 p-4 text-left align-middle shadow-xl transition-all dark:bg-slate-400">
+                <Dialog.Panel className="w-11/12 md:max-w-2xl lg:max-w-screen-md transform overflow-hidden rounded-2xl bg-slate-50 p-4 text-left align-middle shadow-xl transition-all dark:bg-slate-400">
                   <Dialog.Title
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900 mb-2"

@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import ListBoxUI from "./headlessUI/ListBoxUI";
 import ConfirmModal from "./ConfirmModal";
-import Aos from "aos";
-import "aos/dist/aos.css";
 import ViewCodeModal from "./ViewCodeModal";
 
 import {
@@ -67,10 +65,6 @@ export default function CardItems() {
       })
     );
   };
-
-  useEffect(() => {
-    Aos.init();
-  }, []);
 
   if (solutions.length === 0) {
     return (
@@ -139,7 +133,7 @@ export default function CardItems() {
         )}
       </div>
 
-      <section className="md:mt-3 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+      <section className="mt-3 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
         {solutions.map((element, index) => {
           index =
             sortByOrder === "ascending"
@@ -150,8 +144,7 @@ export default function CardItems() {
             <div
               id={element._id}
               key={element._id}
-              className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100 -z-10"
-              data-aos="fade-in"
+              className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
             >
               <div className="flex mb-4">
                 <Image

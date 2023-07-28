@@ -37,7 +37,7 @@ export default function SearchBar() {
     let timer = setTimeout(() => {
       if (search.trim().length !== 0) {
         fetchSearchResults(search);
-        dispatch(setSearchQuery(search));
+        dispatch(setSearchQuery(search.toLowerCase()));
       }
     }, 500);
     return () => {
