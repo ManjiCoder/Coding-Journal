@@ -10,13 +10,17 @@ export default function ShareButton({ solution }) {
     <RWebShare
       data={{
         text: solution.title,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/${user.name}/${solution._id}`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/${user.name}/${
+          solution.title
+        }&${new Date(solution.createdAt).getTime()}`,
         title: solution.title,
       }}
       onClick={() =>
         console.log(
           {
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}/${user.name}/${solution._id}`,
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}/${user.name}/${
+              solution.title
+            }&${new Date(solution.createdAt).getTime()}`,
           },
           "shared successfully!"
         )

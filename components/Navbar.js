@@ -65,9 +65,14 @@ const Navbar = () => {
         >
           {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
         </button>
-        <div className="hidden sm:block sm:justify-end px-5 flex-grow  md:flex-grow-0 text-center text-2xl">
+        <div
+          className={`${
+            pathname === "/" ? "hidden sm:block sm:justify-end" : "block"
+          }  px-5 flex-grow  md:flex-grow-0 text-center text-2xl`}
+        >
           <BrandHead />
         </div>
+
         {/* Desktop */}
         <ul className={`hidden text-white md:flex md:flex-1 space-x-2`}>
           {navigation.map(({ name, href, current }) => (
@@ -82,6 +87,8 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
+
+        <SearchBar />
 
         {/* UserIcon */}
         {!isAuth ? (

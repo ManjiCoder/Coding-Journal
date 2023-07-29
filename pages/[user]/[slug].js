@@ -14,7 +14,7 @@ export default function Slug({ element }) {
       <h1 className="text-center mb-5">
         <BrandHead />
       </h1>
-      <div className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100">
+      <div className="cursor-pointer w-4/5 max-w-md p-5 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100">
         <div className="flex mb-4 justify-between">
           <div className="flex">
             <Image
@@ -123,13 +123,16 @@ export default function Slug({ element }) {
 // SSR
 export async function getServerSideProps(context) {
   const { slug } = context.query;
+  // console.log(context.query);
   try {
+    const arr = slug.split("&");
+    console.log(arr);
     let response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/share?id=${slug}`
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/share?title=${arr[0]}&createdAt=${arr[1]}`
     );
 
     let data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (data.solutions) {
       return { props: { element: data.solutions } };
     }
@@ -140,6 +143,11 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (error) {
-    return notFound;
+    return {
+      redirect: {
+        destination: "/404",
+        permanent: false,
+      },
+    };
   }
 }
