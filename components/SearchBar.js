@@ -3,12 +3,15 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { setSearchQuery, setSearchSolution } from "@/redux-slices/Solution";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 export default function SearchBar() {
   const [search, setSearch] = useState("");
   const dispatch = useDispatch();
+  const router = useRouter();
+
   const controller = new AbortController();
-  let signal = controller.signal;
+  const signal = controller.signal;
 
   const fetchSearchResults = async (query) => {
     let toastId;
@@ -50,7 +53,9 @@ export default function SearchBar() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
-
+  if (router.pathname !== "/") {
+    return null;
+  }
   return (
     <form
       className="flex pr-3 absolute right-16"

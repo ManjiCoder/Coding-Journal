@@ -3,7 +3,7 @@ import solutionModel from "@/models/Solution";
 
 import * as Yup from "yup";
 
-const idSchema = Yup.object().shape({
+export const idSchema = Yup.object().shape({
   id: Yup.string().min(24, "invalid id").max(24, "invalid id"),
 });
 

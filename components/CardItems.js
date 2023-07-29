@@ -12,6 +12,7 @@ import {
   FaEdit,
   FaArrowAltCircleUp,
   FaArrowAltCircleDown,
+  FaShare,
 } from "react-icons/fa";
 
 import {
@@ -20,6 +21,7 @@ import {
   sortSolution,
 } from "@/redux-slices/Solution";
 import BrandHead from "./BrandHead";
+import ShareButton from "./ShareButton";
 
 export default function CardItems() {
   const { title } = useSelector((state) => state.static);
@@ -146,18 +148,23 @@ export default function CardItems() {
               key={element._id}
               className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
             >
-              <div className="flex mb-4">
-                <Image
-                  src="https://media.geeksforgeeks.org/wp-content/uploads/20200716222246/Path-219.png"
-                  alt="Greeks For Greek"
-                  height={90}
-                  width={90}
-                />
-                <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                  {"-"}&nbsp;&nbsp;
-                  {index}
-                </span>
+              <div className="flex mb-4 justify-between">
+                <div className="flex">
+                  {" "}
+                  <Image
+                    src="https://media.geeksforgeeks.org/wp-content/uploads/20200716222246/Path-219.png"
+                    alt="Greeks For Greek"
+                    height={90}
+                    width={90}
+                  />
+                  <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                    {"-"}&nbsp;&nbsp;
+                    {index}
+                  </span>
+                </div>
+                <ShareButton solution={element} />
               </div>
+
               {searchSolution.length === 0 ? (
                 <h5 className="mb-2 text-2xl capitalize font-semibold tracking-tight text-gray-900 dark:text-white">
                   {element.title}
@@ -270,6 +277,11 @@ export default function CardItems() {
                 <FaEraser
                   className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
                   onClick={() => {
+                    navigator.share({
+                      title: element.title,
+                      url: element.link,
+                      text: element.title,
+                    });
                     setShowModal(true);
                     setSelectedElement({
                       ...element,

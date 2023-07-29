@@ -33,8 +33,10 @@ const Navbar = () => {
 
   useEffect(() => {
     let main = document.getElementById("main-container");
-    main.addEventListener("click", closeNav);
-    return () => main.removeEventListener("click", closeNav);
+    if (main) {
+      main.addEventListener("click", closeNav);
+      return () => main.removeEventListener("click", closeNav);
+    }
   }, [isOpen]);
 
   const navigation = [
@@ -80,8 +82,6 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
-
-        <SearchBar />
 
         {/* UserIcon */}
         {!isAuth ? (
