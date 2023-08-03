@@ -67,7 +67,7 @@ const Navbar = () => {
         </button>
         <div
           className={`${
-            pathname === "/" ? "hidden sm:block sm:justify-end" : "block"
+            isAuth ? "hidden sm:block sm:justify-end" : "block"
           }  px-5 flex-grow  md:flex-grow-0 text-center text-2xl`}
         >
           <BrandHead />
@@ -88,7 +88,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <SearchBar />
+        {isAuth && <SearchBar />}
 
         {/* UserIcon */}
         {!isAuth ? (

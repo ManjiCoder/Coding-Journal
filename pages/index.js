@@ -10,6 +10,8 @@ import {
   setSortByQuery,
 } from "@/redux-slices/Solution";
 import Cookies from "js-cookie";
+import BrandHead from "@/components/BrandHead";
+import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,49 +53,57 @@ export default function Home({ solutions }) {
       <section id="main-container" className="pb-10 pt-3.5">
         {!isAuth ? (
           <div className="p-5 rounded-md shadow-md bg-white dark:bg-gray-900 space-y-7">
-            <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
-                {title}
-              </span>{" "}
-              Scalable App.
-            </h1>
-            <div className="text-lg font-normal text-gray-600 lg:text-xl dark:text-gray-400">
-              <b>{title}</b> is a website made for <b>Coder</b> who are solving
-              question on coding platfrom like.
-              <ul className="px-5 mt-2 list-disc text-slate-900">
-                {codingPlatfroms.map((item) => {
-                  return (
-                    <li key={item}>
-                      <Link
-                        href="/"
-                        className="cursor-pointer text-green-600 font-semibold list-disc"
-                      >
-                        {item}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-            <p className="text-lg font-normal text-gray-600 lg:text-xl dark:text-gray-400">
-              You can save your Question record in the <b>{title}</b>.
-            </p>
-            <h2 className="font-medium"> It&apos;s absolutly free!</h2>
-
-            <div className="flex flex-col text-center md:items-center gap-y-2 font-medium">
-              <Link
-                href="/login"
-                className="bg-slate-800 text-center hover:bg-slate-900 p-2.5 text-white text-xl w-full md:max-w-sm font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
-              >
-                Login
-              </Link>
-              OR
-              <Link
-                href="/sign-up"
-                className="bg-slate-800 text-center hover:bg-slate-900 p-2.5 text-white text-xl w-full md:max-w-sm font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
-              >
-                Sign-up
-              </Link>
+            <div className="flex items-center mb-3 pb-10 pt-3.5">
+              <div className="text-lg font-normal text-gray-600 lg:text-xl dark:text-gray-400">
+                Elevate your coding journey with our <b>Coding Journal</b>{" "}
+                Webapp.
+                <br />
+                Seamlessly track progress of GeeksforGeeks, LeetCode, and more.
+                Stay organized, conquer challenges, and unlock your coding
+                potential with our purpose-built app
+                <div className="flex items-center">
+                  <ul className="px-5 mt-2 list-disc text-slate-900">
+                    {codingPlatfroms.map((item) => {
+                      return (
+                        <li key={item}>
+                          <Link
+                            href="/"
+                            className="cursor-pointer text-green-600 font-semibold list-disc"
+                          >
+                            {item}
+                          </Link>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  <Image
+                    src="/code.jpg"
+                    alt="coder"
+                    height={200}
+                    width={200}
+                    className="hidden xs:block md:hidden"
+                  />
+                </div>
+                <p className="text-lg font-normal text-gray-600 lg:text-xl dark:text-gray-400">
+                  You can save your Question record in the <b>{title}</b>.
+                </p>
+                <h2 className="font-medium mb-4"> It&apos;s absolutly free!</h2>
+                <Link
+                  href="/sign-up"
+                  className="bg-slate-800 capitalize text-sm text-center hover:bg-slate-900 p-3 text-white w-full md:max-w-sm font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+                >
+                  Sign Up for free
+                </Link>
+              </div>
+              <aside>
+                <Image
+                  src="/code.jpg"
+                  alt="coder"
+                  height={200}
+                  width={200}
+                  className="hidden md:block w-11/12 h-auto"
+                />
+              </aside>
             </div>
           </div>
         ) : (
