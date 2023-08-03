@@ -26,7 +26,8 @@ export default function CardItems() {
   const { title } = useSelector((state) => state.static);
   let { searchQuery, sortByQuery, sortByOrder, solutions, searchSolution } =
     useSelector((state) => state.solutions);
-  const len = solutions.length;
+
+  const len = solutions ? solutions.length : 0;
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const [viewCode, setViewCode] = useState(false);
@@ -67,7 +68,7 @@ export default function CardItems() {
     );
   };
 
-  if (solutions.length === 0) {
+  if (!solutions || solutions.length === 0) {
     return (
       <div className="flex flex-col min-h-[90vh] bg-slate-200  px-6 py-12 lg:px-8">
         <h1 className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white">

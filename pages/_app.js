@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export default function App({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -39,11 +40,13 @@ export default function App({ Component, pageProps }) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <Navbar />
-        {isLoading ? <Loading /> : null}
-        <Component {...pageProps} />
-        <Toast />
-        <Footer />
+        <ErrorBoundary>
+          <Navbar />
+          {isLoading ? <Loading /> : null}
+          <Component {...pageProps} />
+          <Toast />
+          <Footer />
+        </ErrorBoundary>
       </PersistGate>
     </Provider>
   );
