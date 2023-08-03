@@ -65,7 +65,7 @@ export default function SearchBar() {
         type="search"
         name="search"
         className="rounded-full w-36 shadow-md bg-slate-100 p-1 px-3 outline-none"
-        placeholder="Live - Search"
+        placeholder="Search"
         onChange={(e) => setSearch(e.target.value)}
         value={search}
       />

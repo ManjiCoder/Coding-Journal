@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "@/redux-slices/User";
 import Head from "next/head";
+import BrandHead from "@/components/BrandHead";
 
 export default function SignUp() {
   const { title, toastDuration } = useSelector((state) => state.static);
@@ -81,7 +82,7 @@ export default function SignUp() {
   return (
     <div
       id="main-container"
-      className="p-3 min-h-screen bg-slate-300 flex flex-col justify-start items-center"
+      className="p-3 min-h-screen flex flex-col justify-start items-center"
     >
       <Head>
         <title>{title} - Login</title>
@@ -104,24 +105,11 @@ export default function SignUp() {
           /* and other goodies */
         }) => (
           <form
-            className="inline-flex w-11/12 md:w-auto mx-4 mt-20 mb-20 bg-slate-50 border rounded-md shadow-lg items-center  flex-col text-center py-5 px-10"
+            className="inline-flex w-11/12 md:w-auto mx-4 mt-20 mb-20 bg-gradient-to-br from-white to-slate-100 border rounded-md shadow-lg items-center  flex-col text-center py-5 px-10"
             onSubmit={handleSubmit}
           >
-            <h2 className="text-xl md:text-2xl mb-5 text-center font-semibold">
-              Sign-Up to continue{" "}
-              <Link
-                className="font-bold text-slate-600"
-                style={{ textShadow: "1px 1px pink" }}
-                href="/"
-              >
-                Coding-
-                <span
-                  className="font-bold text-[gold]"
-                  style={{ textShadow: "0.4px 0.4px white" }}
-                >
-                  Journal
-                </span>
-              </Link>
+            <h2 className="text-xl flex md:block flex-col pt-3 gap-y-2 md:text-2xl mb-5 text-center font-semibold">
+              Sign-Up to continue <BrandHead />
             </h2>
             {/* logo */}
 

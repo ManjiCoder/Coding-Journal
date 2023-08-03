@@ -96,7 +96,7 @@ export default function Update() {
       <Head>
         <title>{mainTitle}</title>
       </Head>
-      <div className="w-full mb-7 max-w-sm p-4 bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
+      <div className="w-11/12 md:w-full mb-7 max-w-sm p-4 bg-gradient-to-br from-white to-slate-200 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md sm:p-6 md:p-8 dark:border-slate-100 mx-auto">
         <form className="space-y-6" onSubmit={HandleOnSumbit}>
           <h5 className="text-xl font-medium text-gray-900 dark:text-white">
             Update Data To <b>{mainTitle}</b>

@@ -68,9 +68,9 @@ export default function CardItems() {
     );
   };
 
-  if (!solutions || solutions.length === 0) {
+  if (!solutions || len === 0) {
     return (
-      <div className="flex flex-col min-h-[90vh] bg-slate-200  px-6 py-12 lg:px-8">
+      <div className="flex flex-col min-h-[80vh] px-4 items-center justify-center">
         <h1 className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white">
           <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
             {title}
@@ -82,7 +82,7 @@ export default function CardItems() {
         </p>
         <Link
           href="/add"
-          className="bg-slate-800 text-center mt-3 hover:bg-slate-900 p-2.5 text-white text-xl w-full md:max-w-sm font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+          className="bg-slate-800 text-center mt-3 max-w-xs hover:bg-slate-900 p-2.5 text-white text-xl w-full md:max-w-sm font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
         >
           Add Solutions
         </Link>
@@ -146,7 +146,7 @@ export default function CardItems() {
             <div
               id={element._id}
               key={element._id}
-              className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-white to-slate-200 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
             >
               <div className="flex mb-4 justify-between">
                 <div className="flex">
