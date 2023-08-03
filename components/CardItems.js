@@ -12,7 +12,6 @@ import {
   FaEdit,
   FaArrowAltCircleUp,
   FaArrowAltCircleDown,
-  FaShare,
 } from "react-icons/fa";
 
 import {
@@ -277,11 +276,6 @@ export default function CardItems() {
                 <FaEraser
                   className="pointer-events-auto text-red-700 hover:text-red-500 text-3xl fa-solid fa-eraser cursor-pointer"
                   onClick={() => {
-                    navigator.share({
-                      title: element.title,
-                      url: element.link,
-                      text: element.title,
-                    });
                     setShowModal(true);
                     setSelectedElement({
                       ...element,

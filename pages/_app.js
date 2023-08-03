@@ -7,6 +7,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
+import Footer from "@/components/Footer";
 
 export default function App({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +43,7 @@ export default function App({ Component, pageProps }) {
         {isLoading ? <Loading /> : null}
         <Component {...pageProps} />
         <Toast />
+        <Footer />
       </PersistGate>
     </Provider>
   );

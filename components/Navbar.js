@@ -117,11 +117,12 @@ const Navbar = () => {
           {!isDark ? <BsSunFill /> : <BsFillMoonStarsFill />}
         </button> */}
       </nav>
-
       {/* Moblie */}
+      {/* {isOpen &&
+        createPortal( */}
       <ul
         className={`shadow-lg shadow-black fixed h-screen z-10 top-0 pt-16 px-7 w-3/4 max-w-xs md:hidden text-white text-xl flex flex-col gap-4 bg-slate-800 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
-          ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
+            ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
         onClick={(e) => {
           if (e.target.tagName === "LI") {
             setIsOpen(!isOpen);
@@ -140,6 +141,7 @@ const Navbar = () => {
           </Link>
         ))}
       </ul>
+      {/* , // document.body // )} */}
     </header>
   );
 };
@@ -204,14 +206,15 @@ const MenuItems = () => {
       <Menu.Item>
         {({ active }) => (
           <Link
-            href="/add-friend"
+            href="#"
             className={`${
               active ? "bg-slate-800 text-white" : "text-gray-900"
             } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
           >
             <span className="mr-2">{option[1].icons}</span>
             <span className={`${active ? " text-white" : "text-gray-900"} `}>
-              {option[1].name}
+              {option[1].name} -
+              <span className="text-xs font-medium mr-2"> Coming soon</span>
             </span>
           </Link>
         )}
