@@ -160,7 +160,7 @@ const MenuItems = () => {
   const option = [
     {
       icons: <FaUserCircle />,
-      name: "Welcome, " + user.name,
+      name: "Welcome, " + user.name.split(" ")[0] || user.name,
     },
     {
       icons: <FaUserPlus />,

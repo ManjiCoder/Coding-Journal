@@ -135,7 +135,15 @@ export default function CardItems() {
         )}
       </div>
 
-      <section className="mt-3 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+      <section
+        className="mt-3 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4"
+        // onClick={(e) => {
+        //   if (e.target.classList.contains("view-code")) {
+        //     setViewCode(true);
+        //     // setSelectedElement(element);
+        //   }
+        // }}
+      >
         {solutions.map((element, index) => {
           index =
             sortByOrder === "ascending"
@@ -218,7 +226,7 @@ export default function CardItems() {
                 Code -{" "}
                 <span className="pointer-events-auto font-bold">
                   <button
-                    className="text-blue-600 cursor-pointer"
+                    className="text-blue-600 cursor-pointer view-code"
                     onClick={() => {
                       setViewCode(true);
                       setSelectedElement(element);

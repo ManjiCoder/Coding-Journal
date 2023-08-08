@@ -45,8 +45,10 @@ export default function Home({ solutions }) {
     <>
       <Head>
         <title>{`${isAuth ? user.name + " |" : ""} ${title} `}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <meta
+          name="description"
+          content="Coding Journal for Coders made by a Coder!"
+        />
       </Head>
       <section id="main-container" className="pb-10 pt-3.5">
         {!isAuth ? (
