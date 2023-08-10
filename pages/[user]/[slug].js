@@ -19,7 +19,7 @@ export default function Slug({ element }) {
         <h1 className="text-center mb-5">
           <BrandHead />
         </h1>
-        <div className="cursor-pointer w-4/5 max-w-md p-5 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100">
+        <div className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-white to-slate-200 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100">
           <div className="flex mb-4 justify-between">
             <div className="flex">
               <Image

@@ -23,7 +23,6 @@ import BrandHead from "./BrandHead";
 import ShareButton from "./ShareButton";
 
 export default function CardItems() {
-  const { title } = useSelector((state) => state.static);
   let { searchQuery, sortByQuery, sortByOrder, solutions, searchSolution } =
     useSelector((state) => state.solutions);
 
