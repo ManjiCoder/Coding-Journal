@@ -39,15 +39,15 @@ export default function App({ Component, pageProps }) {
 
   return (
     <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <ErrorBoundary>
-          <Navbar />
-          {isLoading ? <Loading /> : null}
-          <Component {...pageProps} />
-          <Toast />
-          <Footer />
-        </ErrorBoundary>
-      </PersistGate>
+      {/* <PersistGate persistor={persistor}> */}
+      <ErrorBoundary>
+        <Navbar />
+        {isLoading ? <Loading /> : null}
+        <Component {...pageProps} />
+        <Toast />
+        <Footer />
+      </ErrorBoundary>
+      {/* </PersistGate> */}
     </Provider>
   );
 }

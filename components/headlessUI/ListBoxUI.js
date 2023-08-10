@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { BsCheck, BsChevronExpand } from "react-icons/bs";
+import { useRouter } from "next/router";
 // import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
 export default function ListBoxUI({
@@ -9,6 +10,7 @@ export default function ListBoxUI({
   setSelected,
   options,
 }) {
+  const { pathname } = useRouter();
   return (
     <>
       <Listbox value={selected} onChange={setSelected}>
@@ -44,7 +46,11 @@ export default function ListBoxUI({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="border border-gray-300 dark:border-gray-500 absolute z-10 mt-1 max-h-60 w-32 sm:w-full overflow-auto rounded-md bg-white dark:bg-gray-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+            <Listbox.Options
+              className={`border border-gray-300 dark:border-gray-500 absolute z-10 mt-1 max-h-60 overflow-auto rounded-md bg-white dark:bg-gray-600 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm ${
+                pathname === "/" ? "w-36 sm:w-full" : "w-full"
+              }`}
+            >
               {options.map((Lang, LangIdx) => (
                 <Listbox.Option
                   key={LangIdx}

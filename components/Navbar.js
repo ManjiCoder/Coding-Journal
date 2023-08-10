@@ -14,6 +14,8 @@ import { IoMdLogOut } from "react-icons/io";
 import { logOut } from "@/redux-slices/User";
 import { toast } from "react-toastify";
 import SearchBar from "./SearchBar";
+import { PersistGate } from "redux-persist/lib/integration/react";
+import { persistor } from "@/store";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,31 +57,86 @@ const Navbar = () => {
   ];
 
   return (
-    <header className="bg-slate-800">
-      <nav
-        className={`flex justify-between items-center px-3 py-4 lg:py-2.5 flex-1 `}
-      >
-        <button
-          className="md:hidden text-white mr-3 text-2xl z-50"
-          onClick={toggleNav}
+    <PersistGate loading={null} persistor={persistor}>
+      <header className="bg-slate-800">
+        <nav
+          className={`flex justify-between items-center px-3 py-4 lg:py-2.5 flex-1 `}
         >
-          {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
-        </button>
-        <div
-          className={`${
-            isAuth ? "hidden sm:block sm:justify-end" : "block"
-          }  px-5 flex-grow  md:flex-grow-0 text-center text-2xl`}
-        >
-          <BrandHead />
-        </div>
+          <button
+            className="md:hidden text-white mr-3 text-2xl z-50"
+            onClick={toggleNav}
+          >
+            {isOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+          </button>
+          <div
+            className={`${
+              isAuth ? "hidden sm:block sm:justify-end" : "block"
+            }  px-5 flex-grow  md:flex-grow-0 text-center text-2xl`}
+          >
+            <BrandHead />
+          </div>
 
-        {/* Desktop */}
-        <ul className={`hidden text-white md:flex md:flex-1 space-x-2`}>
+          {/* Desktop */}
+          <ul className={`hidden text-white md:flex md:flex-1 space-x-2`}>
+            {navigation.map(({ name, href, current }) => (
+              <Link href={href} key={href}>
+                <li
+                  className={`py-1.5 px-7 font-medium rounded-md hover:bg-slate-900 ${
+                    current && "bg-slate-900 shadow-md "
+                  }`}
+                >
+                  {name}
+                </li>
+              </Link>
+            ))}
+          </ul>
+
+          {isAuth && <SearchBar />}
+
+          {/* UserIcon */}
+          {!isAuth ? (
+            <Link
+              href="/login"
+              className="bg-blue-600 px-2 py-1.5 rounded-md font-medium text-white"
+            >
+              Login
+            </Link>
+          ) : (
+            <MenuUI
+              parent={
+                <Menu.Button className="w-9 h-9 flex justify-center items-center bg-indigo-100 ring-yellow-500 rounded-full shadow-md hover:ring-4 focus:ring-4 font-medium">
+                  {user.name[0]}
+                </Menu.Button>
+              }
+            >
+              <MenuItems />
+            </MenuUI>
+          )}
+
+          {/* <button
+          className="ml-5 w-7 h-7 flex justify-center items-center bg-white ring-yellow-500 rounded-full shadow-md hover:ring-2 focus:ring-2 font-medium"
+          onClick={() => setIsDark(!isDark)}
+        >
+          {!isDark ? <BsSunFill /> : <BsFillMoonStarsFill />}
+        </button> */}
+        </nav>
+        {/* Moblie */}
+        {/* {isOpen &&
+        createPortal( */}
+        <ul
+          className={`shadow-lg shadow-black fixed h-screen z-10 top-0 pt-16 px-7 w-3/4 max-w-xs md:hidden text-white text-xl flex flex-col gap-4 bg-slate-800 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
+            ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
+          onClick={(e) => {
+            if (e.target.tagName === "LI") {
+              setIsOpen(!isOpen);
+            }
+          }}
+        >
           {navigation.map(({ name, href, current }) => (
             <Link href={href} key={href}>
               <li
-                className={`py-1.5 px-7 font-medium rounded-md hover:bg-slate-900 ${
-                  current && "bg-slate-900 shadow-md "
+                className={`p-2 px-7 font-medium rounded-md ${
+                  current && "bg-slate-900"
                 }`}
               >
                 {name}
@@ -87,62 +144,9 @@ const Navbar = () => {
             </Link>
           ))}
         </ul>
-
-        {isAuth && <SearchBar />}
-
-        {/* UserIcon */}
-        {!isAuth ? (
-          <Link
-            href="/login"
-            className="bg-blue-600 px-2 py-1.5 rounded-md font-medium text-white"
-          >
-            Login
-          </Link>
-        ) : (
-          <MenuUI
-            parent={
-              <Menu.Button className="w-9 h-9 flex justify-center items-center bg-indigo-100 ring-yellow-500 rounded-full shadow-md hover:ring-4 focus:ring-4 font-medium">
-                {user.name[0]}
-              </Menu.Button>
-            }
-          >
-            <MenuItems />
-          </MenuUI>
-        )}
-
-        {/* <button
-          className="ml-5 w-7 h-7 flex justify-center items-center bg-white ring-yellow-500 rounded-full shadow-md hover:ring-2 focus:ring-2 font-medium"
-          onClick={() => setIsDark(!isDark)}
-        >
-          {!isDark ? <BsSunFill /> : <BsFillMoonStarsFill />}
-        </button> */}
-      </nav>
-      {/* Moblie */}
-      {/* {isOpen &&
-        createPortal( */}
-      <ul
-        className={`shadow-lg shadow-black fixed h-screen z-10 top-0 pt-16 px-7 w-3/4 max-w-xs md:hidden text-white text-xl flex flex-col gap-4 bg-slate-800 min-h-screen transform transition-transform duration-200 ease-out overflow-hidden
-            ${isOpen ? "translate-x-0" : " -translate-x-full"}`}
-        onClick={(e) => {
-          if (e.target.tagName === "LI") {
-            setIsOpen(!isOpen);
-          }
-        }}
-      >
-        {navigation.map(({ name, href, current }) => (
-          <Link href={href} key={href}>
-            <li
-              className={`p-2 px-7 font-medium rounded-md ${
-                current && "bg-slate-900"
-              }`}
-            >
-              {name}
-            </li>
-          </Link>
-        ))}
-      </ul>
-      {/* , // document.body // )} */}
-    </header>
+        {/* , // document.body // )} */}
+      </header>
+    </PersistGate>
   );
 };
 

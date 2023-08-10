@@ -8,8 +8,9 @@ import Link from "next/link";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "@/redux-slices/User";
-import Head from "next/head";
+
 import BrandHead from "@/components/BrandHead";
+import Header from "@/components/Header";
 
 export default function SignUp() {
   const { title, toastDuration } = useSelector((state) => state.static);
@@ -80,151 +81,151 @@ export default function SignUp() {
   };
 
   return (
-    <div
-      id="main-container"
-      className="p-3 min-h-screen flex flex-col justify-start items-center"
-    >
-      <Head>
-        <title>{title} - Login</title>
-      </Head>
-      <Formik
-        initialValues={{ name: "", email: "", password: "" }}
-        validationSchema={signupSchema}
-        onSubmit={(values) => {
-          // console.log(values);
-          handleSignUp(values.name, values.email, values.password);
-        }}
+    <>
+      <Header title={`SignUp - ${title}`} />
+      <div
+        id="main-container"
+        className="p-3 min-h-screen flex flex-col justify-start items-center"
       >
-        {({
-          values,
-          errors,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          isValid,
-          /* and other goodies */
-        }) => (
-          <form
-            className="inline-flex w-11/12 md:w-auto mx-4 mt-20 mb-20 bg-gradient-to-br from-white to-slate-100 border rounded-md shadow-lg items-center  flex-col text-center py-5 px-10"
-            onSubmit={handleSubmit}
-          >
-            <h2 className="text-xl flex md:block flex-col pt-3 gap-y-2 md:text-2xl mb-5 text-center font-semibold">
-              Sign-Up to continue <BrandHead />
-            </h2>
-            {/* logo */}
-
-            <div className={`${errors.name ? "mb-0" : "mb-7"}`}>
-              <div
-                className={`inline-flex bg-white p-3 ring-2 ${
-                  errors.email ? "ring-red-400" : "ring-transparent"
-                }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
-              >
-                <label
-                  htmlFor="name"
-                  className="text-slate-800 cursor-pointer hover:text-slate-900"
-                >
-                  <FaUserCircle />
-                </label>
-                <input
-                  type="text"
-                  className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
-                  id="name"
-                  name="name"
-                  placeholder="Enter your name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                />
-                <AiFillEye className="invisible text-xl" />
-              </div>
-              <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
-                {errors.name}
-              </h2>
-            </div>
-
-            <div className={`${errors.email ? "mb-0" : "mb-7"}`}>
-              <div
-                className={`inline-flex bg-white p-3 ring-2 ${
-                  errors.email ? "ring-red-400" : "ring-transparent"
-                }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
-              >
-                <label
-                  htmlFor="username"
-                  className="text-slate-800 cursor-pointer hover:text-slate-900"
-                >
-                  <FaUserCircle />
-                </label>
-                <input
-                  type="email"
-                  className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
-                  id="username"
-                  name="email"
-                  placeholder="Enter your email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                />
-                <AiFillEye className="invisible text-xl" />
-              </div>
-              <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
-                {errors.email}
-              </h2>
-            </div>
-
-            <div className={`${errors.password ? "mb-0" : "mb-7"}`}>
-              <div
-                className={`inline-flex bg-white p-3 ring-2 ${
-                  errors.password ? "ring-red-400" : "ring-transparent"
-                }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
-              >
-                <label
-                  htmlFor="userpassword"
-                  className="text-slate-800 cursor-pointer hover:text-slate-900"
-                >
-                  <FaLock className="rounded-full" />
-                </label>
-                <input
-                  type={isVisible === false ? "password" : "text"}
-                  className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
-                  id="userpassword"
-                  name="password"
-                  placeholder="Enter your password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                <button
-                  type="button"
-                  className="cursor-pointer text-slate-800 text-xl hover:text-slate-900"
-                  onClick={toggleEye}
-                >
-                  {isVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
-                </button>
-              </div>
-
-              <h3 className="text-red-500 my-1 font-semibold text-xs text-right">
-                {errors.password}
-              </h3>
-            </div>
-
-            <button
-              type="submit"
-              disabled={!isValid}
-              className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+        <Formik
+          initialValues={{ name: "", email: "", password: "" }}
+          validationSchema={signupSchema}
+          onSubmit={(values) => {
+            // console.log(values);
+            handleSignUp(values.name, values.email, values.password);
+          }}
+        >
+          {({
+            values,
+            errors,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            isValid,
+            /* and other goodies */
+          }) => (
+            <form
+              className="inline-flex w-11/12 md:w-auto mx-4 mt-20 mb-20 bg-gradient-to-br from-white to-slate-100 border rounded-md shadow-lg items-center  flex-col text-center py-5 px-10"
+              onSubmit={handleSubmit}
             >
-              Sign-Up
-            </button>
+              <h2 className="text-xl flex md:block flex-col pt-3 gap-y-2 md:text-2xl mb-5 text-center font-semibold">
+                Sign-Up to continue <BrandHead />
+              </h2>
+              {/* logo */}
 
-            <div className="mb-5">OR Login Account</div>
-            <Link
-              href="/login"
-              className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
-            >
-              Login
-            </Link>
-          </form>
-        )}
-      </Formik>
-    </div>
+              <div className={`${errors.name ? "mb-0" : "mb-7"}`}>
+                <div
+                  className={`inline-flex bg-white p-3 ring-2 ${
+                    errors.email ? "ring-red-400" : "ring-transparent"
+                  }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
+                >
+                  <label
+                    htmlFor="name"
+                    className="text-slate-800 cursor-pointer hover:text-slate-900"
+                  >
+                    <FaUserCircle />
+                  </label>
+                  <input
+                    type="text"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.name}
+                  />
+                  <AiFillEye className="invisible text-xl" />
+                </div>
+                <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
+                  {errors.name}
+                </h2>
+              </div>
+
+              <div className={`${errors.email ? "mb-0" : "mb-7"}`}>
+                <div
+                  className={`inline-flex bg-white p-3 ring-2 ${
+                    errors.email ? "ring-red-400" : "ring-transparent"
+                  }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
+                >
+                  <label
+                    htmlFor="username"
+                    className="text-slate-800 cursor-pointer hover:text-slate-900"
+                  >
+                    <FaUserCircle />
+                  </label>
+                  <input
+                    type="email"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    id="username"
+                    name="email"
+                    placeholder="Enter your email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                  />
+                  <AiFillEye className="invisible text-xl" />
+                </div>
+                <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
+                  {errors.email}
+                </h2>
+              </div>
+
+              <div className={`${errors.password ? "mb-0" : "mb-7"}`}>
+                <div
+                  className={`inline-flex bg-white p-3 ring-2 ${
+                    errors.password ? "ring-red-400" : "ring-transparent"
+                  }  rounded-md shadow-lg items-center space-x-3 justify-center border`}
+                >
+                  <label
+                    htmlFor="userpassword"
+                    className="text-slate-800 cursor-pointer hover:text-slate-900"
+                  >
+                    <FaLock className="rounded-full" />
+                  </label>
+                  <input
+                    type={isVisible === false ? "password" : "text"}
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    id="userpassword"
+                    name="password"
+                    placeholder="Enter your password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  <button
+                    type="button"
+                    className="cursor-pointer text-slate-800 text-xl hover:text-slate-900"
+                    onClick={toggleEye}
+                  >
+                    {isVisible ? <AiFillEye /> : <AiFillEyeInvisible />}
+                  </button>
+                </div>
+
+                <h3 className="text-red-500 my-1 font-semibold text-xs text-right">
+                  {errors.password}
+                </h3>
+              </div>
+
+              <button
+                type="submit"
+                disabled={!isValid}
+                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+              >
+                Sign-Up
+              </button>
+
+              <div className="mb-5">OR Login Account</div>
+              <Link
+                href="/login"
+                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+              >
+                Login
+              </Link>
+            </form>
+          )}
+        </Formik>
+      </div>
+    </>
   );
 }
 

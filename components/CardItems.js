@@ -68,27 +68,6 @@ export default function CardItems() {
     );
   };
 
-  if (!solutions || len === 0) {
-    return (
-      <div className="flex flex-col min-h-[80vh] px-4 items-center justify-center">
-        <h1 className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
-            {title}
-          </span>{" "}
-          Scalable App.
-        </h1>
-        <p className="text-xl font-medium">
-          Please Add solutions of your solved questions.
-        </p>
-        <Link
-          href="/add"
-          className="bg-slate-800 text-center mt-3 max-w-xs hover:bg-slate-900 p-2.5 text-white text-xl w-full md:max-w-sm font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
-        >
-          Add Solutions
-        </Link>
-      </div>
-    );
-  }
   solutions = searchSolution.length === 0 ? solutions : searchSolution;
   return (
     <main>
