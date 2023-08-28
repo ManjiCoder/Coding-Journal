@@ -10,6 +10,7 @@ import { logIn } from "@/redux-slices/User";
 import { toast } from "react-toastify";
 import BrandHead from "@/components/BrandHead";
 import Header from "@/components/Header";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function Login() {
   const { title, toastDuration } = useSelector((state) => state.static);
@@ -124,7 +125,7 @@ export default function Login() {
                   </label>
                   <input
                     type="email"
-                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none w-52"
                     id="email"
                     name="email"
                     placeholder="Enter your email"
@@ -134,9 +135,7 @@ export default function Login() {
                   />
                   <AiFillEye className="invisible text-xl" />
                 </div>
-                <h2 className="text-right px-3 text-red-500 my-1 font-semibold text-xs">
-                  {errors.email}
-                </h2>
+                <ErrorMessage error={errors.email} />
               </div>
 
               <div className={`${errors.password ? "mb-0" : "mb-7"}`}>
@@ -153,7 +152,7 @@ export default function Login() {
                   </label>
                   <input
                     type={isVisible === false ? "password" : "text"}
-                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none w-52"
                     id="userpassword"
                     name="password"
                     placeholder="Enter your password"
@@ -169,17 +168,12 @@ export default function Login() {
                   </button>
                 </div>
 
-                <h3 className="text-right px-3 text-slate-800 my-1 font-semibold text-xs">
-                  <Link href="/forgot">Forgot Password?</Link>
-                </h3>
-                <h3 className="text-right px-3 text-red-500 my-1 font-semibold text-xs">
-                  {errors.password}
-                </h3>
+                <ErrorMessage error={errors.password} />
               </div>
               <button
                 type="submit"
                 disabled={!isValid}
-                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+                className="bg-slate-800 mb-5 hover:bg-slate-900 p-2.5 text-white text-xl w-72 font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
                 Login
               </button>
@@ -187,7 +181,7 @@ export default function Login() {
               <div className="mb-5">OR Create Account</div>
               <Link
                 href="/sign-up"
-                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-72 font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
                 Sign-up
               </Link>

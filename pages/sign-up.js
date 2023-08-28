@@ -11,6 +11,7 @@ import { logIn } from "@/redux-slices/User";
 
 import BrandHead from "@/components/BrandHead";
 import Header from "@/components/Header";
+import ErrorMessage from "@/components/ErrorMessage";
 
 export default function SignUp() {
   const { title, toastDuration } = useSelector((state) => state.static);
@@ -127,7 +128,7 @@ export default function SignUp() {
                   </label>
                   <input
                     type="text"
-                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none w-52"
                     id="name"
                     name="name"
                     placeholder="Enter your name"
@@ -137,9 +138,8 @@ export default function SignUp() {
                   />
                   <AiFillEye className="invisible text-xl" />
                 </div>
-                <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
-                  {errors.name}
-                </h2>
+
+                <ErrorMessage error={errors.name} />
               </div>
 
               <div className={`${errors.email ? "mb-0" : "mb-7"}`}>
@@ -156,7 +156,7 @@ export default function SignUp() {
                   </label>
                   <input
                     type="email"
-                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none w-52"
                     id="username"
                     name="email"
                     placeholder="Enter your email"
@@ -166,9 +166,8 @@ export default function SignUp() {
                   />
                   <AiFillEye className="invisible text-xl" />
                 </div>
-                <h2 className="text-red-500 my-1 font-semibold text-xs text-right">
-                  {errors.email}
-                </h2>
+
+                <ErrorMessage error={errors.email} />
               </div>
 
               <div className={`${errors.password ? "mb-0" : "mb-7"}`}>
@@ -185,7 +184,7 @@ export default function SignUp() {
                   </label>
                   <input
                     type={isVisible === false ? "password" : "text"}
-                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none"
+                    className="bg-transparent px-2 font-semibold placeholder:text-gray-500 placeholder:font-semibold outline-none w-52"
                     id="userpassword"
                     name="password"
                     placeholder="Enter your password"
@@ -201,15 +200,13 @@ export default function SignUp() {
                   </button>
                 </div>
 
-                <h3 className="text-red-500 my-1 font-semibold text-xs text-right">
-                  {errors.password}
-                </h3>
+                <ErrorMessage error={errors.password} />
               </div>
 
               <button
                 type="submit"
                 disabled={!isValid}
-                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-72 font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
                 Sign-Up
               </button>
@@ -217,7 +214,7 @@ export default function SignUp() {
               <div className="mb-5">OR Login Account</div>
               <Link
                 href="/login"
-                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-full font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
+                className="bg-slate-800 mb-5  hover:bg-slate-900 p-2.5 text-white text-xl w-72 font-semibold  border outline-none rounded-md shadow-md shadow-gray-400 cursor-pointer"
               >
                 Login
               </Link>
