@@ -1,37 +1,43 @@
-import { Inter } from "next/font/google";
-import { useDispatch, useSelector } from "react-redux";
-import Link from "next/link";
-import CardItems from "@/components/CardItems";
-import { useEffect } from "react";
+import { Inter } from 'next/font/google';
+import { useDispatch, useSelector } from 'react-redux';
+import Link from 'next/link';
+import CardItems from '@/components/CardItems';
+import { useEffect } from 'react';
 import {
+  setPage,
   setSolutions,
   setSortByOrder,
   setSortByQuery,
-} from "@/redux-slices/Solution";
-import Cookies from "js-cookie";
-import Header from "@/components/Header";
+  setTotalResults,
+} from '@/redux-slices/Solution';
+import Cookies from 'js-cookie';
+import Header from '@/components/Header';
+import { motion } from 'framer-motion';
+import { variants } from '@/utils/frammer';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 const codingPlatfroms = [
-  "HackerRank",
-  "HackerEarth",
-  "LeetCode",
-  "CodeChef",
-  "CodeForces",
-  "GeeksforGeeks",
-  "TopCoder",
+  'HackerRank',
+  'HackerEarth',
+  'LeetCode',
+  'CodeChef',
+  'CodeForces',
+  'GeeksforGeeks',
+  'TopCoder',
 ];
 
-export default function Home({ solutions }) {
+export default function Home({ solutions, page, totalResults }) {
   // console.log(solutions);
   const dispatch = useDispatch();
   useEffect(() => {
-    const isUserSetting = Cookies.get("userSetting");
+    const isUserSetting = Cookies.get('userSetting');
     if (isUserSetting) {
       const { sort, order } = JSON.parse(isUserSetting);
       dispatch(setSortByQuery(sort));
       dispatch(setSortByOrder(order));
+      dispatch(setPage(page));
+      dispatch(setTotalResults(totalResults));
     }
     dispatch(setSolutions(solutions));
 
@@ -44,14 +50,17 @@ export default function Home({ solutions }) {
     return (
       <>
         <Header />
-        <div
+        <motion.div
+          variants={variants}
+          initial="hidden"
+          animate="visible"
           id="main-container"
           className="p-5 rounded-md shadow-md bg-white dark:bg-gray-900 space-y-7"
         >
           <h1 className="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-5xl">
             <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
               {title}
-            </span>{" "}
+            </span>{' '}
             {/* Scalable App. */}
           </h1>
           <div className="text-lg font-normal text-gray-600 lg:text-xl dark:text-gray-400">
@@ -92,21 +101,28 @@ export default function Home({ solutions }) {
               Sign-up
             </Link>
           </div>
-        </div>
+        </motion.div>
       </>
     );
   }
   return (
     <>
       <Header />
-      <section id="main-container" className="min-h-screen pb-10 pt-3.5">
+
+      <motion.section
+        variants={variants}
+        initial="hidden"
+        animate="visible"
+        id="main-container"
+        className="min-h-screen pb-10 pt-3.5"
+      >
         <CardItems solutions={solutions} />
-        {solutions && solutions.length === 0 && (
+        {solutions && solutions.length === 0 && !totalResults && (
           <div className="flex flex-col min-h-[80vh] px-4 items-center justify-center">
             <h1 className="mb-4 text-2xl font-extrabold text-gray-900 dark:text-white">
               <span className="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">
                 {title}
-              </span>{" "}
+              </span>{' '}
               Scalable App.
             </h1>
             <p className="text-xl font-medium">
@@ -120,13 +136,17 @@ export default function Home({ solutions }) {
             </Link>
           </div>
         )}
-      </section>
+      </motion.section>
     </>
   );
 }
 
 // SSR
-export async function getServerSideProps({ req, res }) {
+export async function getServerSideProps(context) {
+  const page = context.query.page ? parseInt(context.query.page) : 1;
+  const limit = context.query.limit ? parseInt(context.query.limit) : 9;
+  // console.log(page);
+  const { req, res } = context;
   try {
     const { token, userSetting } = req.cookies;
     // console.log({ userSetting });
@@ -134,29 +154,44 @@ export async function getServerSideProps({ req, res }) {
     var order = null;
     if (token) {
       let headersList = {
-        "auth-token": token,
+        'auth-token': token,
       };
       if (userSetting) {
         var { sort, order } = JSON.parse(userSetting);
-        if (sort === "date") sort = "createdAt";
+        if (sort === 'date') sort = 'createdAt';
       }
       // console.log(sort, order);
 
       let response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/getall?sort=${
-          sort || "score"
-        }&order=${order || "descending"}`,
+          sort || 'score'
+        }&order=${order || 'descending'}&page=${page}&limit=${limit}`,
         {
-          method: "GET",
+          method: 'GET',
           headers: headersList,
         }
       );
 
-      var { solutions } = await response.json();
+      var data = await response.json();
+
+      if ((data.totalResults && data.solutions.length === 0) || page < 0) {
+        return {
+          redirect: {
+            destination: '/404',
+            permanent: false,
+          },
+        };
+      }
       // console.log(solutions);
     }
 
-    return { props: { solutions: solutions || null } };
+    return {
+      props: {
+        solutions: data.solutions || null,
+        page,
+        totalResults: data.totalResults,
+      },
+    };
   } catch (error) {
     return { props: { solutions: null } };
   }

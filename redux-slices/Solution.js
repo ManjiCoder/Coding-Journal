@@ -1,13 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const Solutions = createSlice({
-  name: "solutions",
+  name: 'solutions',
   initialState: {
-    sortByQuery: "score",
-    sortByOrder: "descending",
+    sortByQuery: 'score',
+    sortByOrder: 'descending',
     solutions: [],
     searchSolution: [],
-    searchQuery: "",
+    searchQuery: '',
+    page: 1,
+    limit: 9,
+    totalResults: 0,
   },
   reducers: {
     setSolutions(state, action) {
@@ -21,9 +24,9 @@ const Solutions = createSlice({
     },
     sortSolution(state, action) {
       let query = action.payload;
-      if (state.sortByOrder === "ascending") {
-        if (query === "date") {
-          query = "createdAt";
+      if (state.sortByOrder === 'ascending') {
+        if (query === 'date') {
+          query = 'createdAt';
           state.solutions.sort((a, b) => {
             return (
               parseInt(new Date(a[query]).getTime()) -
@@ -33,8 +36,8 @@ const Solutions = createSlice({
         }
         state.solutions.sort((a, b) => a[query] - b[query]);
       } else {
-        if (query === "date") {
-          query = "createdAt";
+        if (query === 'date') {
+          query = 'createdAt';
           state.solutions.sort((a, b) => {
             return (
               parseInt(new Date(b[query]).getTime()) -
@@ -51,6 +54,12 @@ const Solutions = createSlice({
     setSortByQuery(state, action) {
       state.sortByQuery = action.payload;
     },
+    setPage(state, action) {
+      state.page = action.payload;
+    },
+    setTotalResults(state, action) {
+      state.totalResults = action.payload;
+    },
   },
 });
 
@@ -61,6 +70,8 @@ export const {
   setSortByOrder,
   setSortByQuery,
   setSearchQuery,
+  setPage,
+  setTotalResults,
 } = Solutions.actions;
 
 export default Solutions.reducer;

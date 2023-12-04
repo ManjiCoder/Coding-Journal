@@ -1,30 +1,40 @@
-import React, { useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import Cookies from "js-cookie";
-import { useDispatch, useSelector } from "react-redux";
-import ListBoxUI from "./headlessUI/ListBoxUI";
-import ConfirmModal from "./ConfirmModal";
-import ViewCodeModal from "./ViewCodeModal";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import Cookies from 'js-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import ListBoxUI from './headlessUI/ListBoxUI';
+import ConfirmModal from './ConfirmModal';
+import ViewCodeModal from './ViewCodeModal';
 
 import {
   FaEraser,
   FaEdit,
   FaArrowAltCircleUp,
   FaArrowAltCircleDown,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 import {
   setSortByOrder,
   setSortByQuery,
   sortSolution,
-} from "@/redux-slices/Solution";
-import BrandHead from "./BrandHead";
-import ShareButton from "./ShareButton";
+} from '@/redux-slices/Solution';
+import BrandHead from './BrandHead';
+import ShareButton from './ShareButton';
+import { animate, motion } from 'framer-motion';
+import { variants } from '@/utils/frammer';
 
 export default function CardItems() {
-  let { searchQuery, sortByQuery, sortByOrder, solutions, searchSolution } =
-    useSelector((state) => state.solutions);
+  let solutionState = useSelector((state) => state.solutions);
+  let {
+    searchQuery,
+    page,
+    limit,
+    sortByQuery,
+    solutions,
+    sortByOrder,
+    searchSolution,
+  } = solutionState;
 
   const len = solutions ? solutions.length : 0;
   const dispatch = useDispatch();
@@ -34,14 +44,14 @@ export default function CardItems() {
   const [selectedElement, setSelectedElement] = useState(null);
 
   // ListBox State
-  const languageOption = ["score", "accuracy", "level", "date"];
+  const languageOption = ['score', 'accuracy', 'level', 'date'];
   const changeSeleted = (query) => {
     dispatch(sortSolution(query));
     dispatch(setSortByQuery(query));
 
     // Saving User-Setting in cookies
     Cookies.set(
-      "userSetting",
+      'userSetting',
       JSON.stringify({
         sort: query,
         order: sortByOrder,
@@ -59,7 +69,7 @@ export default function CardItems() {
 
     // Saving User-Setting in cookies
     Cookies.set(
-      "userSetting",
+      'userSetting',
       JSON.stringify({
         sort: sortByQuery,
         order: order,
@@ -68,6 +78,7 @@ export default function CardItems() {
   };
 
   solutions = searchSolution.length === 0 ? solutions : searchSolution;
+
   return (
     <main>
       <div className="flex flex-col sm:flex sm:justify-around md:justify-center items-center md:first-line:pr-4">
@@ -90,21 +101,21 @@ export default function CardItems() {
             <div className="flex items-center mt-2.5 space-x-1">
               <button
                 className={`${
-                  sortByOrder === "ascending"
-                    ? "text-gray-600"
-                    : "text-gray-400"
+                  sortByOrder === 'ascending'
+                    ? 'text-gray-600'
+                    : 'text-gray-400'
                 }`}
-                onClick={() => handleSortingOrder("ascending")}
+                onClick={() => handleSortingOrder('ascending')}
               >
                 <FaArrowAltCircleUp />
               </button>
               <button
                 className={`${
-                  sortByOrder === "descending"
-                    ? "text-gray-600"
-                    : "text-gray-400"
+                  sortByOrder === 'descending'
+                    ? 'text-gray-600'
+                    : 'text-gray-400'
                 }`}
-                onClick={() => handleSortingOrder("descending")}
+                onClick={() => handleSortingOrder('descending')}
               >
                 <FaArrowAltCircleDown />
               </button>
@@ -122,21 +133,30 @@ export default function CardItems() {
         //   }
         // }}
       >
-        {solutions.map((element, index) => {
-          index =
-            sortByOrder === "ascending"
-              ? (len + index - len + 1).toString().padStart(2, 0)
-              : (len - index).toString().padStart(2, 0);
+        {solutions.map((element, index, arr) => {
+          // index =
+          //   sortByOrder === 'ascending'
+          //     ? (len + index - len + 1).toString().padStart(2, 0)
+          //     : (len - index).toString().padStart(2, 0);
 
           return (
-            <div
+            <motion.div
               id={element._id}
               key={element._id}
               className="cursor-pointer w-3/4 max-w-md xs:w-10/12 p-4 sm:w-96 mx-auto sm:p-6 bg-gradient-to-br from-white to-slate-200 dark:from-slate-900 dark:to-slate-700 border border-gray-300 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-100"
+              variants={variants}
+              initial="hidden"
+              animate="visible"
+              transition={{
+                delay: index * 0.25,
+                ease: 'easeInOut',
+                duration: 0.5,
+              }}
+              viewport={{ amount: 0 }}
             >
               <div className="flex mb-4 justify-between">
                 <div className="flex">
-                  {" "}
+                  {' '}
                   <Image
                     src="https://media.geeksforgeeks.org/wp-content/uploads/20200716222246/Path-219.png"
                     alt="Greeks For Greek"
@@ -144,8 +164,8 @@ export default function CardItems() {
                     width={90}
                   />
                   <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    {"-"}&nbsp;&nbsp;
-                    {index}
+                    {'-'}&nbsp;&nbsp;
+                    {(page * limit - index).toString().padStart(2, '0')}
                   </span>
                 </div>
                 <ShareButton solution={element} />
@@ -169,12 +189,12 @@ export default function CardItems() {
                 />
               )}
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Status -{" "}
+                Status -{' '}
                 <span
                   className={`${
-                    element.status === "Done"
-                      ? "text-green-500"
-                      : "text-red-600"
+                    element.status === 'Done'
+                      ? 'text-green-500'
+                      : 'text-red-600'
                   } font-bold`}
                 >
                   {element.status}
@@ -184,11 +204,11 @@ export default function CardItems() {
                 Level - <span className={`font-bold`}>{element.level}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Language -{" "}
+                Language -{' '}
                 <span className="font-bold capitalize">{element.language}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Accuracy -{" "}
+                Accuracy -{' '}
                 <span className={`font-bold`}>
                   {Math.floor(100 / element.accuracy) ===
                   Math.ceil(100 / element.accuracy)
@@ -201,7 +221,7 @@ export default function CardItems() {
                 Time - <span className={`font-bold`}>{element.time}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Code -{" "}
+                Code -{' '}
                 <span className="pointer-events-auto font-bold">
                   <button
                     className="text-blue-600 cursor-pointer view-code"
@@ -215,16 +235,17 @@ export default function CardItems() {
                 </span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Date -{" "}
+                Date -{' '}
                 <span className={`font-bold`}>
                   {`${new Date(element.createdAt).toDateString()}, ${new Date(
                     element.createdAt
                   ).toLocaleTimeString()}`}
+                  {/* {element.createdAt} */}
                 </span>
               </p>
 
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Score -{" "}
+                Score -{' '}
                 <span className={`font-bold text-red-700`}>
                   {element.score}
                 </span>
@@ -251,7 +272,7 @@ export default function CardItems() {
                 {/* Update */}
                 <Link
                   href={{
-                    pathname: "/update",
+                    pathname: '/update',
                     query: {
                       data: JSON.stringify(element),
                     },
@@ -268,7 +289,7 @@ export default function CardItems() {
                   }}
                 />
               </section>
-            </div>
+            </motion.div>
           );
         })}
 
