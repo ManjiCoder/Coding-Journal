@@ -133,7 +133,7 @@ export default function CardItems() {
         //   }
         // }}
       >
-        {solutions.map((element, index, arr) => {
+        {solutions?.map((element, index, arr) => {
           // index =
           //   sortByOrder === 'ascending'
           //     ? (len + index - len + 1).toString().padStart(2, 0)
