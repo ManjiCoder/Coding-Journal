@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
 import Footer from '@/components/Footer';
 import ErrorBoundary from '@/components/ErrorBoundary';
-import Pagination from '@/components/Pagination';
 
 export default function App({ Component, pageProps }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -46,7 +45,6 @@ export default function App({ Component, pageProps }) {
         {isLoading ? <Loading /> : null}
         <Component {...pageProps} />
         <Toast />
-        <Pagination />
         <Footer />
       </ErrorBoundary>
       {/* </PersistGate> */}

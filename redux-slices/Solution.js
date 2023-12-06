@@ -33,8 +33,11 @@ const Solutions = createSlice({
               parseInt(new Date(b[query]).getTime())
             );
           });
+        } else if (query === 'accuracy') {
+          state.solutions.sort((a, b) => b[query] - a[query]);
+        } else {
+          state.solutions.sort((a, b) => a[query] - b[query]);
         }
-        state.solutions.sort((a, b) => a[query] - b[query]);
       } else {
         if (query === 'date') {
           query = 'createdAt';
@@ -44,8 +47,11 @@ const Solutions = createSlice({
               parseInt(new Date(a[query]).getTime())
             );
           });
+        } else if (query === 'accuracy') {
+          state.solutions.sort((a, b) => a[query] - b[query]);
+        } else {
+          state.solutions.sort((a, b) => b[query] - a[query]);
         }
-        state.solutions.sort((a, b) => b[query] - a[query]);
       }
     },
     setSortByOrder(state, action) {

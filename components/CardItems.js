@@ -23,6 +23,7 @@ import BrandHead from './BrandHead';
 import ShareButton from './ShareButton';
 import { animate, motion } from 'framer-motion';
 import { variants } from '@/utils/frammer';
+import Pagination from './Pagination';
 
 export default function CardItems() {
   let solutionState = useSelector((state) => state.solutions);
@@ -124,20 +125,14 @@ export default function CardItems() {
         )}
       </div>
 
-      <section
-        className="mt-3 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4"
-        // onClick={(e) => {
-        //   if (e.target.classList.contains("view-code")) {
-        //     setViewCode(true);
-        //     // setSelectedElement(element);
-        //   }
-        // }}
-      >
-        {solutions?.map((element, index, arr) => {
-          // index =
-          //   sortByOrder === 'ascending'
-          //     ? (len + index - len + 1).toString().padStart(2, 0)
-          //     : (len - index).toString().padStart(2, 0);
+      <section className="mt-3 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
+        {solutions?.map((element, index) => {
+          let i = index;
+          let num = page * limit;
+          num = num === page * len ? num : num - len;
+          num =
+            sortByOrder === 'ascending' ? num - len + 1 + index : num - index;
+          index = num.toString().padStart(2, 0);
 
           return (
             <motion.div
@@ -148,7 +143,7 @@ export default function CardItems() {
               initial="hidden"
               animate="visible"
               transition={{
-                delay: index * 0.25,
+                delay: i * 0.25,
                 ease: 'easeInOut',
                 duration: 0.5,
               }}
@@ -165,7 +160,7 @@ export default function CardItems() {
                   />
                   <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
                     {'-'}&nbsp;&nbsp;
-                    {(page * limit - index).toString().padStart(2, '0')}
+                    {index}
                   </span>
                 </div>
                 <ShareButton solution={element} />
@@ -311,6 +306,7 @@ export default function CardItems() {
           />
         )}
       </section>
+      <Pagination />
     </main>
   );
 }

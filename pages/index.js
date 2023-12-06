@@ -36,9 +36,9 @@ export default function Home({ solutions, page, totalResults }) {
       const { sort, order } = JSON.parse(isUserSetting);
       dispatch(setSortByQuery(sort));
       dispatch(setSortByOrder(order));
-      dispatch(setPage(page));
-      dispatch(setTotalResults(totalResults));
     }
+    dispatch(setPage(page));
+    dispatch(setTotalResults(totalResults));
     dispatch(setSolutions(solutions));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -114,7 +114,7 @@ export default function Home({ solutions, page, totalResults }) {
         initial="hidden"
         animate="visible"
         id="main-container"
-        className="min-h-screen pb-10 pt-3.5"
+        className="min-h-screen pt-3.5"
       >
         <CardItems solutions={solutions} />
         {solutions && solutions.length === 0 && !totalResults && (
@@ -193,6 +193,7 @@ export async function getServerSideProps(context) {
       },
     };
   } catch (error) {
+    // TODO: Delete Cookie
     return { props: { solutions: null } };
   }
 }
