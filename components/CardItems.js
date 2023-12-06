@@ -24,6 +24,7 @@ import ShareButton from './ShareButton';
 import { animate, motion } from 'framer-motion';
 import { variants } from '@/utils/frammer';
 import Pagination from './Pagination';
+import { useRouter } from 'next/router';
 
 export default function CardItems() {
   let solutionState = useSelector((state) => state.solutions);
@@ -43,6 +44,7 @@ export default function CardItems() {
   const [viewCode, setViewCode] = useState(false);
 
   const [selectedElement, setSelectedElement] = useState(null);
+  const router = useRouter();
 
   // ListBox State
   const languageOption = ['score', 'accuracy', 'level', 'date'];
@@ -76,6 +78,7 @@ export default function CardItems() {
         order: order,
       })
     );
+    // router.push('/'); // For fresh data by server
   };
 
   solutions = searchSolution.length === 0 ? solutions : searchSolution;

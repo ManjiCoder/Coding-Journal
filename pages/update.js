@@ -1,37 +1,40 @@
-import Header from "@/components/Header";
-import ListBoxUI from "@/components/headlessUI/ListBoxUI";
-import Cookies from "js-cookie";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import Header from '@/components/Header';
+import ListBoxUI from '@/components/headlessUI/ListBoxUI';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 export default function Update({ solution }) {
   const { title: mainTitle, toastDuration } = useSelector(
     (state) => state.static
   );
 
-  const [link, setLink] = useState(solution?.link || "");
-  const [title, setTitle] = useState(solution?.title || "");
-  const [status, setStatus] = useState(solution?.status || "");
-  const [level, setLevel] = useState(solution?.level || "");
-  const [accuracy, setAccuracy] = useState(solution?.accuracy || "");
-  const [time, setTime] = useState(solution?.time || "");
-  const [code, setCode] = useState(solution?.code || "");
-  const [score, setScore] = useState(solution?.score || "");
+  const router = useRouter();
+
+  const [link, setLink] = useState(solution?.link || '');
+  const [title, setTitle] = useState(solution?.title || '');
+  const [status, setStatus] = useState(solution?.status || '');
+  const [level, setLevel] = useState(solution?.level || '');
+  const [accuracy, setAccuracy] = useState(solution?.accuracy || '');
+  const [time, setTime] = useState(solution?.time || '');
+  const [code, setCode] = useState(solution?.code || '');
+  const [score, setScore] = useState(solution?.score || '');
 
   // ListBox State
   const [selected, setSelected] = useState(solution.language);
-  const languageOption = ["javascript", "python", "java", "c++", "c"];
+  const languageOption = ['javascript', 'python', 'java', 'c++', 'c'];
 
   const HandleOnSumbit = async (e) => {
-    const toastId = toast.loading("Please wait...");
+    const toastId = toast.loading('Please wait...');
     e.preventDefault();
 
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/solutions/update`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify({
             id: solution._id,
             link,
@@ -45,30 +48,30 @@ export default function Update({ solution }) {
             score,
           }),
           headers: {
-            "Content-Type": "application/json",
-            "auth-token": Cookies.get("token"),
+            'Content-Type': 'application/json',
+            'auth-token': Cookies.get('token'),
           },
         }
       );
 
       const data = await response.json();
       if (response.ok) {
-        router.replace("/");
+        router.replace('/');
         toast.update(toastId, {
           render: data.message,
-          type: "success",
+          type: 'success',
           isLoading: false,
           autoClose: toastDuration,
           closeButton: true,
           closeOnClick: true,
         });
-        router.replace("/");
+        router.replace('/');
         return;
       }
       console.log(data);
       toast.update(toastId, {
         render: data.message,
-        type: "error",
+        type: 'error',
         isLoading: false,
         autoClose: toastDuration,
         closeButton: true,
@@ -76,8 +79,8 @@ export default function Update({ solution }) {
       });
     } catch (error) {
       toast.update(toastId, {
-        render: error.message || "Internal server error",
-        type: "error",
+        render: error.message || 'Internal server error',
+        type: 'error',
         closeButton: true,
         closeOnClick: true,
       });
@@ -148,7 +151,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="status"
                   value="Done"
-                  checked={status === "Done"}
+                  checked={status === 'Done'}
                   onChange={(e) => {
                     setStatus(e.target.value);
                   }}
@@ -169,7 +172,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="status"
                   value="Wrong"
-                  checked={status === "Wrong"}
+                  checked={status === 'Wrong'}
                   className="cursor-pointer w-4 h-4"
                   onChange={(e) => {
                     setStatus(e.target.value);
@@ -190,7 +193,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="status"
                   value="TLE"
-                  checked={status === "TLE"}
+                  checked={status === 'TLE'}
                   className="cursor-pointer w-4 h-4"
                   onChange={(e) => {
                     setStatus(e.target.value);
@@ -216,7 +219,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="level"
                   value="0"
-                  checked={level === "0"}
+                  checked={level === '0'}
                   className="cursor-pointer w-4 h-4"
                   onChange={(e) => {
                     setLevel(e.target.value);
@@ -237,7 +240,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="level"
                   value="1"
-                  checked={level == "1"}
+                  checked={level == '1'}
                   className="cursor-pointer w-4 h-4 "
                   onChange={(e) => {
                     setLevel(e.target.value);
@@ -258,7 +261,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="level"
                   value="2"
-                  checked={level == "2"}
+                  checked={level == '2'}
                   className="cursor-pointer w-4 h-4"
                   onChange={(e) => {
                     setLevel(e.target.value);
@@ -278,7 +281,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="level"
                   value="4"
-                  checked={level == "4"}
+                  checked={level == '4'}
                   className="cursor-pointer w-4 h-4"
                   onChange={(e) => {
                     setLevel(e.target.value);
@@ -298,7 +301,7 @@ export default function Update({ solution }) {
                   type="radio"
                   name="level"
                   value="8"
-                  checked={level == "8"}
+                  checked={level == '8'}
                   className="cursor-pointer w-4 h-4"
                   onChange={(e) => {
                     setLevel(e.target.value);
@@ -360,7 +363,7 @@ export default function Update({ solution }) {
 
             {/* Lang */}
             <ListBoxUI
-              listBoxTitle={"Language"}
+              listBoxTitle={'Language'}
               selected={selected}
               setSelected={setSelected}
               options={languageOption}
@@ -427,7 +430,7 @@ export const getServerSideProps = async (context) => {
   } catch (error) {
     return {
       redirect: {
-        destination: "/404",
+        destination: '/404',
         permanent: false,
       },
     };
