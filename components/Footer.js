@@ -7,8 +7,8 @@ import { AiFillGithub } from "react-icons/ai";
 import { FaLinkedinIn } from "react-icons/fa";
 
 const footerLinks = [
-  { icon: <AiFillGithub className="h-5 w-5" />, href: "#/" },
-  { icon: <FaLinkedinIn className="h-5 w-5" />, href: "#/jk" },
+  { icon: <AiFillGithub className="h-5 w-5" />, href: "https://github.com/ManjiCoder/Coding-Journal" },
+  { icon: <FaLinkedinIn className="h-5 w-5" />, href: "#" },
 ];
 
 export default function Footer() {
