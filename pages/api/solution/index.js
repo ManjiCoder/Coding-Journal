@@ -5,7 +5,7 @@ import { isValidToken } from '@/utils/server-utils';
 
 export default async function handler(req, res) {
   const { method, query } = req;
-  const { sort, page, limit } = query;
+  const { filter, sort, page, limit } = query;
   const sortByFields = [
     'score',
     'questionNo',
@@ -34,26 +34,44 @@ export default async function handler(req, res) {
       const id = userId.id;
       await dbConnect();
       // Adding Filter based on query for sorting
-      const filterObj = {};
+      const filterObj = {
+        user: id,
+      };
+      const sortObj = {};
+      if (filter) {
+        const [field, operator, value] = filter.split('||');
+        if (operator === 'eq') {
+          filterObj[field] = value;
+        }
+      }
+
       if (sort) {
         const [sortField, order] = sort.split(',');
-        filterObj[sortField] = sortByOrders[order];
+        sortObj[sortField] = sortByOrders[order];
       } else if (!sort) {
-        filterObj.createdAt = -1;
+        sortObj.createdAt = -1;
       }
 
       const skip = (parseInt(page) - 1) * limit;
-      const totalResults = await solutionModel.find({ user: id });
-      const solutions = await solutionModel
-        .find({ user: id })
-        .sort(filterObj)
+      let solutions = await solutionModel
+        .find(filterObj)
+        .sort(sortObj)
         .select(['-user'])
         .skip(skip)
         .limit(limit || 15);
+
+      if (filter) {
+        const [field, operator, value] = filter.split('||');
+        if (operator === 'match') {
+          solutions = solutions.filter((obj) => {
+            return obj[field].toLowerCase().includes(value.toLowerCase());
+          });
+        }
+      }
       return res.status(200).json({
         message: 'Solution fetch successfully!',
         solutions,
-        totalResults: totalResults.length,
+        totalResults: solutions.length,
       });
     } catch (error) {
       res
