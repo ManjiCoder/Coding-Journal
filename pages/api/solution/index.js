@@ -5,7 +5,7 @@ import { isValidToken } from '@/utils/server-utils';
 
 export default async function handler(req, res) {
   const { method, query } = req;
-  let { sort, page, limit } = query;
+  const { sort, page, limit } = query;
   const sortByFields = [
     'score',
     'questionNo',
@@ -34,12 +34,12 @@ export default async function handler(req, res) {
       const id = userId.id;
       await dbConnect();
       // Adding Filter based on query for sorting
-      const filterObj = {
-        createdAt: -1,
-      };
+      const filterObj = {};
       if (sort) {
         const [sortField, order] = sort.split(',');
         filterObj[sortField] = sortByOrders[order];
+      } else if (!sort) {
+        filterObj.createdAt = -1;
       }
 
       const skip = (parseInt(page) - 1) * limit;
