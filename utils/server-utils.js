@@ -30,3 +30,15 @@ export async function verify(token, secret) {
   // if its all good, return it, or perhaps just return a boolean
   return payload;
 }
+
+export const isValidToken = async (token) => {
+  try {
+    const { userId } = await verify(
+      token.replace('Bearer ', ''),
+      process.env.JWT_PRIVATE_KEY
+    );
+    return userId;
+  } catch (error) {
+    return false;
+  }
+};
