@@ -1,30 +1,30 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import Cookies from 'js-cookie';
-import { useDispatch, useSelector } from 'react-redux';
-import ListBoxUI from './headlessUI/ListBoxUI';
-import ConfirmModal from './ConfirmModal';
-import ViewCodeModal from './ViewCodeModal';
+import Cookies from "js-cookie";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ConfirmModal from "./ConfirmModal";
+import ListBoxUI from "./headlessUI/ListBoxUI";
+import ViewCodeModal from "./ViewCodeModal";
 
 import {
-  FaEraser,
-  FaEdit,
-  FaArrowAltCircleUp,
   FaArrowAltCircleDown,
-} from 'react-icons/fa';
+  FaArrowAltCircleUp,
+  FaEdit,
+  FaEraser,
+} from "react-icons/fa";
 
 import {
   setSortByOrder,
   setSortByQuery,
   sortSolution,
-} from '@/redux-slices/Solution';
-import BrandHead from './BrandHead';
-import ShareButton from './ShareButton';
-import { animate, motion } from 'framer-motion';
-import { variants } from '@/utils/frammer';
-import Pagination from './Pagination';
-import { useRouter } from 'next/router';
+} from "@/redux-slices/Solution";
+import { variants } from "@/utils/frammer";
+import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import BrandHead from "./BrandHead";
+import Pagination from "./Pagination";
+import ShareButton from "./ShareButton";
 
 export default function CardItems() {
   let solutionState = useSelector((state) => state.solutions);
@@ -47,14 +47,14 @@ export default function CardItems() {
   const router = useRouter();
 
   // ListBox State
-  const languageOption = ['score', 'accuracy', 'level', 'date'];
+  const languageOption = ["score", "accuracy", "level", "date"];
   const changeSeleted = (query) => {
     dispatch(sortSolution(query));
     dispatch(setSortByQuery(query));
 
     // Saving User-Setting in cookies
     Cookies.set(
-      'userSetting',
+      "userSetting",
       JSON.stringify({
         sort: query,
         order: sortByOrder,
@@ -72,7 +72,7 @@ export default function CardItems() {
 
     // Saving User-Setting in cookies
     Cookies.set(
-      'userSetting',
+      "userSetting",
       JSON.stringify({
         sort: sortByQuery,
         order: order,
@@ -105,21 +105,21 @@ export default function CardItems() {
             <div className="flex items-center mt-2.5 space-x-1">
               <button
                 className={`${
-                  sortByOrder === 'ascending'
-                    ? 'text-gray-600'
-                    : 'text-gray-400'
+                  sortByOrder === "ascending"
+                    ? "text-gray-600"
+                    : "text-gray-400"
                 }`}
-                onClick={() => handleSortingOrder('ascending')}
+                onClick={() => handleSortingOrder("ascending")}
               >
                 <FaArrowAltCircleUp />
               </button>
               <button
                 className={`${
-                  sortByOrder === 'descending'
-                    ? 'text-gray-600'
-                    : 'text-gray-400'
+                  sortByOrder === "descending"
+                    ? "text-gray-600"
+                    : "text-gray-400"
                 }`}
-                onClick={() => handleSortingOrder('descending')}
+                onClick={() => handleSortingOrder("descending")}
               >
                 <FaArrowAltCircleDown />
               </button>
@@ -131,12 +131,20 @@ export default function CardItems() {
       <section className="mt-3 pointer-events-none grid md:grid-cols-2 2xl:grid-cols-4 xl:grid-cols-3 gap-4">
         {solutions?.map((element, index) => {
           let i = index;
-          let num = page * limit;
-          num = num === page * len ? num : num - len;
-          num =
-            sortByOrder === 'ascending' ? num - len + 1 + index : num - index;
-          index = num.toString().padStart(2, 0);
 
+          // let num = page * limit;
+          // num = num === page * len ? num : num - len;
+          // num =
+          //   sortByOrder === "ascending" ? num - len + 1 + index : num - index;
+
+          if (sortByOrder === "ascending") {
+            index = solutionState.totalResults - page * limit + index + 1;
+          } else {
+            index = solutionState.totalResults - (page - 1) * limit - index;
+          }
+
+          index = index.toString().padStart(2, 0);
+          console.log(solutionState.totalResults, (page - 1) * limit);
           return (
             <motion.div
               id={element._id}
@@ -147,14 +155,14 @@ export default function CardItems() {
               animate="visible"
               transition={{
                 delay: i * 0.25,
-                ease: 'easeInOut',
+                ease: "easeInOut",
                 duration: 0.5,
               }}
               viewport={{ amount: 0 }}
             >
               <div className="flex mb-4 justify-between">
                 <div className="flex">
-                  {' '}
+                  {" "}
                   <Image
                     src="https://media.geeksforgeeks.org/wp-content/uploads/20200716222246/Path-219.png"
                     alt="Greeks For Greek"
@@ -162,7 +170,7 @@ export default function CardItems() {
                     width={90}
                   />
                   <span className="ml-4 mb-2 text-3xl font-semibold tracking-tight text-gray-900 dark:text-white">
-                    {'-'}&nbsp;&nbsp;
+                    {"-"}&nbsp;&nbsp;
                     {index}
                   </span>
                 </div>
@@ -187,12 +195,12 @@ export default function CardItems() {
                 />
               )}
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Status -{' '}
+                Status -{" "}
                 <span
                   className={`${
-                    element.status === 'Done'
-                      ? 'text-green-500'
-                      : 'text-red-600'
+                    element.status === "Done"
+                      ? "text-green-500"
+                      : "text-red-600"
                   } font-bold`}
                 >
                   {element.status}
@@ -202,11 +210,11 @@ export default function CardItems() {
                 Level - <span className={`font-bold`}>{element.level}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Language -{' '}
+                Language -{" "}
                 <span className="font-bold capitalize">{element.language}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Accuracy -{' '}
+                Accuracy -{" "}
                 <span className={`font-bold`}>
                   {Math.floor(100 / element.accuracy) ===
                   Math.ceil(100 / element.accuracy)
@@ -219,7 +227,7 @@ export default function CardItems() {
                 Time - <span className={`font-bold`}>{element.time}</span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Code -{' '}
+                Code -{" "}
                 <span className="pointer-events-auto font-bold">
                   <button
                     className="text-blue-600 cursor-pointer view-code"
@@ -233,7 +241,7 @@ export default function CardItems() {
                 </span>
               </p>
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Date -{' '}
+                Date -{" "}
                 <span className={`font-bold`}>
                   {`${new Date(element.createdAt).toDateString()}, ${new Date(
                     element.createdAt
@@ -243,7 +251,7 @@ export default function CardItems() {
               </p>
 
               <p className="mb-3 font-normal text-gray-600 dark:text-gray-400">
-                Score -{' '}
+                Score -{" "}
                 <span className={`font-bold text-red-700`}>
                   {element.score}
                 </span>
@@ -270,7 +278,7 @@ export default function CardItems() {
                 {/* Update */}
                 <Link
                   href={{
-                    pathname: '/update',
+                    pathname: "/update",
                     query: {
                       data: JSON.stringify(element),
                     },
