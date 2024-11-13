@@ -1,4 +1,4 @@
-package com.CodingJournal;
+package com.codeingjournal;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

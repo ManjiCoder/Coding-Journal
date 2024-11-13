@@ -93,9 +93,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.CodingJournal"
+    namespace "com.codeingjournal"
     defaultConfig {
-        applicationId "com.CodingJournal"
+        applicationId "com.codeingjournal"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
