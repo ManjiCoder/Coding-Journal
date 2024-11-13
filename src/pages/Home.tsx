@@ -16,8 +16,8 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {Button} from 'react-native-paper';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   Colors,
   DebugInstructions,
@@ -43,6 +43,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         ]}>
         {title}
       </Text>
+
       <Text
         style={[
           styles.sectionDescription,
@@ -52,7 +53,13 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         ]}>
         {children}
       </Text>
-      <Icon name="rocket" size={30} color="#900" />
+
+      <Button
+        icon="camera"
+        mode="contained"
+        onPress={() => console.log('Pressed')}>
+        Press me
+      </Button>
     </View>
   );
 }
