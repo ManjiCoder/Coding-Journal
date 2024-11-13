@@ -13,3 +13,7 @@ git init
 > > git branch -M apps
 > > git remote add origin https://github.com/ManjiCoder/Coding-Journal.git
 > > git push -u origin apps
+
+# react native
+
+npx react-native run-android -- --reset-cache
