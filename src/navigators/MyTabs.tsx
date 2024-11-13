@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {CommonActions} from '@react-navigation/native';
 import {BottomNavigation, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Home from '../pages/Home';
 
 const Tab = createBottomTabNavigator();
 
@@ -59,7 +60,7 @@ export default function MyTabs() {
       )}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={Home}
         options={{
           tabBarLabel: 'Home',
           headerShown: false,
