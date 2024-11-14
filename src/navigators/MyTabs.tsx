@@ -5,7 +5,13 @@ import {StyleSheet, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {CommonActions} from '@react-navigation/native';
 import {useQuery} from '@tanstack/react-query';
-import {ActivityIndicator, BottomNavigation, Text} from 'react-native-paper';
+import {Image, ScrollView} from 'react-native';
+import {
+  ActivityIndicator,
+  BottomNavigation,
+  Button,
+  Text,
+} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const Tab = createBottomTabNavigator();
@@ -104,9 +110,37 @@ function HomeScreen() {
   return (
     <View style={styles.container}>
       <Text variant="headlineMedium">Home!</Text>
-      {data.map(item => {
-        return <Text key={item.description}>{item.category}</Text>;
-      })}
+      <ScrollView>
+        {data.map(item => {
+          const mrp = new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 2,
+          }).format(item.price);
+          return (
+            <View
+              style={[styles.container, {gap: 10, marginBottom: 20}]}
+              key={item.description}>
+              <Image
+                width={200}
+                height={200}
+                source={{uri: item.image}}
+                style={{borderRadius: 11, padding: 10}}
+              />
+              <Text numberOfLines={1} style={{textAlign: 'center'}}>
+                {item.title}
+              </Text>
+              <Button
+                icon="cart"
+                mode="contained"
+                onPress={() => console.log('Pressed')}>
+                {mrp}
+              </Button>
+            </View>
+          );
+        })}
+      </ScrollView>
     </View>
   );
 }
@@ -124,5 +158,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
   },
 });
