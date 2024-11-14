@@ -13,6 +13,7 @@ import {
   Text,
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import LoginScreen from '../pages/LoginScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,7 +67,7 @@ export default function MyTabs() {
       )}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={LoginScreen}
         options={{
           tabBarLabel: 'Home',
           headerShown: false,
