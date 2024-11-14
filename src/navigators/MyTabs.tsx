@@ -81,7 +81,8 @@ export default function MyTabs() {
         name="Settings"
         component={SignupScreen}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'SignUp',
+          headerShown: false,
           tabBarIcon: ({color, size}) => {
             return <Icon name="cog" size={size} color={color} />;
           },

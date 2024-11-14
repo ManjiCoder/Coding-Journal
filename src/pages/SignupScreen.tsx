@@ -20,18 +20,18 @@ const SignupScreen = () => {
       ]}>
       <View style={{rowGap: 5}}>
         <Text variant="headlineMedium" style={styles.textCenter}>
-          Login to your Account
+          Create your Account
         </Text>
         <Text variant="titleSmall" style={styles.textCenter}>
-          Welcome back to CodingJournal
+          Welcome to CodingJournal
         </Text>
       </View>
 
-      <View style={{paddingVertical: 0, gap: 30}}>
+      <View style={{paddingVertical: 0, gap: 20}}>
         <TextInput
           label="Name"
           value={name}
-          autoFocus
+          //   autoFocus
           // placeholder="Enter your Email"
           onChangeText={text => setName(text)}
           right={<TextInput.Icon icon="account" />}
@@ -53,9 +53,17 @@ const SignupScreen = () => {
         />
       </View>
 
-      <Button mode="contained" rippleColor="#fff">
-        Sign Up
-      </Button>
+      <View style={{rowGap: 5}}>
+        <Button mode="contained" rippleColor="#fff">
+          Sign Up
+        </Button>
+        <Text variant="titleMedium" style={styles.textCenter}>
+          Or
+        </Text>
+        <Button mode="contained" rippleColor="#fff">
+          LogIn
+        </Button>
+      </View>
     </View>
   );
 };

@@ -26,28 +26,48 @@ const LoginScreen = () => {
         </Text>
       </View>
 
-      <View style={{paddingVertical: 0, gap: 30}}>
+      <View style={{paddingVertical: 0, gap: 20}}>
         <TextInput
           label="Email"
           value={email}
-          autoFocus
+          //   autoFocus
           // placeholder="Enter your Email"
           onChangeText={text => setEmail(text)}
           right={<TextInput.Icon icon="email" />}
         />
-        <TextInput
-          label="Password"
-          secureTextEntry
-          value={pass}
-          // placeholder="Enter your Password"
-          onChangeText={text => setPass(text)}
-          right={<TextInput.Icon icon="eye" />}
-        />
+        <View style={{position: 'relative', marginBottom: 20}}>
+          <TextInput
+            label="Password"
+            secureTextEntry
+            value={pass}
+            // placeholder="Enter your Password"
+            onChangeText={text => setPass(text)}
+            right={<TextInput.Icon icon="eye" />}
+          />
+          <Text
+            style={{
+              textAlign: 'right',
+              position: 'absolute',
+              top: 60,
+              right: 10,
+            }}
+            variant="labelSmall">
+            Forgot Password?
+          </Text>
+        </View>
       </View>
 
-      <Button mode="contained" rippleColor="#fff">
-        LogIn
-      </Button>
+      <View style={{rowGap: 5}}>
+        <Button mode="contained" rippleColor="#fff">
+          LogIn
+        </Button>
+        <Text variant="titleMedium" style={styles.textCenter}>
+          Or
+        </Text>
+        <Button mode="contained" rippleColor="#fff">
+          Sign Up
+        </Button>
+      </View>
     </View>
   );
 };
