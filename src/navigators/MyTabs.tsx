@@ -14,6 +14,7 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoginScreen from '../pages/LoginScreen';
+import SignupScreen from '../pages/SignupScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -78,7 +79,7 @@ export default function MyTabs() {
       />
       <Tab.Screen
         name="Settings"
-        component={SettingsScreen}
+        component={SignupScreen}
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({color, size}) => {
