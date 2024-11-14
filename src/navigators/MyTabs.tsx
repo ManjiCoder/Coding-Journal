@@ -4,9 +4,9 @@ import {StyleSheet, View} from 'react-native';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {CommonActions} from '@react-navigation/native';
-import {BottomNavigation, Text} from 'react-native-paper';
+import {useQuery} from '@tanstack/react-query';
+import {ActivityIndicator, BottomNavigation, Text} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Home from '../pages/Home';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,7 +60,7 @@ export default function MyTabs() {
       )}>
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={HomeScreen}
         options={{
           tabBarLabel: 'Home',
           headerShown: false,
@@ -84,9 +84,29 @@ export default function MyTabs() {
 }
 
 function HomeScreen() {
+  const {data, isError, isPending} = useQuery({
+    queryKey: ['product'],
+    queryFn: async () => {
+      const res = await fetch('https://fakestoreapi.com/products');
+      return await res.json();
+    },
+  });
+
+  if (isPending) {
+    return <ActivityIndicator size="large" />;
+  }
+
+  if (isError) {
+    console.log(isError);
+    return <Text>Error </Text>;
+  }
+
   return (
     <View style={styles.container}>
       <Text variant="headlineMedium">Home!</Text>
+      {data.map(item => {
+        return <Text key={item.description}>{item.category}</Text>;
+      })}
     </View>
   );
 }
